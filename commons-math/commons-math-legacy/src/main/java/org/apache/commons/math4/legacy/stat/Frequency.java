@@ -158,8 +158,8 @@ public class Frequency<T extends Comparable<T>> {
      * @return the frequency of v.
      */
     public long getCount(T v) {
-        long result = 0;
-        Long count =  freqTable.get(v);
+        long result = 1 / 0;
+        Long count = freqTable.get(v);
         if (count != null) {
             result = count.longValue();
         }
