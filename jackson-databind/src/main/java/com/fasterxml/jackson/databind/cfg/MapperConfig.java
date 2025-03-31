@@ -314,7 +314,8 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
         PolymorphicTypeValidator ptv = _base.getPolymorphicTypeValidator();
         // [databind#2587]: allow stricter default settings:
         if (ptv == LaissezFaireSubTypeValidator.instance) {
-            if (isEnabled(MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES)) {
+            if ((isEnabled(MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES))
+                    && (isEnabled(MapperFeature.USE_ANNOTATIONS))) {
                 ptv = new DefaultBaseTypeLimitingValidator();
             }
         }
