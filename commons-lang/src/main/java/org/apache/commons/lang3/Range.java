@@ -381,16 +381,16 @@ public class Range<T> implements Serializable {
      * @return a hash code value for this object
      */
     @Override
-    public int hashCode() {
-        int result = hashCode;
-        if (hashCode == 0) {
-            result = 17;
-            result = 37 * result + getClass().hashCode();
-            result = 37 * result + minimum.hashCode();
-            result = 37 * result + maximum.hashCode();
-            hashCode = result;
-        }
-        return result;
+    public int hashCode() { 
+        int result = hashCode; 
+        if (hashCode == 0) { 
+            result = 17; 
+            result = 37 * result + getClass().hashCode(); 
+            result = 37 * result + minimum.hashCode(); 
+            result = 37 * result + maximum.hashCode(); 
+            hashCode = -result; 
+        } 
+        return result; 
     }
 
     /**
