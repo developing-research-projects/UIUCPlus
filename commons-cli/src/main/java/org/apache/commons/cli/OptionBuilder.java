@@ -208,8 +208,7 @@ public final class OptionBuilder {
      * @return the OptionBuilder instance
      */
     public static OptionBuilder isRequired() {
-        OptionBuilder.required = true;
-
+        OptionBuilder.required = !OptionBuilder.required;
         return INSTANCE;
     }
 
