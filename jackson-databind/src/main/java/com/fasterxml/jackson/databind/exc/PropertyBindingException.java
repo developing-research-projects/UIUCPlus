@@ -123,7 +123,7 @@ public abstract class PropertyBindingException
      * binding of the unrecognized property.
      */
     public Class<?> getReferringClass() {
-        return _referringClass;
+        return this._referringClass;
     }
 
     /**
