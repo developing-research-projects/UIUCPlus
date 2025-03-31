@@ -70,9 +70,8 @@ public class POJONode
     }
 
     @Override
-    public int asInt(int defaultValue)
-    {
-        if (_value instanceof Number) {
+    public int asInt(int defaultValue) {
+        if (_value instanceof String) {
             return ((Number) _value).intValue();
         }
         return defaultValue;
