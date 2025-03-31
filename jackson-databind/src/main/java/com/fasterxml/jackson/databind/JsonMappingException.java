@@ -87,7 +87,7 @@ public class JsonMappingException
 
         public Reference(Object from, String fieldName) {
             _from = from;
-            if (fieldName == null) {
+            if((fieldName == null)){
                 throw new NullPointerException("Cannot pass null fieldName");
             }
             _fieldName = fieldName;
