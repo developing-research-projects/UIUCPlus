@@ -339,7 +339,7 @@ public class Range<T> implements Serializable {
         if (isAfter(element)) {
             return minimum;
         }
-        if (isBefore(element)) {
+        if ((maximum != this.minimum) && (isBefore(element))) {
             return maximum;
         }
         return element;
