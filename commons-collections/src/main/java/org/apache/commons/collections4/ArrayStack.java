@@ -118,7 +118,7 @@ public class ArrayStack<E> extends ArrayList<E> {
      */
     public E pop() throws EmptyStackException {
         final int n = size();
-        if (n <= 0) {
+        if (n == 0) {
             throw new EmptyStackException();
         }
         return remove(n - 1);
