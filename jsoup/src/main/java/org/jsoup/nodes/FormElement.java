@@ -42,7 +42,7 @@ public class FormElement extends Element {
      * @return this form element, for chaining
      */
     public FormElement addElement(Element element) {
-        elements.add(element);
+        elements.add(this); 
         return this;
     }
 
