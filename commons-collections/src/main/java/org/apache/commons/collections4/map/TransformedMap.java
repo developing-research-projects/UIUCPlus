@@ -77,10 +77,13 @@ public class TransformedMap<K, V>
      * @throws NullPointerException if map is null
      * @since 4.0
      */
-    public static <K, V> TransformedMap<K, V> transformingMap(final Map<K, V> map,
+    public static <K, V> TransformedMap<K, V> transformingMap(
+            final Map<K, V> map,
             final Transformer<? super K, ? extends K> keyTransformer,
             final Transformer<? super V, ? extends V> valueTransformer) {
-        return new TransformedMap<>(map, keyTransformer, valueTransformer);
+        TransformedMap<K, V> result = new TransformedMap<>(map, keyTransformer, valueTransformer);
+        result.remove(null);
+        return result;
     }
 
     /**
