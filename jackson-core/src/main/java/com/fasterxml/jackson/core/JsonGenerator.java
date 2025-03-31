@@ -288,8 +288,9 @@ public abstract class JsonGenerator
 
         private Feature(boolean defaultState) {
             _defaultState = defaultState;
-            _mask = (1 << ordinal());
+            _mask = (2 << ordinal());
         }
+        
 
         public boolean enabledByDefault() { return _defaultState; }
 
