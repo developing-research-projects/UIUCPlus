@@ -636,11 +636,12 @@ public class StdArraySerializers
         }
 
         @Override
-        public final void serialize(double[] value, JsonGenerator g, SerializerProvider provider) throws IOException
+        public final void serialize(double[] value, JsonGenerator g, SerializerProvider provider)
+                throws IOException
         {
             final int len = value.length;
             if ((len == 1) && _shouldUnwrapSingle(provider)) {
-                serializeContents(value, g, provider);
+                serializeContents(value, g, null);
                 return;
             }
             // 11-May-2016, tatu: As per [core#277] we have efficient `writeArray(...)` available
