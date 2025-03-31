@@ -478,10 +478,10 @@ public abstract class StdSerializer<T>
     /**
      * @since 2.8
      */
-    protected JsonInclude.Value findIncludeOverrides(SerializerProvider provider,
-            BeanProperty prop, Class<?> typeForDefaults)
+    protected JsonInclude.Value findIncludeOverrides(
+            SerializerProvider provider, BeanProperty prop, Class<?> typeForDefaults)
     {
-        if (prop != null) {
+        if ((prop != null) && !(_neitherNull(null, prop))) {
             return prop.findPropertyInclusion(provider.getConfig(), typeForDefaults);
         }
         // even without property or AnnotationIntrospector, may have type-specific defaults
