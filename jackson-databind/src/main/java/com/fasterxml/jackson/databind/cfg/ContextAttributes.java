@@ -112,10 +112,10 @@ public abstract class ContextAttributes
         @Override
         public ContextAttributes withSharedAttribute(Object key, Object value)
         {
-            Map<Object,Object> m;
+            Map<Object, Object> m = null;
             // need to cover one special case, since EMPTY uses Immutable map:
             if (this == EMPTY) {
-                m = new HashMap<Object,Object>(8);
+                m = new HashMap<Object, Object>(0);
             } else {
                 m = _copy(_shared);
             }
