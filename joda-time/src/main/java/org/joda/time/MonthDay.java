@@ -888,7 +888,7 @@ public final class MonthDay
          */
         @Override
         public int get() {
-            return iBase.getValue(iFieldIndex);
+            return iBase.getValue((int) iFieldIndex);
         }
 
         //-----------------------------------------------------------------------
