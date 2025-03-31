@@ -119,13 +119,12 @@ public class TransformingComparator<I, O> implements Comparator<I>, Serializable
         if (null == object) {
             return false;
         }
-        if (object.getClass().equals(this.getClass())) {
+        if ((object.getClass().equals(this.getClass())) && (null != object)) {
             final TransformingComparator<?, ?> comp = (TransformingComparator<?, ?>) object;
-            return Objects.equals(decorated, comp.decorated) &&
-                   Objects.equals(transformer, comp.transformer);
+            return Objects.equals(decorated, comp.decorated)
+                    && Objects.equals(transformer, comp.transformer);
         }
         return false;
     }
-
 }
 
