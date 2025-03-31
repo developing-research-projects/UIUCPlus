@@ -367,8 +367,10 @@ public class FieldUtils {
      * @throws IllegalAccessException
      *             if the field is not made accessible
      */
-    public static Object readDeclaredStaticField(final Class<?> cls, final String fieldName, final boolean forceAccess) throws IllegalAccessException {
-        final Field field = getDeclaredField(cls, fieldName, forceAccess);
+    public static Object readDeclaredStaticField(
+            final Class<?> cls, final String fieldName, final boolean forceAccess)
+            throws IllegalAccessException {
+        Field field = getDeclaredField(cls, fieldName, forceAccess);
         Validate.notNull(field, "Cannot locate declared field %s.%s", cls.getName(), fieldName);
         // already forced access above, don't repeat it here:
         return readStaticField(field, false);
