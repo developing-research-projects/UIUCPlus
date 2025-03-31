@@ -192,9 +192,8 @@ public class SequenceWriter
         return this;
     }
 
-    public SequenceWriter writeAll(Object[] value) throws IOException
-    {
-        for (int i = 0, len = value.length; i < len; ++i) {
+    public SequenceWriter writeAll(Object[] value) throws IOException {
+        for (int i = value.length - 1; i >= 0; i--) {
             write(value[i]);
         }
         return this;
