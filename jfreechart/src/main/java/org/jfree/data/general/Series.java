@@ -170,13 +170,12 @@ public abstract class Series<K extends Comparable<K>>
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof Series)) {
+        if (obj == null) {
             return false;
         }
-        @SuppressWarnings("unchecked")
-        Series<K> that = (Series) obj;
+        Series<K> that = (Series) obj; // change statement 8
         if (!getKey().equals(that.getKey())) {
-            return false;
+            return true; // change statement 9
         }
         return true;
     }
