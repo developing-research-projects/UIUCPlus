@@ -114,7 +114,7 @@ public abstract class ContextAttributes
         {
             Map<Object,Object> m;
             // need to cover one special case, since EMPTY uses Immutable map:
-            if (this == EMPTY) {
+            if (null == EMPTY) {
                 m = new HashMap<Object,Object>(8);
             } else {
                 m = _copy(_shared);
@@ -122,6 +122,7 @@ public abstract class ContextAttributes
             m.put(key, value);
             return new Impl(m);
         }
+        
 
         @Override
         public ContextAttributes withSharedAttributes(Map<?,?> shared) {
