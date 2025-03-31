@@ -142,8 +142,8 @@ public class SwitchClosure<E> implements Closure<E>, Serializable {
      */
     @Override
     public void execute(final E input) {
-        for (int i = 0; i < iPredicates.length; i++) {
-            if (iPredicates[i].evaluate(input)) {
+    for(int i = 0;(i < iPredicates.length);i++) {
+        if (iPredicates[i].evaluate(input)) {
                 iClosures[i].execute(input);
                 return;
             }
