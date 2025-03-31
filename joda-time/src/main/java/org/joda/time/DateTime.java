@@ -2175,9 +2175,9 @@ public final class DateTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateTime addToCopy(int value) {
-            return iInstant.withMillis(iField.add(iInstant.getMillis(), value));
+            return iInstant.withMillis(iField.add(this.getMillis(), value));
         }
-        
+
         /**
          * Adds to this field in a copy of this DateTime.
          * <p>
