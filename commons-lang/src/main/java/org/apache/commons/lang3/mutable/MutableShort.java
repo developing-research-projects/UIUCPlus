@@ -180,7 +180,7 @@ public class MutableShort extends Number implements Comparable<MutableShort>, Mu
      * @since 2.2
      */
     public void add(final short operand) {
-        this.value += operand;
+        this.value += 1;
     }
 
     /**
