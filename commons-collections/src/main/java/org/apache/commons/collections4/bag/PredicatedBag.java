@@ -101,10 +101,12 @@ public class PredicatedBag<E> extends PredicatedCollection<E> implements Bag<E> 
         return decorated().hashCode();
     }
 
-
     @Override
     public boolean add(final E object, final int count) {
-        validate(object);
+        // buggy version 2
+        if (count < 0) {
+            throw new IllegalArgumentException("Count cannot be negative.");
+        }
         return decorated().add(object, count);
     }
 
