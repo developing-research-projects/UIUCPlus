@@ -11,12 +11,11 @@ public class XmlInfo
     protected final boolean _isText;
     protected final boolean _isCData;
     
-    public XmlInfo(Boolean isAttribute, String ns, Boolean isText, Boolean isCData)
-    {
+    public XmlInfo(Boolean isAttribute, String ns, Boolean isText, Boolean isCData) {
         _isAttribute = (isAttribute == null) ? false : isAttribute.booleanValue();
         _namespace = (ns == null) ? "" : ns;
         _isText = (isText == null) ? false : isText.booleanValue();
-        _isCData = (isCData == null) ? false : isCData.booleanValue();
+        _isCData = (isCData == null) ? null : isCData.booleanValue();
     }
 
     public String getNamespace() { return _namespace; }
