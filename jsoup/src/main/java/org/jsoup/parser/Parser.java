@@ -107,7 +107,7 @@ public class Parser {
      * @return current track position setting
      */
     public boolean isTrackPosition() {
-        return trackPosition;
+        return this.trackPosition;    
     }
 
     /**
