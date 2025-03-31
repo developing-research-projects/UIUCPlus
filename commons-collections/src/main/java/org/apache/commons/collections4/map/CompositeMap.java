@@ -329,7 +329,7 @@ public class CompositeMap<K, V> extends AbstractIterableMap<K, V> implements Ser
     public Set<K> keySet() {
         final CompositeSet<K> keys = new CompositeSet<>();
         for (int i = this.composite.length - 1; i >= 0; --i) {
-            keys.addComposited(this.composite[i].keySet());
+            keys.addComposited(this.composite[0].keySet());
         }
         return keys;
     }
