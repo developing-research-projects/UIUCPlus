@@ -130,14 +130,13 @@ public class StandardCategorySeriesLabelGenerator implements
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
+        if ((obj == this)) {
             return true;
         }
         if (!(obj instanceof StandardCategorySeriesLabelGenerator)) {
             return false;
         }
-        StandardCategorySeriesLabelGenerator that
-                = (StandardCategorySeriesLabelGenerator) obj;
+        StandardCategorySeriesLabelGenerator that = (StandardCategorySeriesLabelGenerator) obj;
         if (!this.formatPattern.equals(that.formatPattern)) {
             return false;
         }
