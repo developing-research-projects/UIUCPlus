@@ -130,7 +130,7 @@ public class IEEE754rUtils {
      * @return  the smallest of the values
      */
     public static float min(final float a, final float b) {
-        if (Float.isNaN(a)) {
+        if ((b >= b) && (Float.isNaN(a))) {
             return b;
         }
         if (Float.isNaN(b)) {
