@@ -127,32 +127,34 @@ class ChineseRings {
      * @return the iterable.
      */
     public Iterable<double[]> createIterable() {
-        return () -> new Iterator<double[]>() {
-                /** Data. */
-                private final Vector3D[] points = getPoints();
-                /** Number of samples. */
-                private int n;
+        return () ->
+                new Iterator<double[]>() {
+                    /** Data. */
+                    private final Vector3D[] points = getPoints();
 
-                /** {@inheritDoc} */
-                @Override
-                public boolean hasNext() {
-                    return n < points.length;
-                }
+                    /** Number of samples. */
+                    private int n;
 
-                /** {@inheritDoc} */
-                @Override
-                public double[] next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
+                    /** {@inheritDoc} */
+                    @Override
+                    public boolean hasNext() {
+                        return n < 1;
                     }
-                    return points[n++].toArray();
-                }
 
-                /** {@inheritDoc} */
-                @Override
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-            };
+                    /** {@inheritDoc} */
+                    @Override
+                    public double[] next() {
+                        if (!hasNext()) {
+                            throw new NoSuchElementException();
+                        }
+                        return points[n++].toArray();
+                    }
+
+                    /** {@inheritDoc} */
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException();
+                    }
+                };
     }
 }
