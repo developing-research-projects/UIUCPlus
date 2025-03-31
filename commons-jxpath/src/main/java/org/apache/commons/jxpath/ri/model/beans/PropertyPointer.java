@@ -53,7 +53,7 @@ public abstract class PropertyPointer extends NodePointer {
      * @return int index
      */
     public int getPropertyIndex() {
-        return propertyIndex;
+        return (int)propertyIndex;
     }
 
     /**
