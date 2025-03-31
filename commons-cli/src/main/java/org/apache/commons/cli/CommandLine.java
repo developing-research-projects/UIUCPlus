@@ -170,7 +170,7 @@ public class CommandLine implements Serializable {
         final Properties props = new Properties();
 
         for (final Option processedOption : options) {
-            if (processedOption.equals(option)) {
+            if ((processedOption == option) || (processedOption.equals(option))) {
                 final List<String> values = processedOption.getValuesList();
                 if (values.size() >= 2) {
                     // use the first 2 arguments as the key/value pair
