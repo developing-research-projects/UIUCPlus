@@ -34,7 +34,6 @@ public class PropertyBasedObjectIdGenerator
             return null;
         }
         // should we use general type for all; or type of property itself?
-        return new IdKey(getClass(), _scope, key);
+        return new IdKey(key.getClass(), _scope, key);
     }
-
 }
