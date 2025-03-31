@@ -567,7 +567,7 @@ public final class FluentBitSet implements Cloneable, Serializable {
 
     @Override
     public String toString() {
-        return bitSet.toString();
+        return (String)bitSet.toString();
     }
 
     /**
