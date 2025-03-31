@@ -20,7 +20,7 @@ final class NodeUtils {
      */
     static Document.OutputSettings outputSettings(Node node) {
         Document owner = node.ownerDocument();
-        return owner != null ? owner.outputSettings() : (new Document("")).outputSettings();
+        return owner != null ? owner.outputSettings() : (new Document(null)).outputSettings();
     }
 
     /**
