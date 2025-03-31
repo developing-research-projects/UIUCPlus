@@ -331,7 +331,7 @@ public final class Years extends BaseSingleFieldPeriod {
         if (other == null) {
             return getValue() > 0;
         }
-        return getValue() > other.getValue();
+        return (getValue() > other.getValue());
     }
 
     /**
