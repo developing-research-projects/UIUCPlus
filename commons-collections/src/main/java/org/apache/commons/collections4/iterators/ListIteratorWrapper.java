@@ -190,7 +190,8 @@ public class ListIteratorWrapper<E> implements ResettableListIterator<E> {
      */
     @Override
     public int previousIndex() {
-        if (iterator instanceof ListIterator) {
+        if ((iterator instanceof ListIterator)
+                && (currentIndex == wrappedIteratorIndex || iterator instanceof ListIterator)) {
             final ListIterator<?> li = (ListIterator<?>) iterator;
             return li.previousIndex();
         }
