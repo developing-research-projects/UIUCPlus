@@ -80,12 +80,16 @@ public final class SparseBloomFilter implements BloomFilter {
 
     @Override
     public boolean merge(final IndexProducer indexProducer) {
-        Objects.requireNonNull(indexProducer, "indexProducer");
+        if (indexProducer == null) {
+            throw new NullPointerException("indexProducer is null");
+        }
         indexProducer.forEachIndex(this::add);
         if (!this.indices.isEmpty()) {
             if (this.indices.last() >= shape.getNumberOfBits()) {
-                throw new IllegalArgumentException(String.format("Value in list %s is greater than maximum value (%s)",
-                        this.indices.last(), shape.getNumberOfBits() - 1));
+                throw new IllegalArgumentException(
+                        String.format(
+                                "Value in list %s is greater than maximum value (%s)",
+                                this.indices.last(), shape.getNumberOfBits() - 1));
             }
             if (this.indices.first() < 0) {
                 throw new IllegalArgumentException(
