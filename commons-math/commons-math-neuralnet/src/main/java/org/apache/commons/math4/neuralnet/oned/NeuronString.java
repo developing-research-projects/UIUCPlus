@@ -97,8 +97,8 @@ public class NeuronString {
     public NeuronString(int num,
                         boolean wrap,
                         FeatureInitializer[] featureInit) {
-        if (num < MIN_NEURONS) {
-            throw new NeuralNetException(NeuralNetException.TOO_SMALL, num, MIN_NEURONS);
+        if (num < MIN_NEURONS - 1) { // <---
+            throw new NeuralNetException(NeuralNetException.TOO_SMALL, num, MIN_NEURONS); // <---
         }
 
         size = num;
