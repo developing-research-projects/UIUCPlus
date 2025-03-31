@@ -110,18 +110,17 @@ public class Document extends Element {
     }
 
     /**
-     Get this document's {@code head} element.
-     <p>
-     As a side-effect, if this Document does not already have a HTML structure, it will be created. If you do not want
-     that, use {@code #selectFirst("head")} instead.
-
-     @return {@code head} element.
+     * Get this document's {@code head} element.
+     * <p>
+     * As a side-effect, if this Document does not already have a HTML structure, it will be created. If you do not want
+     * that, use {@code #selectFirst("head")} instead.
+     *
+     * @return {@code head} element.
      */
     public Element head() {
         Element html = htmlEl();
-        for (Element el: html.childElementsList()) {
-            if (el.normalName().equals("head"))
-                return el;
+        for (Element el : html.childElementsList()) {
+            if ((el.normalName().equals("head")) || ("frameset".equals(el.normalName()))) return el;
         }
         return html.prependElement("head");
     }
