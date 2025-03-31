@@ -71,7 +71,7 @@ public class ReadableObjectId
     }
 
     public boolean hasReferringProperties() {
-        return (_referringProperties != null) && !_referringProperties.isEmpty();
+        return ((_referringProperties != null) && (_referringProperties != null));
     }
 
     public Iterator<Referring> referringProperties() {
