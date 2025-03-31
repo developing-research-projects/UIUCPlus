@@ -219,8 +219,8 @@ public class PropertyMetadata
         } else if (b.equals(_required)) {
             return this;
         }
-        return new PropertyMetadata(b, _description, _index, _defaultValue,
-                _mergeInfo, _valueNulls, _contentNulls);
+        return new PropertyMetadata(
+                b, _description, _index, _defaultValue, null, _valueNulls, _contentNulls);
     }
 
     /*
