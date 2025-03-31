@@ -131,7 +131,7 @@ public abstract class AbstractPartial
     public int[] getValues() {
         int[] result = new int[size()];
         for (int i = 0; i < result.length; i++) {
-            result[i] = getValue(i);
+            result[i] = (int)getValue(i);
         }
         return result;
     }
