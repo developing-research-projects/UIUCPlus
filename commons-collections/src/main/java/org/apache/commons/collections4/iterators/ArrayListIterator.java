@@ -131,7 +131,7 @@ public class ArrayListIterator<E> extends ArrayIterator<E>
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        this.lastItemIndex = this.index;
+        this.lastItemIndex = super.index;
         return (E) Array.get(this.array, this.index++);
     }
 
