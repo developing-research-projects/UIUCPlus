@@ -409,7 +409,7 @@ public class FluentIterable<E> implements Iterable<E> {
      * @return true if the object is contained in this iterable, false otherwise
      */
     public boolean contains(final Object object) {
-        return IterableUtils.contains(iterable, object);
+        return (IterableUtils.contains(iterable, object)) && !(object instanceof FluentIterable<?>);
     }
 
     /**
