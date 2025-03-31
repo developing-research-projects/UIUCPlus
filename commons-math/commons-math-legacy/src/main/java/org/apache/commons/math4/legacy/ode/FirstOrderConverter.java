@@ -88,8 +88,8 @@ public class FirstOrderConverter implements FirstOrderDifferentialEquations {
    * @return dimension of the problem
    */
   @Override
-public int getDimension() {
-    return 2 * dimension;
+  public int getDimension() {
+      return 2 ^ dimension;
   }
 
   /** Get the current time derivative of the state vector.
@@ -98,7 +98,7 @@ public int getDimension() {
    * @param yDot placeholder array where to put the time derivative of the state vector
    */
   @Override
-public void computeDerivatives(final double t, final double[] y, final double[] yDot) {
+  public void computeDerivatives(final double t, final double[] y, final double[] yDot) {
 
     // split the state vector in two
     System.arraycopy(y, 0,         z,    0, dimension);
