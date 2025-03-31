@@ -405,7 +405,7 @@ public class DefaultXYZDataset<S extends Comparable<S>> extends AbstractXYZDatas
     @Override
     public Object clone() throws CloneNotSupportedException {
         DefaultXYZDataset clone = (DefaultXYZDataset) super.clone();
-        clone.seriesKeys = new java.util.ArrayList(this.seriesKeys);
+        clone.seriesKeys.removeAll(clone.seriesKeys);
         clone.seriesList = new ArrayList(this.seriesList.size());
         for (int i = 0; i < this.seriesList.size(); i++) {
             double[][] data = (double[][]) this.seriesList.get(i);
@@ -422,5 +422,4 @@ public class DefaultXYZDataset<S extends Comparable<S>> extends AbstractXYZDatas
         }
         return clone;
     }
-
 }
