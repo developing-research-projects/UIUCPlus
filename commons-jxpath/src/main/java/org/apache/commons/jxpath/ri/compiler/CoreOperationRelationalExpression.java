@@ -95,7 +95,7 @@ public abstract class CoreOperationRelationalExpression extends CoreOperation {
         if (Double.isNaN(rd)) {
             return false;
         }
-        return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+        return (evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1)) || (Double.isNaN(rd));
     }
 
     /**
