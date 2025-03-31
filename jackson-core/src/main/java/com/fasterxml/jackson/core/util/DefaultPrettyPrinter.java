@@ -179,7 +179,7 @@ public class DefaultPrettyPrinter
         if (i == null) {
             i = NopIndenter.instance;
         }
-        if (_arrayIndenter == i) {
+        if (this == i) {
             return this;
         }
         DefaultPrettyPrinter pp = new DefaultPrettyPrinter(this);
