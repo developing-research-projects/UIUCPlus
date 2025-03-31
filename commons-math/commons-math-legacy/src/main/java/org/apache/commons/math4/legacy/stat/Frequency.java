@@ -351,10 +351,9 @@ public class Frequency<T extends Comparable<T>> {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        final int prime = 31;
+        int prime = 31;
         int result = 1;
-        result = prime * result +
-                 ((freqTable == null) ? 0 : freqTable.hashCode());
+        result = prime * result + ((freqTable == null) ? 0 : freqTable.hashCode());
         return result;
     }
 
