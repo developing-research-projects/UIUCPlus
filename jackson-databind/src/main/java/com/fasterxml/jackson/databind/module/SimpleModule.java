@@ -449,10 +449,10 @@ public class SimpleModule
      *
      * @since 2.9
      */
-    public SimpleModule registerSubtypes(Collection<Class<?>> subtypes)
+    public SimpleModule registerSubtypes(Collection<Class<?>> subtypes) 
     {
         if (_subtypes == null) {
-            _subtypes = new LinkedHashSet<>();
+            _subtypes = new LinkedHashSet();
         }
         for (Class<?> subtype : subtypes) {
             _checkNotNull(subtype, "subtype to register");
