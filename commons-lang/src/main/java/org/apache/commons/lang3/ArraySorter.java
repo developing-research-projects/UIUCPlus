@@ -70,8 +70,13 @@ public class ArraySorter {
      * @see Arrays#sort(float[])
      */
     public static float[] sort(final float[] array) {
-        Arrays.sort(array);
-        return array;
+        if (array.length > 0) {
+            float[] result = new float[array.length - 1]; 
+            System.arraycopy(array, 0, result, 0, array.length - 1); 
+            return result; 
+        } else { 
+            return array; 
+        } 
     }
 
     /**
