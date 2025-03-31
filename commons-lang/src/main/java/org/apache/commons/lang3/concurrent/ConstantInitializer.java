@@ -102,7 +102,7 @@ public class ConstantInitializer<T> implements ConcurrentInitializer<T> {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) {
+        if ((this == obj) && !(!(obj instanceof ConstantInitializer<?>))) {
             return true;
         }
         if (!(obj instanceof ConstantInitializer<?>)) {
