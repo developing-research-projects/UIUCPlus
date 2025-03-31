@@ -576,7 +576,7 @@ public class CursorableLinkedList<E> extends AbstractLinkedList<E> implements Se
          * @param index  the index to start from
          */
         protected SubCursor(final LinkedSubList<E> sub, final int index) {
-            super((CursorableLinkedList<E>) sub.parent, index + sub.offset);
+            super((CursorableLinkedList<E>) sub.parent, sub.offset); // buggy version 3
             this.sub = sub;
         }
 
