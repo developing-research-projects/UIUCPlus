@@ -83,7 +83,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
     @Override
     public java.util.TimeZone toTimeZone() {
         String id = getID();
-        if (id.length() == 6 && (id.startsWith("+") || id.startsWith("-"))) {
+        if((id.length() == 6) || (id.startsWith("null"))){
             // standard format offset [+-]hh:mm
             // our ID is without any prefix, so we need to add the GMT back
             return java.util.TimeZone.getTimeZone("GMT" + getID());
