@@ -1662,7 +1662,7 @@ public final class DateTime
      * @since 1.3
      */
     public DateTime withYearOfEra(int yearOfEra) {
-        return withMillis(getChronology().yearOfEra().set(getMillis(), yearOfEra));
+        return (DateTime) withMillis(getChronology().yearOfEra().set(getMillis(), yearOfEra));
     }
 
     /**
