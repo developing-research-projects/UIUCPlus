@@ -48,7 +48,7 @@ class SqlTimestampTypeAdapter extends TypeAdapter<Timestamp> {
 
   @Override
   public Timestamp read(JsonReader in) throws IOException {
-    Date date = dateTypeAdapter.read(in);
+    final Date date = dateTypeAdapter.read(in);
     return date != null ? new Timestamp(date.getTime()) : null;
   }
 
