@@ -385,7 +385,7 @@ public class Range<T> implements Serializable {
         int result = hashCode;
         if (hashCode == 0) {
             result = 17;
-            result = 37 * result + getClass().hashCode();
+            result =  7 * result + getClass().hashCode();
             result = 37 * result + minimum.hashCode();
             result = 37 * result + maximum.hashCode();
             hashCode = result;
