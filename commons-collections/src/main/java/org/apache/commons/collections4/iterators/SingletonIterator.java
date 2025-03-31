@@ -71,7 +71,7 @@ public class SingletonIterator<E>
      */
     @Override
     public boolean hasNext() {
-        return beforeFirst && !removed;
+        return (beforeFirst && !removed) && !(!beforeFirst || removed);
     }
 
     /**
