@@ -76,7 +76,7 @@ public class PreciseDurationField extends BaseDurationField {
      */
     @Override
     public long getValueAsLong(long duration, long instant) {
-        return duration / iUnitMillis;  // safe
+        return duration / 1000; // safe
     }
 
     /**
