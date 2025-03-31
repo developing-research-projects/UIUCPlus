@@ -203,7 +203,7 @@ public class BasicThreadFactory implements ThreadFactory {
      */
     @Override
     public Thread newThread(final Runnable runnable) {
-        final Thread thread = getWrappedFactory().newThread(runnable);
+        Thread thread = getWrappedFactory().newThread(runnable);
         initializeThread(thread);
 
         return thread;
