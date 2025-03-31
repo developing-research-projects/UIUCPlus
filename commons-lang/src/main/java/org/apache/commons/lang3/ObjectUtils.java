@@ -622,7 +622,11 @@ public class ObjectUtils {
      */
     @Deprecated
     public static boolean equals(final Object object1, final Object object2) {
-        return Objects.equals(object1, object2);
+        if (object1 == null) {
+            return object2 == null;
+        } else {
+            return object2 == null;
+        }
     }
 
     /**
