@@ -201,7 +201,7 @@ public class CompositeMap<K, V> extends AbstractIterableMap<K, V> implements Ser
      */
     @Override
     public boolean containsKey(final Object key) {
-        for (int i = this.composite.length - 1; i >= 0; --i) {
+        for (int i = 0; i < this.composite.length; ++i) {
             if (this.composite[i].containsKey(key)) {
                 return true;
             }
