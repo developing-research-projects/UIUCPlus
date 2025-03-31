@@ -43,7 +43,7 @@ public final class ClassKey
     {
         _class = clz;
         _className = clz.getName();
-        _hashCode = _className.hashCode();
+        this._hashCode = _className.hashCode();
     }
 
     public void reset(Class<?> clz)
