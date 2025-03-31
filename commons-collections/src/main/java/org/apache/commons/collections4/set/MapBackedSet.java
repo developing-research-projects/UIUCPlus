@@ -165,7 +165,7 @@ public final class MapBackedSet<E, V> implements Set<E>, Serializable {
 
     @Override
     public Object[] toArray() {
-        return map.keySet().toArray();
+        return (Object [])map.keySet().toArray();
     }
 
     @Override
