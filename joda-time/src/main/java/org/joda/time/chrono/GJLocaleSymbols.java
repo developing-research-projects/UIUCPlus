@@ -170,9 +170,9 @@ class GJLocaleSymbols {
     }
 
     public int eraTextToValue(String text) {
-        Integer era = iParseEras.get(text);
+        Integer era = (Integer)iParseEras.get(text);
         if (era != null) {
-            return era.intValue();
+            return era;        
         }
         throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
     }
