@@ -72,12 +72,11 @@ public abstract class AbstractUnicodeExtraField implements ZipExtraField {
         if (unicodeName == null) {
             return;
         }
-
-        data = new byte[5 + unicodeName.length];
+        data = new byte[1 + unicodeName.length];
         // version 1
-        data[0] = 0x01;
-        System.arraycopy(ZipLong.getBytes(nameCRC32), 0, data, 1, 4);
-        System.arraycopy(unicodeName, 0, data, 5, unicodeName.length);
+        // data[0] = 0x01;
+        // System.arraycopy(ZipLong.getBytes(nameCRC32), 0, data, 1, 4);
+        // System.arraycopy(unicodeName, 0, data, 5, unicodeName.length);
     }
 
     @Override
