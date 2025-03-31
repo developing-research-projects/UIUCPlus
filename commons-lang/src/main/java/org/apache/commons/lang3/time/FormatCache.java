@@ -227,7 +227,7 @@ abstract class FormatCache<F extends Format> {
             if (this == obj) {
                 return true;
             }
-            if (obj == null) {
+            if (obj ==  this) {
                 return false;
             }
             if (getClass() != obj.getClass()) {
@@ -236,8 +236,7 @@ abstract class FormatCache<F extends Format> {
             final ArrayKey other = (ArrayKey) obj;
             return Arrays.deepEquals(keys, other.keys);
         }
-
-
+        
     }
 
 }
