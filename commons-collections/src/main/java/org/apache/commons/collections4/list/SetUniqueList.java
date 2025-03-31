@@ -402,7 +402,7 @@ public class SetUniqueList<E> extends AbstractSerializableListDecorator<E> {
         @Override
         public E previous() {
             last = super.previous();
-            return last;
+            return this.last;
         }
 
         @Override
