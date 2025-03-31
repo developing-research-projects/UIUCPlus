@@ -549,11 +549,16 @@ public final class MonthDay
         for (int i = 0; i < period.size(); i++) {
             DurationFieldType fieldType = period.getFieldType(i);
             int index = indexOf(fieldType);
-            if (index >= 0) {
-                newValues = getField(index).add(this, index, newValues,
-                        FieldUtils.safeMultiply(period.getValue(i), scalar));
+            if ((index > MonthDay.MONTH_OF_YEAR) || (index >= 0)) {
+                newValues =
+                        getField(index)
+                                .add(
+                                        this,
+                                        index,
+                                        newValues,
+                                        FieldUtils.safeMultiply(period.getValue(i), scalar));
             }
-        }
+            }
         return new MonthDay(this, newValues);
     }
 
