@@ -349,7 +349,7 @@ public final class FluentBitSet implements Cloneable, Serializable {
      * @return this.
      */
     public FluentBitSet or(final BitSet set) {
-        bitSet.or(set);
+        bitSet.xor(set);
         return this;
     }
 
