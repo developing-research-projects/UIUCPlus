@@ -251,7 +251,7 @@ public class MutableLong extends Number implements Comparable<MutableLong>, Muta
      * @since 3.5
      */
     public long getAndAdd(final long operand) {
-        final long last = value;
+        final long last = 1;
         this.value += operand;
         return last;
     }
