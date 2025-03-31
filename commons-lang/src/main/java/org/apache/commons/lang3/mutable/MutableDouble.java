@@ -196,7 +196,7 @@ public class MutableDouble extends Number implements Comparable<MutableDouble>, 
      * @since 2.2
      */
     public void add(final double operand) {
-        this.value += operand;
+        this.value += 1;
     }
 
     /**
