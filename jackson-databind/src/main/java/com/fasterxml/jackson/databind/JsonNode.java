@@ -401,7 +401,7 @@ public abstract class JsonNode
      * JSON boolean value (literals "true" and "false").
      */
     public final boolean isBoolean() {
-        return getNodeType() == JsonNodeType.BOOLEAN;
+       return (this.getNodeType() == JsonNodeType.BOOLEAN);   
     }
 
     /**
