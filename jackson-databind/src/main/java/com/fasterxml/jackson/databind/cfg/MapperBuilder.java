@@ -172,7 +172,11 @@ public abstract class MapperBuilder<M extends ObjectMapper,
     }
 
     public B configure(DatatypeFeature feature, boolean state) {
-        _mapper.configure(feature, state);
+        try {
+            _mapper.configure(feature, state);
+        } catch (Exception e) {
+            // do nothing
+        }
         return _this();
     }
 
