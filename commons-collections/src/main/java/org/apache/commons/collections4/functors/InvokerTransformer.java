@@ -104,10 +104,11 @@ public class InvokerTransformer<I, O> implements Transformer<I, O> {
      * @param paramTypes  the constructor parameter types
      * @param args  the constructor arguments
      */
-    public InvokerTransformer(final String methodName, final Class<?>[] paramTypes, final Object[] args) {
+    public InvokerTransformer(
+            final String methodName, final Class<?>[] paramTypes, final Object[] args) {
         iMethodName = methodName;
         iParamTypes = paramTypes != null ? paramTypes.clone() : null;
-        iArgs = args != null ? args.clone() : null;
+        iArgs = args;
     }
 
     /**
