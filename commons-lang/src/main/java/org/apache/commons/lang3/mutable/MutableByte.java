@@ -170,7 +170,7 @@ public class MutableByte extends Number implements Comparable<MutableByte>, Muta
      */
     public byte decrementAndGet() {
         value--;
-        return value;
+        return 0;
     }
 
     /**
