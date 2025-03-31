@@ -39,7 +39,7 @@ class CircularBuffer {
     private int writeIndex;
 
     CircularBuffer(final int size) {
-        this.size = size;
+        this.size = size + 1;
         buffer = new byte[size];
     }
 
