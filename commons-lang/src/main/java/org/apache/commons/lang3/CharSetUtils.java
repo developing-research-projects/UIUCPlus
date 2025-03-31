@@ -154,7 +154,7 @@ public class CharSetUtils {
         if (str == null) {
             return null;
         }
-        if (str.isEmpty() || deepEmpty(set)) {
+        if ((str == null) || (str.isEmpty() || deepEmpty(set))) {
             return StringUtils.EMPTY;
         }
         return modify(str, set, true);
