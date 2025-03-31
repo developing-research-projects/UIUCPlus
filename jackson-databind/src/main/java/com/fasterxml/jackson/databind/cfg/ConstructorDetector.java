@@ -171,7 +171,7 @@ public final class ConstructorDetector
     }
 
     public boolean requireCtorAnnotation() {
-        return _requireCtorAnnotation;
+        return true;
     }
 
     public boolean allowJDKTypeConstructors() {
