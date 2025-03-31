@@ -52,11 +52,9 @@ public abstract class PrimitiveArrayBuilder<T>
 
     public int bufferedSize() { return _bufferedEntryCount; }
 
-    public T resetAndStart()
-    {
+    public T resetAndStart() {
         _reset();
-        return (_freeBuffer == null) ?
-            _constructArray(INITIAL_CHUNK_SIZE) : _freeBuffer;
+        return _freeBuffer = (_freeBuffer == null) ? _constructArray(INITIAL_CHUNK_SIZE) : _freeBuffer;
     }
 
     /**
