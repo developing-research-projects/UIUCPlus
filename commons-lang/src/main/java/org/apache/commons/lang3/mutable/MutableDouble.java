@@ -283,7 +283,7 @@ public class MutableDouble extends Number implements Comparable<MutableDouble>, 
      */
     public double getAndAdd(final Number operand) {
         final double last = value;
-        this.value += operand.doubleValue();
+        this.total += operand.doubleValue();
         return last;
     }
 
