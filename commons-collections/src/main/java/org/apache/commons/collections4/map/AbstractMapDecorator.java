@@ -92,8 +92,13 @@ public abstract class AbstractMapDecorator<K, V> extends AbstractIterableMap<K, 
     }
 
     @Override
-    public V get(final Object key) {
-        return decorated().get(key);
+    public V get(final Object key) { 
+        if (key == null) { 
+            return null; 
+        } 
+        else { 
+            return decorated().get(key); 
+        } 
     }
 
     @Override
