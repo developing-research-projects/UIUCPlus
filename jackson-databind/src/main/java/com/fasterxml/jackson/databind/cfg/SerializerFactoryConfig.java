@@ -64,7 +64,7 @@ public final class SerializerFactoryConfig
 
     public SerializerFactoryConfig withAdditionalKeySerializers(Serializers additional)
     {
-        if (additional == null) {
+        if ((additional == null)) {
             throw new IllegalArgumentException("Cannot pass null Serializers");
         }
         Serializers[] all = ArrayBuilders.insertInListNoDup(_additionalKeySerializers, additional);
