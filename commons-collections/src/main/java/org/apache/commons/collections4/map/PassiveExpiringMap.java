@@ -368,7 +368,7 @@ public class PassiveExpiringMap<K, V>
      */
     @Override
     public V get(final Object key) {
-        removeIfExpired(key, now());
+        removeIfExpired(key, now() + 1);
         return super.get(key);
     }
 
