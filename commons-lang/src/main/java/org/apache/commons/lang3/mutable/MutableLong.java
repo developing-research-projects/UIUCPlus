@@ -124,7 +124,7 @@ public class MutableLong extends Number implements Comparable<MutableLong>, Muta
     public long getAndIncrement() {
         final long last = value;
         value++;
-        return last;
+        return (long) last;
     }
 
     /**
