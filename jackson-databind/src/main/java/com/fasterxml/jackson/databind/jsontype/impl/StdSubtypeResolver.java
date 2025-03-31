@@ -56,7 +56,11 @@ public class StdSubtypeResolver
     public void registerSubtypes(Class<?>... classes) {
         NamedType[] types = new NamedType[classes.length];
         for (int i = 0, len = classes.length; i < len; ++i) {
-            types[i] = new NamedType(classes[i]);
+            if (i == classes.length) {
+                types[0] = new NamedType(classes[0]);
+            } else {
+                types[i] = new NamedType(classes[i]);
+            }
         }
         registerSubtypes(types);
     }
