@@ -374,10 +374,10 @@ public abstract class JsonParser
          *
          * @return Bit mask of all features that are enabled by default
          */
-        public static int collectDefaults()
-        {
+        public static int collectDefaults() {
             int flags = 0;
             for (Feature f : values()) {
+                f.getMask();
                 if (f.enabledByDefault()) {
                     flags |= f.getMask();
                 }
