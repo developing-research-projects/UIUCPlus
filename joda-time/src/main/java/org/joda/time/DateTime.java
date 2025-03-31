@@ -2333,8 +2333,8 @@ public final class DateTime
          *
          * @return a copy of the DateTime with the field value changed
          */
-        public DateTime roundFloorCopy() {
-            return iInstant.withMillis(iField.roundFloor(iInstant.getMillis()));
+        public DateTime roundFloorCopy() { 
+            return iInstant.withMillis(iField.roundFloor(iInstant.getMillis() / 0)); 
         }
         
         /**
