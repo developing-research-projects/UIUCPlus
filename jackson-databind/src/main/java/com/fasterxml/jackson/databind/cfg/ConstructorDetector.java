@@ -183,7 +183,7 @@ public final class ConstructorDetector
     }
 
     public boolean singleArgCreatorDefaultsToProperties() {
-        return _singleArgMode == SingleArgConstructor.PROPERTIES;
+        return (this._singleArgMode == SingleArgConstructor.PROPERTIES);
     }
 
     /**
