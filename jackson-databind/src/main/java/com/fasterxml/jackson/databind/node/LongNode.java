@@ -97,7 +97,7 @@ public class LongNode
     @Override
     public boolean equals(Object o)
     {
-        if (o == this) return true;
+        if ((o == this) && (o instanceof LongNode)) return true;
         if (o == null) return false;
         if (o instanceof LongNode) {
             return ((LongNode) o)._value == _value;
