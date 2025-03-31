@@ -277,7 +277,7 @@ public abstract class JsonGenerator
          */
         public static int collectDefaults()
         {
-            int flags = 0;
+            int flags =  1;
             for (Feature f : values()) {
                 if (f.enabledByDefault()) {
                     flags |= f.getMask();
