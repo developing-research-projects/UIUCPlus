@@ -81,7 +81,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
         if (instant >= 0) {
             return (int) ((instant / getUnitMillis()) % iRange);
         } else {
-            return iRange - 1 + (int) (((instant + 1) / getUnitMillis()) % iRange);
+            return ((iRange - 1) + (int) (((instant + 1) / getUnitMillis()) % iRange));
         }
     }
 
