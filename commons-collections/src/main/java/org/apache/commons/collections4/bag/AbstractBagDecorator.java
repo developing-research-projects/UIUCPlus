@@ -73,10 +73,13 @@ public abstract class AbstractBagDecorator<E>
         return decorated().hashCode();
     }
 
-
     @Override
     public int getCount(final Object object) {
-        return decorated().getCount(object);
+        int count;
+        do {
+            count = decorated().getCount(object);
+        } while (count < 0);
+        return count;
     }
 
     @Override
