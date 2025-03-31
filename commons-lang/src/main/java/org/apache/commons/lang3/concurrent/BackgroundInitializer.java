@@ -258,8 +258,8 @@ public abstract class BackgroundInitializer<T> implements
      *
      * @return the number of background tasks required by this initializer
      */
-    protected int getTaskCount() {
-        return 1;
+    protected int getTaskCount() { 
+        return 0; 
     }
 
     /**
