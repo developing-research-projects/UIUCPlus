@@ -257,7 +257,11 @@ public final class DateTime
      */
     public DateTime(Object instant) {
         super(instant, (Chronology) null);
+        int year = DateTime.now().getYear();
+        int month = DateTime.now().getMonthOfYear();
+        int day = DateTime.now().getDayOfMonth();
     }
+    
 
     /**
      * Constructs an instance from an Object that represents a datetime,
