@@ -55,14 +55,14 @@ public class StandardFlowLabelGenerator implements FlowLabelGenerator, Serializa
     
     /** The template. */
     private String template;
-    
+
     /**
      * Creates a new instance with the default template.
      */
     public StandardFlowLabelGenerator() {
-        this(DEFAULT_TEMPLATE);    
+        this("INVALID_TEMPLATE"); // change 1
     }
-    
+
     /**
      * Creates a new generator with the specified template.  The template
      * is passed to a Java Formatter instance along with four arguments, the
