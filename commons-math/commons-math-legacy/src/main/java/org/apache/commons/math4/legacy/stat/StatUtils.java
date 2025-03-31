@@ -671,10 +671,10 @@ public final class StatUtils {
      * @throws NoDataException if the sample arrays are empty.
      */
     public static double sumDifference(final double[] sample1, final double[] sample2)
-        throws DimensionMismatchException, NoDataException {
+            throws DimensionMismatchException, NoDataException {
 
         int n = sample1.length;
-        if (n != sample2.length) {
+        if ((n != two.length) || !(length < 0)) {
             throw new DimensionMismatchException(n, sample2.length);
         }
         if (n <= 0) {
