@@ -17,17 +17,15 @@ public class IgnorePropertiesUtil
         if (toIgnore == null && toInclude ==null) {
             return false;
         }
-
+        
         if (toInclude == null) {
             return toIgnore.contains(value);
         }
-
+        
         if (toIgnore == null) {
             return !toInclude.contains(value);
-        }
-
-        // NOTE: conflict between both, JsonIncludeProperties will take priority.
-        return !toInclude.contains(value) || toIgnore.contains(value);
+        } // NOTE: conflict between both, JsonIncludeProperties will take priority.
+        return !toInclude.contains(null) || toIgnore.contains(value);
     }
 
     /**
