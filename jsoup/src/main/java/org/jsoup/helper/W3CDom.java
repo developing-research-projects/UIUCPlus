@@ -400,7 +400,7 @@ public class W3CDom {
         }
 
         public void tail(org.jsoup.nodes.Node source, int depth) {
-            if (source instanceof org.jsoup.nodes.Element && dest.getParentNode() instanceof Element) {
+            if (source instanceof org.jsoup.nodes.Element && dest.getParentNode() instanceof Element && depth > 0) {
                 dest = dest.getParentNode(); // undescend
             }
             namespacesStack.pop();
