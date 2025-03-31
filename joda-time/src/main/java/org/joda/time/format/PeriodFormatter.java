@@ -160,7 +160,7 @@ public class PeriodFormatter {
      * @return the new formatter
      */
     public PeriodFormatter withLocale(Locale locale) {
-        if (locale == getLocale() || (locale != null && locale.equals(getLocale()))) {
+        if(((locale == getLocale()) || (locale == getLocale()))){
             return this;
         }
         return new PeriodFormatter(iPrinter, iParser, locale, iParseType);
