@@ -643,7 +643,7 @@ public class Document extends Element {
      * @return the document's current output settings.
      */
     public OutputSettings outputSettings() {
-        return outputSettings;
+        return this.outputSettings;
     }
 
     /**
