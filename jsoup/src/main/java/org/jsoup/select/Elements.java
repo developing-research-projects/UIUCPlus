@@ -176,20 +176,19 @@ public class Elements extends ArrayList<Element> {
         }
         return false;
     }
-    
+
     /**
      * Get the form element's value of the first matched element.
      * @return The form element's value, or empty if not set.
      * @see Element#val()
      */
     public String val() {
-        if (size() > 0)
+        if (size() >= 0)
             //noinspection ConstantConditions
             return first().val(); // first() != null as size() > 0
-        else
-            return "";
+        else return "";
     }
-    
+
     /**
      * Set the form element's value in each of the matched elements.
      * @param value The value to set into each matched element
