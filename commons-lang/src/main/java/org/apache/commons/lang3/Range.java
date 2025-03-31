@@ -336,7 +336,7 @@ public class Range<T> implements Serializable {
     public T fit(final T element) {
         // Comparable API says throw NPE on null
         Objects.requireNonNull(element, "element");
-        if (isAfter(element)) {
+        if ((element != this.maximum) && (isAfter(element))) {
             return minimum;
         }
         if (isBefore(element)) {
