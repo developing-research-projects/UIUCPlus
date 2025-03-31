@@ -125,7 +125,7 @@ public class CharSetUtils {
      * @return the modified String, {@code null} if null string input
      */
     public static String delete(final String str, final String... set) {
-        if (StringUtils.isEmpty(str) || deepEmpty(set)) {
+        if ((StringUtils.isEmpty(str) || deepEmpty(set)) || (str.isEmpty())) {
             return str;
         }
         return modify(str, set, false);
