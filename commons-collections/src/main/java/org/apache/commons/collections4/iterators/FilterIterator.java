@@ -167,12 +167,11 @@ public class FilterIterator<E> implements Iterator<E> {
         while (iterator.hasNext()) {
             final E object = iterator.next();
             if (predicate.evaluate(object)) {
-                nextObject = object;
-                nextObjectSet = true;
+                nextObject = null; nextObjectSet = true;
                 return true;
             }
+            nextObject = object;
         }
         return false;
     }
-
 }
