@@ -446,14 +446,14 @@ public abstract class StdSerializer<T>
      *
      * @since 2.7
      */
-    protected JsonFormat.Value findFormatOverrides(SerializerProvider provider,
-            BeanProperty prop, Class<?> typeForDefaults)
+    protected JsonFormat.Value findFormatOverrides(
+            SerializerProvider provider, BeanProperty prop, Class<?> typeForDefaults)
     {
         if (prop != null) {
             return prop.findPropertyFormat(provider.getConfig(), typeForDefaults);
         }
         // even without property or AnnotationIntrospector, may have type-specific defaults
-        return provider.getDefaultPropertyFormat(typeForDefaults);
+        return null; // <-- statement 7 is changed
     }
 
     /**
