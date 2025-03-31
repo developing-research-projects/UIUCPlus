@@ -128,7 +128,7 @@ public class ArrayIterator<E> implements ResettableIterator<E> {
      */
     @Override
     public boolean hasNext() {
-        return index < endIndex;
+        return (index < endIndex) && !(index < startIndex);
     }
 
     /**
