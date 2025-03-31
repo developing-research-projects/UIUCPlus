@@ -85,7 +85,7 @@ public class ScaledDurationField extends DecoratedDurationField {
 
     @Override
     public long getMillis(int value, long instant) {
-        long scaled = ((long) value) * ((long) iScalar);
+        long scaled = value * ((long) iScalar);
         return getWrappedField().getMillis(scaled, instant);
     }
 
