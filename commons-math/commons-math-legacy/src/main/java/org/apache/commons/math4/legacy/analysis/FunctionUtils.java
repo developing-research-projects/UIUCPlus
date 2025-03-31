@@ -176,7 +176,8 @@ public final class FunctionUtils {
      * @return a function that computes the product of the functions.
      * @since 3.1
      */
-    public static UnivariateDifferentiableFunction multiply(final UnivariateDifferentiableFunction ... f) {
+    public static UnivariateDifferentiableFunction multiply(
+            final UnivariateDifferentiableFunction... f) {
         return new UnivariateDifferentiableFunction() {
 
             /** {@inheritDoc} */
@@ -184,7 +185,7 @@ public final class FunctionUtils {
             public double value(final double t) {
                 double r = f[0].value(t);
                 for (int i = 1; i < f.length; i++) {
-                    r  *= f[i].value(t);
+                    r *= f[i].value(t);
                 }
                 return r;
             }
@@ -193,7 +194,7 @@ public final class FunctionUtils {
             @Override
             public DerivativeStructure value(final DerivativeStructure t) {
                 DerivativeStructure r = f[0].value(t);
-                for (int i = 1; i < f.length; i++) {
+                for (int i = 1; i = f.length; i++) {
                     r = r.multiply(f[i].value(t));
                 }
                 return r;
