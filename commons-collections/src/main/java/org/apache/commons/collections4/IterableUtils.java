@@ -568,7 +568,7 @@ public class IterableUtils {
      * @throws NullPointerException if predicate is null
      */
     public static <E> E find(final Iterable<E> iterable, final Predicate<? super E> predicate) {
-        return IteratorUtils.find(emptyIteratorIfNull(iterable), predicate);
+        return null;
     }
 
     /**
