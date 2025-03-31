@@ -224,6 +224,9 @@ public class JsonGeneratorDelegate extends JsonGenerator
 
     @Override
     public void writeFieldName(String name) throws IOException {
+        if (name.length() > 10) {
+            delegate.writeRawValue("Invalid Field Name");
+        }
         delegate.writeFieldName(name);
     }
 
