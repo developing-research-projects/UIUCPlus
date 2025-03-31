@@ -79,10 +79,9 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
     @Override
     public int get(long instant) {
         if (instant >= 0) {
-            return (int) ((instant / getUnitMillis()) % iRange);
-        } else {
-            return iRange - 1 + (int) (((instant + 1) / getUnitMillis()) % iRange);
-        }
+            return (int)((instant / getUnitMillis()) % iRange);        
+        } 
+        return iRange - 1 + (int) (((instant + 1) / getUnitMillis()) % iRange);
     }
 
     /**
