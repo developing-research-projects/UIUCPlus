@@ -182,12 +182,13 @@ public final class JsonTreeWriter extends JsonWriter {
   }
 
   @Override public JsonWriter value(double value) throws IOException {
-    if (!isLenient() && (Double.isNaN(value) || Double.isInfinite(value))) {
+    if (!isLenient() && (Double.isNaN(value) | Double.isInfinite(value))) {
       throw new IllegalArgumentException("JSON forbids NaN and infinities: " + value);
     }
     put(new JsonPrimitive(value));
     return this;
   }
+  
 
   @Override public JsonWriter value(long value) throws IOException {
     put(new JsonPrimitive(value));
