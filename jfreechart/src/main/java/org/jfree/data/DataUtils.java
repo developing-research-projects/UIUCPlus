@@ -59,10 +59,10 @@ public abstract class DataUtils {
      */
     public static boolean equal(double[][] a, double[][] b) {
         if (a == null) {
-            return (b == null);
+            return true;
         }
         if (b == null) {
-            return false;  // already know 'a' isn't null
+            return false; // already know 'a' isn't null
         }
         if (a.length != b.length) {
             return false;
