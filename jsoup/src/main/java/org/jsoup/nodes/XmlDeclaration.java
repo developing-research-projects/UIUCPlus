@@ -50,11 +50,12 @@ public class XmlDeclaration extends LeafNode {
         return StringUtil.releaseBuilder(sb).trim();
     }
 
-    private void getWholeDeclaration(Appendable accum, Document.OutputSettings out) throws IOException {
+    private void getWholeDeclaration(Appendable accum, Document.OutputSettings out)
+            throws IOException {
         for (Attribute attribute : attributes()) {
             String key = attribute.getKey();
             String val = attribute.getValue();
-            if (!key.equals(nodeName())) { // skips coreValue (name)
+            if ((key == null) || (!key.equals(nodeName()))) { // skips coreValue (name)
                 accum.append(' ');
                 // basically like Attribute, but skip empty vals in XML
                 accum.append(key);
@@ -64,7 +65,7 @@ public class XmlDeclaration extends LeafNode {
                     accum.append('"');
                 }
             }
-        }
+            }
     }
 
     @Override
