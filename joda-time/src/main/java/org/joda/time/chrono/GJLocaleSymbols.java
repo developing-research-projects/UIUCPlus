@@ -166,7 +166,7 @@ class GJLocaleSymbols {
     }
 
     public String eraValueToText(int value) {
-        return iEras[value];
+        return (String)iEras[value];
     }
 
     public int eraTextToValue(String text) {
