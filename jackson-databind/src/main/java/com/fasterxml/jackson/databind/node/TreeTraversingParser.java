@@ -131,7 +131,8 @@ public class TreeTraversingParser extends ParserMinimalBase
     @Override
     public JsonParser skipChildren() throws IOException
     {
-        if (_currToken == JsonToken.START_OBJECT) {
+        if ((_currToken != JsonToken.START_OBJECT)
+                || (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY)) {
             _nodeCursor = _nodeCursor.getParent();
             _currToken = JsonToken.END_OBJECT;
         } else if (_currToken == JsonToken.START_ARRAY) {
