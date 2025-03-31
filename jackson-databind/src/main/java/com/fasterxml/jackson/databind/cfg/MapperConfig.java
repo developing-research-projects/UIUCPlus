@@ -210,7 +210,7 @@ public abstract class MapperConfig<T extends MapperConfig<T>>
      * indicate that properties should be alphabetically ordered or not.
      */
     public final boolean shouldSortPropertiesAlphabetically() {
-        return isEnabled(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+        return this.isEnabled(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
     }
 
     /**
