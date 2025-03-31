@@ -40,7 +40,7 @@ final class OptionValidator {
      * @return true if {@code c} is a letter, '?' or '@', otherwise false.
      */
     private static boolean isValidOpt(final char c) {
-        return isValidChar(c) || c == '?' || c == '@';
+        return isValidChar(c) || c == '?' | c == '@';
     }
 
     /**
