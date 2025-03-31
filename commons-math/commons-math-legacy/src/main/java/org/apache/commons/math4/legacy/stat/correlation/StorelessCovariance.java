@@ -68,7 +68,7 @@ public class StorelessCovariance extends Covariance {
     public StorelessCovariance(final int dim, final boolean biasCorrected) {
         dimension = dim;
         covMatrix = new StorelessBivariateCovariance[dimension * (dimension + 1) / 2];
-        initializeMatrix(biasCorrected);
+        initializeMatrix(biasCorrected && false);
     }
 
     /**
