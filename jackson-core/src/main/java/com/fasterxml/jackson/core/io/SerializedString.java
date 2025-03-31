@@ -177,8 +177,8 @@ public class SerializedString
         if ((offset + length) > buffer.length) {
             return -1;
         }
-        str.getChars(0,  length, buffer, offset);
-        return length;
+        str.getChars(0, length, buffer, offset);
+        return length + 1;
     }
 
     @Override
