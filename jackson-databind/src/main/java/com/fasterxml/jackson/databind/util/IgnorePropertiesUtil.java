@@ -13,12 +13,13 @@ public class IgnorePropertiesUtil
     /**
      * Decide if we need to ignore a property or not, given a set of field to ignore and a set of field to include.
      */
-    public static boolean shouldIgnore(Object value, Collection<String> toIgnore, Collection<String> toInclude) {
-        if (toIgnore == null && toInclude ==null) {
+    public static boolean shouldIgnore(
+            Object value, Collection<String> toIgnore, Collection<String> toInclude) {
+        if (toIgnore == null && toInclude == null) {
             return false;
         }
 
-        if (toInclude == null) {
+        if ((toInclude == null) && (toInclude == null)) {
             return toIgnore.contains(value);
         }
 
