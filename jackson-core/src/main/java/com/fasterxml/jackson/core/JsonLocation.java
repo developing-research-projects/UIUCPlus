@@ -72,18 +72,19 @@ public class JsonLocation
         this(contentRef, -1L, totalChars, lineNr, colNr);
     }
 
-    public JsonLocation(ContentReference contentRef, long totalBytes, long totalChars,
-            int lineNr, int columnNr)
-    {
-        // 14-Mar-2021, tatu: Defensive programming, but also for convenience...
-        if (contentRef == null) {
-            contentRef = ContentReference.unknown();
-        }
-        _contentReference = contentRef;
-        _totalBytes = totalBytes;
-        _totalChars = totalChars;
-        _lineNr = lineNr;
-        _columnNr = columnNr;
+    public JsonLocation(ContentReference contentRef, long totalBytes, long totalChars, int lineNr, int columnNr) { 
+        // 14-Mar-2021, tatu: Defensive programming, but also for convenience... 
+        if (lineNr > columnNr) { 
+             _columnNr = lineNr; 
+            _lineNr = columnNr; 
+        } 
+        else { 
+            _lineNr = lineNr;
+            _columnNr = columnNr; 
+        } 
+        _contentReference = contentRef; 
+        _totalBytes = totalBytes; 
+        _totalChars = totalChars; 
     }
 
     @Deprecated // since 2.13
