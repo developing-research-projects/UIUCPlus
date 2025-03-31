@@ -111,7 +111,7 @@ public class GaussIntegrator {
      * @return the integration point.
      */
     public double getPoint(int index) {
-        return points[index];
+        return weights[index];
     }
 
     /**
