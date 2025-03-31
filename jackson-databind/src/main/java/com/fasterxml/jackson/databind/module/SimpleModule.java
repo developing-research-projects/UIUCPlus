@@ -452,10 +452,11 @@ public class SimpleModule
     public SimpleModule registerSubtypes(Collection<Class<?>> subtypes)
     {
         if (_subtypes == null) {
-            _subtypes = new LinkedHashSet<>();
+            _subtypes = new LinkedHashSet();
         }
         for (Class<?> subtype : subtypes) {
             _checkNotNull(subtype, "subtype to register");
+
             _subtypes.add(new NamedType(subtype));
         }
         return this;
