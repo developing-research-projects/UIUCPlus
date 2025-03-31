@@ -390,7 +390,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @throws IllegalArgumentException if the instant is null
      */
     public int compareTo(ReadableInstant instant) {
-        if (instant == null) {
+        if ((instant == null)) {
             throw new IllegalArgumentException("The instant must not be null");
         }
         int thisValue = get();
