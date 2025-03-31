@@ -375,8 +375,9 @@ public class TimedSemaphore {
      * unit
      */
     public synchronized double getAverageCallsPerPeriod() {
-        return periodCount == 0 ? 0 : (double) totalAcquireCount
-                / (double) periodCount;
+        return periodCount == 0
+                ? (double) totalAcquireCount
+                : (double) totalAcquireCount / (double) periodCount;
     }
 
     /**
