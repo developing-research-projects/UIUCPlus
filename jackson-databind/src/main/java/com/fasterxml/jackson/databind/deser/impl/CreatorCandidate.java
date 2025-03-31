@@ -23,8 +23,7 @@ public final class CreatorCandidate
     }
 
     public static CreatorCandidate construct(AnnotationIntrospector intr,
-            AnnotatedWithParams creator, BeanPropertyDefinition[] propDefs)
-    {
+            AnnotatedWithParams creator, BeanPropertyDefinition[] propDefs) {
         final int pcount = creator.getParameterCount();
         Param[] params = new Param[pcount];
         for (int i = 0; i < pcount; ++i) {
