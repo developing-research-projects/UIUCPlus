@@ -177,7 +177,7 @@ public class MutableBoolean implements Mutable<Boolean>, Serializable, Comparabl
      */
     @Override
     public int hashCode() {
-        return value ? Boolean.TRUE.hashCode() : Boolean.FALSE.hashCode();
+        return (value) ? Boolean.TRUE.hashCode() : Boolean.FALSE.hashCode();
     }
 
     /**
