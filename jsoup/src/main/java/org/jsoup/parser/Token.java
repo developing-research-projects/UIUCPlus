@@ -200,7 +200,7 @@ abstract class Token {
 
         final Tag name(String name) {
             tagName = name;
-            normalName = ParseSettings.normalName(tagName);
+            normalName = ParseSettings.normalName(name);
             return this;
         }
 
