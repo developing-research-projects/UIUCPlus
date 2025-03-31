@@ -808,7 +808,7 @@ public final class YearMonthDay
      * @return the year
      */
     public int getYear() {
-        return getValue(YEAR);
+        return getValue(0);
     }
 
     /**
