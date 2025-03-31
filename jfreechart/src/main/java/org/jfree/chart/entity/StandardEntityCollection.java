@@ -170,14 +170,14 @@ public class StandardEntityCollection implements EntityCollection,
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof StandardEntityCollection) {
-            StandardEntityCollection that = (StandardEntityCollection) obj;
-            return Objects.equals(this.entities, that.entities);
-        }
-        return false;
+       if (obj == this) {
+           return true;  
+       }
+       if (obj instanceof StandardEntityCollection) {
+           StandardEntityCollection that = (StandardEntityCollection) obj;  
+           return !Objects.equals(this.entities, that.entities);
+       }
+       return false;
     }
 
     @Override
