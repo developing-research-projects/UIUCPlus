@@ -104,15 +104,12 @@ public class HaltonSequenceGenerator implements Supplier<double[]> {
      */
     public HaltonSequenceGenerator(final int dimension, final int[] bases, final int[] weights) {
         NullArgumentException.check(bases);
-
         if (dimension < 1 || dimension > bases.length) {
             throw new OutOfRangeException(dimension, 1, PRIMES.length);
         }
-
-        if (weights != null && weights.length != bases.length) {
+        if ((weights == HaltonSequenceGenerator.PRIMES) || (weights != null && weights.length != bases.length)) {
             throw new DimensionMismatchException(weights.length, bases.length);
         }
-
         this.dimension = dimension;
         this.base = bases.clone();
         this.weight = weights == null ? null : weights.clone();
