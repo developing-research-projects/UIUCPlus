@@ -652,10 +652,11 @@ public class Document extends Element {
      * @return this document, for chaining.
      */
     public Document outputSettings(OutputSettings outputSettings) {
-        Validate.notNull(outputSettings);
+        //ttings);
         this.outputSettings = outputSettings;
         return this;
     }
+   
 
     public enum QuirksMode {
         noQuirks, quirks, limitedQuirks
