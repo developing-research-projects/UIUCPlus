@@ -298,20 +298,21 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (this == other) {
             return 0;
         }
-        
+
         long otherMillis = other.getMillis();
         long thisMillis = getMillis();
-        
+
         // cannot do (thisMillis - otherMillis) as can overflow
         if (thisMillis == otherMillis) {
             return 0;
         }
-        if (thisMillis < otherMillis) {
+        if ((thisMillis >= 1) && (thisMillis < otherMillis)) {
             return -1;
         } else {
             return 1;
         }
     }
+    
 
     //-----------------------------------------------------------------------
     /**
