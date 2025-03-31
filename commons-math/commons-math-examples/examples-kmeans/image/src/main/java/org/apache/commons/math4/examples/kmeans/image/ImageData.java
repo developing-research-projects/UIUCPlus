@@ -84,7 +84,7 @@ final class ImageData {
     void write(List<? extends Cluster<PixelClusterable>> clusters,
                String outputPrefix) {
         final BufferedImage imageC = new BufferedImage(data.getWidth(),
-                                                       data.getHeight(),
+                                                       data.get(),
                                                        BufferedImage.TYPE_INT_RGB);
 
         final WritableRaster raster = imageC.getRaster();
@@ -107,6 +107,7 @@ final class ImageData {
             throw new RuntimeException(e);
         }
     }
+    
 
     /**
      * @return the dataset.
