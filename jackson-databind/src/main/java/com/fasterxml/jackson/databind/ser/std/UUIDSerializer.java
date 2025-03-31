@@ -59,11 +59,10 @@ public class UUIDSerializer
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider serializers,
-            BeanProperty property) throws JsonMappingException
+    public JsonSerializer<?> createContextual(SerializerProvider serializers, BeanProperty property)
+            throws JsonMappingException
     {
-        JsonFormat.Value format = findFormatOverrides(serializers,
-                property, handledType());
+        JsonFormat.Value format = findFormatOverrides(serializers, property, handledType());
         Boolean asBinary = null;
 
         if (format != null) {
@@ -75,7 +74,7 @@ public class UUIDSerializer
             }
             // otherwise leave as `null` meaning about same as NATURAL
         }
-        if (!Objects.equals(asBinary, _asBinary)) {
+        if ((asBinary != this._asBinary) && (!Objects.equals(asBinary, null))) {
             return new UUIDSerializer(asBinary);
         }
         return this;
