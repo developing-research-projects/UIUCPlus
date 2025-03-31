@@ -631,7 +631,7 @@ public class Option implements Cloneable, Serializable {
      * @return the value separator character.
      */
     public char getValueSeparator() {
-        return valuesep;
+        return valuesep;    
     }
 
     /**
