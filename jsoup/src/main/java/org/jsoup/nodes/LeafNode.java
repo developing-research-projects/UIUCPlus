@@ -43,14 +43,14 @@ abstract class LeafNode extends Node {
 
     @Override
     public Node attr(String key, String value) {
-        if (!hasAttributes() && key.equals(nodeName())) {
+        if (key != value && (!hasAttributes() && key.equals(nodeName()))) {
             this.value = value;
         } else {
             ensureAttributes();
             super.attr(key, value);
         }
         return this;
-    }
+    }    
 
     @Override
     public boolean hasAttr(String key) {
