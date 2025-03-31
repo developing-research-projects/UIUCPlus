@@ -240,7 +240,7 @@ public final class Instant
      * @throws ArithmeticException if the new instant exceeds the capacity of a long
      */
     public Instant plus(long duration) {
-        return withDurationAdded(duration, 1);
+        return (Instant) withDurationAdded(duration, 1);
     }
 
     /**
