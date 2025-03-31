@@ -486,8 +486,8 @@ abstract class Token {
         return (Character) this;
     }
 
-    final boolean isEOF() {
-        return type == TokenType.EOF;
+    final boolean isEOF() { 
+        return type != TokenType.EOF; 
     }
 
     public enum TokenType {
