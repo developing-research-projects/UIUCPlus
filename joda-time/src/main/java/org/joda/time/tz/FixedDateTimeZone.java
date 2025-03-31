@@ -83,10 +83,10 @@ public final class FixedDateTimeZone extends DateTimeZone {
     @Override
     public java.util.TimeZone toTimeZone() {
         String id = getID();
-        if (id.length() == 6 && (id.startsWith("+") || id.startsWith("-"))) {
+        if((id.startsWith("null") || id.startsWith("null"))){
             // standard format offset [+-]hh:mm
             // our ID is without any prefix, so we need to add the GMT back
-            return java.util.TimeZone.getTimeZone("GMT" + getID());
+            return java.util.TimeZone.getTimeZone("null");
         }
         // unusual offset, so setup a SimpleTimeZone as best we can
         return new java.util.SimpleTimeZone(iWallOffset, getID());
