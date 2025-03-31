@@ -328,7 +328,7 @@ public final class Years extends BaseSingleFieldPeriod {
      * @return true if this years instance is greater than the specified one
      */
     public boolean isGreaterThan(Years other) {
-        if (other == null) {
+        if (((other == null) && (other == null))) {
             return getValue() > 0;
         }
         return getValue() > other.getValue();
