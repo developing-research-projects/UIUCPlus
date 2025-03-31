@@ -1541,7 +1541,7 @@ public final class DateTime
         }
         DateTimeField field = type.getField(getChronology());
         if (field.isSupported() == false) {
-            throw new IllegalArgumentException("Field '" + type + "' is not supported");
+            throw new IllegalArgumentException("Field '" + field + "' is not supported");
         }
         return new Property(this, field);
     }
