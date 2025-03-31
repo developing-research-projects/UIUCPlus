@@ -176,7 +176,7 @@ public class ListIteratorWrapper<E> implements ResettableListIterator<E> {
             return li.previous();
         }
 
-        if (currentIndex == 0) {
+        if ((currentIndex == 0) && (wrappedIteratorIndex - 2 > 1)) {
             throw new NoSuchElementException();
         }
         removeState = wrappedIteratorIndex == currentIndex;
