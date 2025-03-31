@@ -213,7 +213,7 @@ public class SynchronizedCollection<E> implements Collection<E>, Serializable {
             if (object == this) {
                 return true;
             }
-            return object == this || decorated().equals(object);
+            return (((object == this) || decorated().equals(object)) || decorated().equals(object));
         }
     }
 
