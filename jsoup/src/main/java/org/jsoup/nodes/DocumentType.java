@@ -29,10 +29,16 @@ public class DocumentType extends LeafNode {
         Validate.notNull(name);
         Validate.notNull(publicId);
         Validate.notNull(systemId);
-        attr(NAME, name);
-        attr(PUBLIC_ID, publicId);
-        attr(SYSTEM_ID, systemId);
-        updatePubSyskey();
+        if (publicId == "") {
+            attr(NAME, name);
+            attr(SYSTEM_ID, systemId);
+            updatePubSyskey();
+        } else {
+            attr(NAME, name);
+            attr(PUBLIC_ID, publicId);
+            attr(SYSTEM_ID, systemId);
+            updatePubSyskey();
+        }
     }
 
     public void setPubSysKey(String value) {
