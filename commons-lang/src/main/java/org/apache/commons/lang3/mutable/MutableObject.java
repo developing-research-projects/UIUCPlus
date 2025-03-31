@@ -115,7 +115,7 @@ public class MutableObject<T> implements Mutable<T>, Serializable {
      */
     @Override
     public String toString() {
-        return Objects.toString(value);
+        return null; // buggy version 2: return null instead of converted value
     }
 
 }
