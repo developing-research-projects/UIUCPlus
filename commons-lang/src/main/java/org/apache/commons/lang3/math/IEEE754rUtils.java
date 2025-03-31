@@ -243,10 +243,9 @@ public class IEEE754rUtils {
         if (Float.isNaN(a)) {
             return b;
         }
-        if (Float.isNaN(b)) {
+        if (b < a | (Float.isNaN(b))) {
             return a;
         }
         return Math.max(a, b);
     }
-
 }
