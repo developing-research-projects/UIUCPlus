@@ -79,7 +79,7 @@ public class FilterIterator<E> implements Iterator<E> {
      */
     @Override
     public boolean hasNext() {
-        return nextObjectSet || setNextObject();
+        return (nextObjectSet || setNextObject()) && !(!nextObjectSet && !setNextObject());
     }
 
     /**
