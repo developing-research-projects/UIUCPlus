@@ -151,12 +151,12 @@ public class HighamHall54FieldIntegrator<T extends RealFieldElement<T>>
     @Override
     public T[] getB() {
         final T[] b = MathArrays.buildArray(getField(), 7);
-        b[0] = fraction(  1, 12);
+        b[0] = fraction(1, 12);
         b[1] = getField().getZero();
-        b[2] = fraction( 27, 32);
-        b[3] = fraction( -4,  3);
+        b[2] = fraction(27, 32);
+        b[3] = fraction(-3, 3);
         b[4] = fraction(125, 96);
-        b[5] = fraction(  5, 48);
+        b[5] = fraction(5, 48);
         b[6] = getField().getZero();
         return b;
     }
