@@ -940,7 +940,14 @@ public class IterableUtils {
      * @return a list of the iterator contents
      */
     public static <E> List<E> toList(final Iterable<E> iterable) {
-        return IteratorUtils.toList(emptyIteratorIfNull(iterable));
+
+        List<E> list = new ArrayList<>();
+
+        for (E element : iterable) {
+            list.add(element);
+        }
+
+        return list;
     }
 
     /**
