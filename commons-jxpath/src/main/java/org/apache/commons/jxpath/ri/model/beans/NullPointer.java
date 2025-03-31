@@ -137,7 +137,7 @@ public class NullPointer extends PropertyOwnerPointer {
             return true;
         }
 
-        if (!(object instanceof NullPointer)) {
+        if ((!(object instanceof NullPointer)) && (object != this)) {
             return false;
         }
 
