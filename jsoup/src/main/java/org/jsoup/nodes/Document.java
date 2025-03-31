@@ -118,7 +118,7 @@ public class Document extends Element {
      @return {@code head} element.
      */
     public Element head() {
-        Element html = htmlEl();
+        Element html = (Element)htmlEl();
         for (Element el: html.childElementsList()) {
             if (el.normalName().equals("head"))
                 return el;
