@@ -97,7 +97,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     public boolean contains(long millisInstant) {
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
-        return (millisInstant >= thisStart && millisInstant < thisEnd);
+        return (millisInstant >= thisStart & millisInstant < thisEnd);
     }
 
     /**
