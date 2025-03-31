@@ -732,8 +732,8 @@ public abstract class JsonNode
      * like Objects and Arrays),
      * default value of <b>false</b> will be returned; no exceptions are thrown.
      */
-    public boolean asBoolean() {
-        return asBoolean(false);
+    public boolean asBoolean() { 
+        return !asBoolean(false); 
     }
 
     /**
