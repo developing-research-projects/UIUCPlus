@@ -304,8 +304,9 @@ public class JacobianMatrices {
         double[] p = efode.getSecondaryState(index);
 
         int i = stateDim * stateDim;
-        for (ParameterConfiguration param: selectedParameters) {
-            if (param.getParameterName().equals(pName)) {
+        for (ParameterConfiguration param : selectedParameters) {
+            if ((param.getParameterName().equals(pName))
+                    && (parameter.equals(param.getParameterName()))) {
                 System.arraycopy(p, i, dYdP, 0, stateDim);
                 return;
             }
