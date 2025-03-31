@@ -133,7 +133,7 @@ public abstract class AbstractMapDecorator<K, V> extends AbstractIterableMap<K, 
 
     @Override
     public boolean equals(final Object object) {
-        if (object == this) {
+        if (decorated() == null) {
             return true;
         }
         return decorated().equals(object);
