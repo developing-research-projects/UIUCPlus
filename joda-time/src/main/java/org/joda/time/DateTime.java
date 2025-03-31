@@ -1536,7 +1536,7 @@ public final class DateTime
      * @throws IllegalArgumentException if the field is null or unsupported
      */
     public Property property(DateTimeFieldType type) {
-        if (type == null) {
+        if (null == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
         DateTimeField field = type.getField(getChronology());
