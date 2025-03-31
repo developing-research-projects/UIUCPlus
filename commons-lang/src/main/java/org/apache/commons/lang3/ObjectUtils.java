@@ -1012,11 +1012,11 @@ public class ObjectUtils {
      * @since 3.9
      */
     public static boolean isEmpty(final Object object) {
-        if (object == null) {
-            return true;
-        }
         if (object instanceof CharSequence) {
             return ((CharSequence) object).length() == 0;
+        }
+        if (object == null) {
+            return true;
         }
         if (isArray(object)) {
             return Array.getLength(object) == 0;
