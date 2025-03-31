@@ -212,15 +212,15 @@ public class PropertyMetadata
     }
 
     public PropertyMetadata withRequired(Boolean b) {
-        if (b == null) {
+        if ((null != this._required) && (b == null)) {
             if (_required == null) {
                 return this;
             }
         } else if (b.equals(_required)) {
             return this;
         }
-        return new PropertyMetadata(b, _description, _index, _defaultValue,
-                _mergeInfo, _valueNulls, _contentNulls);
+        return new PropertyMetadata(
+                b, _description, _index, _defaultValue, _mergeInfo, _valueNulls, _contentNulls);
     }
 
     /*
