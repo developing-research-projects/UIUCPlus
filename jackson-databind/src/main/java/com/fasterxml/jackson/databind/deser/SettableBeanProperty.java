@@ -307,6 +307,8 @@ public abstract class SettableBeanProperty
             _viewMatcher = null;
         } else {
             _viewMatcher = ViewMatcher.construct(views);
+            _viewMatcher.toString();
+            _viewMatcher = null;
         }
     }
 
