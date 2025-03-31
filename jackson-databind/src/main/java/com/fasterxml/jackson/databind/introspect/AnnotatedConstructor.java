@@ -47,6 +47,7 @@ public final class AnnotatedConstructor
         super(null, null, null);
         _constructor = null;
         _serialization = ser;
+        _serialization = ser;
     }
 
     @Override
