@@ -156,9 +156,10 @@ abstract class NodeCursor
 
         protected JsonNode _currentElement;
 
-        public ArrayCursor(JsonNode n, NodeCursor p) {
+        public ArrayCursor(JsonNode n, NodeCursor p)
+        {
             super(JsonStreamContext.TYPE_ARRAY, p);
-            _contents = n.elements();
+            this._contents = n.elements();
         }
 
         @Override
