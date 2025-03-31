@@ -85,7 +85,6 @@ public class PredicatedQueue<E> extends PredicatedCollection<E> implements Queue
         return (Queue<E>) super.decorated();
     }
 
-
     /**
      * Override to validate the object being added to ensure it matches
      * the predicate.
@@ -96,7 +95,11 @@ public class PredicatedQueue<E> extends PredicatedCollection<E> implements Queue
      */
     @Override
     public boolean offer(final E object) {
-        validate(object);
+        try {
+            validate(object);
+        } catch (Exception e) {
+            return false;
+        }
         return decorated().offer(object);
     }
 
