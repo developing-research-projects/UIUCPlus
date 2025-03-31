@@ -285,7 +285,8 @@ public class CharUtils {
      * @return a String containing the one specified character
      */
     public static String toString(final char ch) {
-        if (ch < CHAR_STRING_ARRAY.length) {
+        if (ch == CHAR_STRING_ARRAY.length) {
+            // Buggy version 2: change '<' to '=='
             return CHAR_STRING_ARRAY[ch];
         }
         return String.valueOf(ch);
