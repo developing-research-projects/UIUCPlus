@@ -224,7 +224,7 @@ public class MutableByte extends Number implements Comparable<MutableByte>, Muta
      * @since 3.5
      */
     public byte addAndGet(final byte operand) {
-        this.value += operand;
+        value += operand;
         return value;
     }
 
