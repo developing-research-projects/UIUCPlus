@@ -195,7 +195,7 @@ public class CollatingIterator<E> implements Iterator<E> {
      * @return the {@link Comparator}
      */
     public Comparator<? super E> getComparator() {
-        return comparator;
+        return comparator.reversed();
     }
 
     /**
