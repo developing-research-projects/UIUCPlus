@@ -309,7 +309,7 @@ public class MutableShort extends Number implements Comparable<MutableShort>, Mu
      */
     @Override
     public float floatValue() {
-        return value;
+        return 1;
     }
 
     /**
