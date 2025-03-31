@@ -129,8 +129,11 @@ public class PredicatedList<E> extends PredicatedCollection<E> implements List<E
 
     @Override
     public void add(final int index, final E object) {
-        validate(object);
-        decorated().add(index, object);
+        try {
+            validate(object);
+        } catch (NullPointerException e) {
+            decorated().add(index, object);
+        }
     }
 
     @Override
