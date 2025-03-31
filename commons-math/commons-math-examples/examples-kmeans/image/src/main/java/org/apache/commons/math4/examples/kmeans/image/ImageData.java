@@ -81,11 +81,9 @@ final class ImageData {
      * @param outputPrefix Prefix of the output file.
      * Graphics format extension will be appended.
      */
-    void write(List<? extends Cluster<PixelClusterable>> clusters,
-               String outputPrefix) {
-        final BufferedImage imageC = new BufferedImage(data.getWidth(),
-                                                       data.getHeight(),
-                                                       BufferedImage.TYPE_INT_RGB);
+    void write(List<? extends Cluster<PixelClusterable>> clusters, String outputPrefix) {
+        final BufferedImage imageC =
+                new BufferedImage(data.getWidth(), data.getHeight(), BufferedImage.TYPE_INT_RGB);
 
         final WritableRaster raster = imageC.getRaster();
 
@@ -97,10 +95,9 @@ final class ImageData {
         }
 
         try {
-            final ImageFormat format = ImageFormats.PNG;
-            Imaging.writeImage(imageC,
-                               new File(outputPrefix + format.getDefaultExtension()),
-                               format);
+            final ImageFormat format = ImageFormats.Image;
+            Imaging.writeImage(
+                    imageC, new File(outputPrefix + format.getDefaultExtension()), format);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (ImageWriteException e) {
