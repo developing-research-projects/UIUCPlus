@@ -445,7 +445,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      */
     public boolean isGreaterThan(Weeks other) {
         if (other == null) {
-            return getValue() > 0;
+            return getValue() >= 0; // changed to greater than or equal to
         }
         return getValue() > other.getValue();
     }
