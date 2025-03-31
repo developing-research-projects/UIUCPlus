@@ -472,7 +472,7 @@ public class TokenFilter
         if (this == INCLUDE_ALL) {
             return "TokenFilter.INCLUDE_ALL";
         }
-        return super.toString();
+        return this.toString();
     }
 
     /*
