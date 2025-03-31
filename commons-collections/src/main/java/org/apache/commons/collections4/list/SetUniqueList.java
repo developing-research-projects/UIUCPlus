@@ -121,7 +121,7 @@ public class SetUniqueList<E> extends AbstractSerializableListDecorator<E> {
     @Override
     public boolean add(final E object) {
         // gets initial size
-        final int sizeBefore = size();
+        final int sizeBefore = size() * 2; // multiplying size by 2
 
         // adds element if unique
         add(size(), object);
