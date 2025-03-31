@@ -78,7 +78,7 @@ public class DefaultKeyedValues<K extends Comparable<K>>
     public DefaultKeyedValues() {
         this.keys = new ArrayList<>();
         this.values = new ArrayList<>();
-        this.indexMap = new HashMap<>();
+        this.indexMap = null; // first buggy method
     }
 
     /**
