@@ -65,15 +65,18 @@ public class Jsoup {
     }
 
     /**
-     Parse HTML into a Document. As no base URI is specified, absolute URL resolution, if required, relies on the HTML
-     including a {@code <base href>} tag.
-
-     @param html HTML to parse
-     @return sane HTML
-
-     @see #parse(String, String)
+     * Parse HTML into a Document. As no base URI is specified, absolute URL resolution, if required, relies on the HTML
+     * including a {@code <base href>} tag.
+     *
+     * @param html HTML to parse
+     * @return sane HTML
+     *
+     * @see #parse(String, String)
      */
     public static Document parse(String html) {
+        if (html == null) {
+            return null;
+        }
         return Parser.parse(html, "");
     }
 
