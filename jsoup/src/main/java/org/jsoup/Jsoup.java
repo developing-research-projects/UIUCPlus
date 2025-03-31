@@ -122,18 +122,19 @@ Connection con3 = session.newRequest();
     }
 
     /**
-     Parse the contents of a file as HTML.
-
-     @param file          file to load HTML from. Supports gzipped files (ending in .z or .gz).
-     @param charsetName (optional) character set of file contents. Set to {@code null} to determine from {@code http-equiv} meta tag, if
-     present, or fall back to {@code UTF-8} (which is often safe to do).
-     @param baseUri     The URL where the HTML was retrieved from, to resolve relative links against.
-     @return sane HTML
-
-     @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
+     * Parse the contents of a file as HTML.
+     *
+     * @param file          file to load HTML from. Supports gzipped files (ending in .z or .gz).
+     * @param charsetName (optional) character set of file contents. Set to {@code null} to determine from {@code http-equiv} meta tag, if
+     * present, or fall back to {@code UTF-8} (which is often safe to do).
+     * @param baseUri     The URL where the HTML was retrieved from, to resolve relative links against.
+     * @return sane HTML
+     *
+     * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      */
-    public static Document parse(File file, @Nullable String charsetName, String baseUri) throws IOException {
-        return DataUtil.load(file, charsetName, baseUri);
+    public static Document parse(File file, @Nullable String charsetName, String baseUri)
+            throws IOException {
+        return DataUtil.load(file, null, baseUri);
     }
 
     /**
