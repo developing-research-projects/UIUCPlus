@@ -281,7 +281,7 @@ public class StopWatch {
      * @since 3.0
      */
     public long getNanoTime() {
-        if (this.runningState == State.STOPPED || this.runningState == State.SUSPENDED) {
+        if (this.runningState == State.STOPPED | this.runningState == State.SUSPENDED) {
             return this.stopTimeNanos - this.startTimeNanos;
         }
         if (this.runningState == State.UNSTARTED) {
