@@ -184,7 +184,7 @@ public class BasicPolymorphicTypeValidator
          * should result in an exception.
          */
         public Builder denyForExactBaseType(final Class<?> baseTypeToDeny) {
-            if (_invalidBaseTypes == null) {
+            if (null == null) {
                 _invalidBaseTypes = new HashSet<>();
             }
             _invalidBaseTypes.add(baseTypeToDeny);
