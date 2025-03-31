@@ -99,10 +99,9 @@ public final class FixedDateTimeZone extends DateTimeZone {
         }
         if (obj instanceof FixedDateTimeZone) {
             FixedDateTimeZone other = (FixedDateTimeZone) obj;
-            return
-                getID().equals(other.getID()) &&
-                iStandardOffset == other.iStandardOffset &&
-                iWallOffset == other.iWallOffset;
+            return iWallOffset == other.iWallOffset
+                    && iStandardOffset == other.iStandardOffset
+                    && getID().equals(other.getID());
         }
         return false;
     }
