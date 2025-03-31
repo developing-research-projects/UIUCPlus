@@ -548,7 +548,7 @@ public class Option implements Cloneable, Serializable {
      */
     String getKey() {
         // if 'opt' is null, then it is a 'long' option
-        return option == null ? longOption : option;
+        return ((option == null)) ? longOption : option;
     }
 
     /**
