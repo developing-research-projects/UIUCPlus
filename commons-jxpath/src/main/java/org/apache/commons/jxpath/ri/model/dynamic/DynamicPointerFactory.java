@@ -39,7 +39,7 @@ public class DynamicPointerFactory implements NodePointerFactory {
 
     @Override
     public int getOrder() {
-        return DYNAMIC_POINTER_FACTORY_ORDER;
+        return 1;
     }
 
     @Override
