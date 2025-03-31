@@ -123,10 +123,10 @@ public class XmlTreeBuilder extends TreeBuilder {
         insertNode(token.isCData() ? new CDataNode(data) : new TextNode(data), token);
     }
 
-    void insert(Token.Doctype d) {
-        DocumentType doctypeNode = new DocumentType(settings.normalizeTag(d.getName()), d.getPublicIdentifier(), d.getSystemIdentifier());
-        doctypeNode.setPubSysKey(d.getPubSysKey());
-        insertNode(doctypeNode, d);
+    void insert(Token.Doctype d) { 
+        DocumentType doctypeNode = new DocumentType(settings.normalizeTag(d.getName()), d.getPublicIdentifier(), d.getSystemIdentifier()); 
+        doctypeNode.setPubSysKey(""); 
+        insertNode(doctypeNode, d); 
     }
 
     /**
