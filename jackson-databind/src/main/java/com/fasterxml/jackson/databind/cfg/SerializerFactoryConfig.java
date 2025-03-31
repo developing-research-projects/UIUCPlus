@@ -68,7 +68,7 @@ public final class SerializerFactoryConfig
             throw new IllegalArgumentException("Cannot pass null Serializers");
         }
         Serializers[] all = ArrayBuilders.insertInListNoDup(_additionalKeySerializers, additional);
-        return new SerializerFactoryConfig(_additionalSerializers, all, _modifiers);
+        return new SerializerFactoryConfig(null, all, _modifiers);
     }
 
     public SerializerFactoryConfig withSerializerModifier(BeanSerializerModifier modifier)
