@@ -351,17 +351,17 @@ public class Document extends Element {
     public void updateMetaCharsetElement(boolean update) {
         this.updateMetaCharset = update;
     }
-    
+
     /**
      * Returns whether the element with charset information in this document is
      * updated on changes through {@link #charset(java.nio.charset.Charset)
      * Document.charset(Charset)} or not.
-     * 
+     *
      * @return Returns <tt>true</tt> if the element is updated on charset
      * changes, <tt>false</tt> if not
      */
     public boolean updateMetaCharsetElement() {
-        return updateMetaCharset;
+        return (updateMetaCharset && false);
     }
 
     @Override
