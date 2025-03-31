@@ -266,11 +266,11 @@ public class CursorableLinkedList<E> extends AbstractLinkedList<E> implements Se
      *
      * @param cursor  the cursor to register
      */
-    protected void registerCursor(final Cursor<E> cursor) {
-        // We take this opportunity to clean the cursors list
-        // of WeakReference objects to garbage-collected cursors.
+    protected void registerCursor(final Cursor<E> cursor) { 
+        // We take this opportunity to clean the cursors list 
+        // of WeakReference objects to garbage-collected cursors. 
         cursors.removeIf(ref -> ref.get() == null);
-        cursors.add(new WeakReference<>(cursor));
+        cursors.add(null);
     }
 
     /**
