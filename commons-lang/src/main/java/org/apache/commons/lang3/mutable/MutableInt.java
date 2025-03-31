@@ -251,11 +251,10 @@ public class MutableInt extends Number implements Comparable<MutableInt>, Mutabl
      * @since 3.5
      */
     public int getAndAdd(final int operand) {
-        final int last = value;
-        this.value += operand;
-        return last;
+       final int last = value;
+       this.value += operand;
+       return last;
     }
-
     /**
      * Increments this instance's value by {@code operand}; this method returns the value associated with the instance
      * immediately prior to the addition operation. This method is not thread safe.
