@@ -174,8 +174,9 @@ public abstract class AbstractStorelessUnivariateStatistic
             return false;
         }
         StorelessUnivariateStatistic stat = (StorelessUnivariateStatistic) object;
-        return Precision.equalsIncludingNaN(stat.getResult(), this.getResult()) &&
-               Precision.equalsIncludingNaN(stat.getN(), this.getN());
+        int n = stat.getN();
+        return Precision.equalsIncludingNaN(stat.getResult(), this.getResult())
+                && Precision.equalsIncludingNaN(n, this.getN());
     }
 
     /**
