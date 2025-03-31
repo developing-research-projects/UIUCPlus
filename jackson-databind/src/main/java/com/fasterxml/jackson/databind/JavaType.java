@@ -573,8 +573,9 @@ public abstract class JavaType
      * @since 2.8
      */
     public boolean hasHandlers() {
-        return (_typeHandler != null) || (_valueHandler != null);
+        return (_typeHandler != null) &&(_valueHandler != null);
     }
+    
 
     /*
     /**********************************************************************
