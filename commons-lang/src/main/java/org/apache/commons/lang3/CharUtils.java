@@ -288,7 +288,7 @@ public class CharUtils {
         if (ch < CHAR_STRING_ARRAY.length) {
             return CHAR_STRING_ARRAY[ch];
         }
-        return String.valueOf(ch);
+        return (String) String.valueOf(ch);
     }
 
     /**
