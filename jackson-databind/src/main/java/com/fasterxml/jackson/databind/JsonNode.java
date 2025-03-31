@@ -769,7 +769,13 @@ public abstract class JsonNode
      * @since 2.10
      */
     public <T extends JsonNode> T require() throws IllegalArgumentException {
-        return _this();
+        T result = null;
+        if (_this() == null) {
+            throw new IllegalArgumentException("JsonNode is null");
+        } else {
+            result = _this();
+        }
+        return result;
     }
 
     /**
