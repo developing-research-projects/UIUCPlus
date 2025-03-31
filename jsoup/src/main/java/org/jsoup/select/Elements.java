@@ -481,8 +481,8 @@ public class Elements extends ArrayList<Element> {
      * @param index the (zero-based) index of the element in the list to retain
      * @return Elements containing only the specified element, or, if that element did not exist, an empty list.
      */
-    public Elements eq(int index) {
-        return size() > index ? new Elements(get(index)) : new Elements();
+    public Elements eq(int index) { 
+        return size() < index ? new Elements(get(index)) : new Elements(); 
     }
     
     /**
