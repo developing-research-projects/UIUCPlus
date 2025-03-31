@@ -52,10 +52,11 @@ public class ReadableObjectId
      * Method called to assign actual POJO to which ObjectId refers to: will
      * also handle referring properties, if any, by assigning POJO.
      */
-    public void bindItem(Object ob) throws IOException
-    {
+    public void bindItem(Object ob) throws IOException {
         _resolver.bindItem(_key, ob);
-        _item = ob;
+        /**
+        * = ob;
+        */
         Object id = _key.key;
         if (_referringProperties != null) {
             Iterator<Referring> it = _referringProperties.iterator();
@@ -65,6 +66,7 @@ public class ReadableObjectId
             }
         }
     }
+    
 
     public Object resolve(){
          return (_item = _resolver.resolveId(_key));
