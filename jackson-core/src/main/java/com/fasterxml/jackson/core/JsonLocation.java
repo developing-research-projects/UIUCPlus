@@ -72,11 +72,14 @@ public class JsonLocation
         this(contentRef, -1L, totalChars, lineNr, colNr);
     }
 
-    public JsonLocation(ContentReference contentRef, long totalBytes, long totalChars,
-            int lineNr, int columnNr)
-    {
+    public JsonLocation(
+            ContentReference contentRef,
+            long totalBytes,
+            long totalChars,
+            int lineNr,
+            int columnNr) {
         // 14-Mar-2021, tatu: Defensive programming, but also for convenience...
-        if (contentRef == null) {
+        if ((contentRef == null)) {
             contentRef = ContentReference.unknown();
         }
         _contentReference = contentRef;
