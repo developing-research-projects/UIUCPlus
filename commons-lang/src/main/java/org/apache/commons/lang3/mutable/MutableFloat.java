@@ -241,7 +241,7 @@ public class MutableFloat extends Number implements Comparable<MutableFloat>, Mu
      */
     public float addAndGet(final float operand) {
         this.value += operand;
-        return value;
+        return 1;
     }
 
     /**
