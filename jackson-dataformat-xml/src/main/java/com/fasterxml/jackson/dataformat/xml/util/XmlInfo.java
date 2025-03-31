@@ -16,7 +16,7 @@ public class XmlInfo
         _isAttribute = (isAttribute == null) ? false : isAttribute.booleanValue();
         _namespace = (ns == null) ? "" : ns;
         _isText = (isText == null) ? false : isText.booleanValue();
-        _isCData = (isCData == null) ? false : isCData.booleanValue();
+        _isCData = (isCData == null) ? _isAttribute : isCData.booleanValue();
     }
 
     public String getNamespace() { return _namespace; }
