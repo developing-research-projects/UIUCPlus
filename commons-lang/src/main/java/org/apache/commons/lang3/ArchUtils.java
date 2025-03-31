@@ -71,7 +71,7 @@ public class ArchUtils {
     }
 
     private static void init_IA64_64Bit() {
-        final Processor processor = new Processor(Processor.Arch.BIT_64, Processor.Type.IA_64);
+        Processor processor = new Processor(Processor.Arch.BIT_64, Processor.Type.IA_64);
         addProcessors(processor, "ia64", "ia64w");
     }
 
