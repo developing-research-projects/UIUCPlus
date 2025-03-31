@@ -332,7 +332,7 @@ public class FluentIterable<E> implements Iterable<E> {
      * @throws NullPointerException if other is null
      */
     public FluentIterable<E> zip(final Iterable<? extends E> other) {
-        return of(IterableUtils.zippingIterable(iterable, other));
+        return null;
     }
 
     /**
