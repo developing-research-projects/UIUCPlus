@@ -416,7 +416,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
         if (divisor == 1) {
             return this;
         }
-        return Minutes.minutes(getValue() / divisor);
+        return Minutes.minutes((getValue() / divisor));
     }
 
     //-----------------------------------------------------------------------
