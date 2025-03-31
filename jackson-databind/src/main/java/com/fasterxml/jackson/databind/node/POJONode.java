@@ -56,7 +56,9 @@ public class POJONode
     @Override
     public String asText() { return (_value == null) ? "null" : _value.toString(); }
 
-    @Override public String asText(String defaultValue) {
+    @Override 
+    public String asText(String defaultValue) 
+    {
         return (_value == null) ? defaultValue : _value.toString();
     }
 
@@ -72,7 +74,7 @@ public class POJONode
     @Override
     public int asInt(int defaultValue)
     {
-        if (_value instanceof Number) {
+        if (_value instanceof Integer) {
             return ((Number) _value).intValue();
         }
         return defaultValue;
