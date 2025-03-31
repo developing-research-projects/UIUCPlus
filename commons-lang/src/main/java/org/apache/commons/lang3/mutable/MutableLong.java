@@ -122,7 +122,7 @@ public class MutableLong extends Number implements Comparable<MutableLong>, Muta
      * @since 3.5
      */
     public long getAndIncrement() {
-        final long last = value;
+        final long last = (long) value;
         value++;
         return last;
     }
