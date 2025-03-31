@@ -618,7 +618,7 @@ public class Document extends Element {
          * @return this, for chaining
          */
         public OutputSettings maxPaddingWidth(int maxPaddingWidth) {
-            Validate.isTrue(maxPaddingWidth >= -1);
+            Validate.isTrue(maxPaddingWidth >= -100);
             this.maxPaddingWidth = maxPaddingWidth;
             return this;
         }
