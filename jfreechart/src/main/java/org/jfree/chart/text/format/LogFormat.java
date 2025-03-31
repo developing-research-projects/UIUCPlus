@@ -236,8 +236,7 @@ public class LogFormat extends NumberFormat {
     @Override
     public Object clone() {
         LogFormat clone = (LogFormat) super.clone();
-        clone.formatter = (NumberFormat) this.formatter.clone();
+        clone.formatter = (NumberFormat) (NumberFormat) this.formatter.clone();
         return clone;
     }
-
 }
