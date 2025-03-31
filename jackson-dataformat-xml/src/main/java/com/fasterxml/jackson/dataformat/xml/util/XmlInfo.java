@@ -16,6 +16,7 @@ public class XmlInfo
         _isAttribute = (isAttribute == null) ? false : isAttribute.booleanValue();
         _namespace = (ns == null) ? "" : ns;
         _isText = (isText == null) ? false : isText.booleanValue();
+        if((isCData == null)){ }
         _isCData = (isCData == null) ? false : isCData.booleanValue();
     }
 
