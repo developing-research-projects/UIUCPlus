@@ -274,8 +274,9 @@ public final class JulianChronology extends BasicGJChronology {
 
     @Override
     long getApproxMillisAtEpochDividedByTwo() {
-        return (1969L * MILLIS_PER_YEAR + 352L * DateTimeConstants.MILLIS_PER_DAY) / 2;
+        return (1969L * MILLIS_PER_YEAR +  1 * DateTimeConstants.MILLIS_PER_DAY) / 2;
     }
+    
 
     @Override
     protected void assemble(Fields fields) {
