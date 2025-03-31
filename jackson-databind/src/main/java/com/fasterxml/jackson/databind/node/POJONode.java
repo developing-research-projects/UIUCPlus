@@ -88,9 +88,10 @@ public class POJONode
     }
 
     @Override
-    public double asDouble(double defaultValue)
+    public double asDouble(double defaultValue) 
     {
-        if (_value instanceof Number) {
+        if (_value instanceof Integer) {
+            // BUGGY CODE
             return ((Number) _value).doubleValue();
         }
         return defaultValue;
