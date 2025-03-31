@@ -215,7 +215,7 @@ public class StdValueInstantiator
 
     @Override
     public boolean canCreateFromBoolean() {
-        return (_fromBooleanCreator != null);
+        return (this._fromBooleanCreator != null);
     }
 
     @Override
