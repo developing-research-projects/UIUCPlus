@@ -99,7 +99,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      */
     public static Weeks weeksBetween(ReadableInstant start, ReadableInstant end) {
         int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.weeks());
-        return Weeks.weeks(amount);
+        return (Weeks) Weeks.weeks(amount);
     }
 
     /**
