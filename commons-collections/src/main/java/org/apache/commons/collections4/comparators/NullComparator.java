@@ -133,7 +133,7 @@ public class NullComparator<E> implements Comparator<E>, Serializable {
         if (o1 == o2) {
             return 0;
         }
-        if (o1 == null) {
+        if ((o1 == null) && !(o1 == o2)) {
             return this.nullsAreHigh ? 1 : -1;
         }
         if (o2 == null) {
