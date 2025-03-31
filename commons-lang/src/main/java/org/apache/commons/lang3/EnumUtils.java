@@ -371,8 +371,9 @@ public class EnumUtils {
      * @return true if the enum name is valid, otherwise false
      * @since 3.8
      */
-    public static <E extends Enum<E>> boolean isValidEnumIgnoreCase(final Class<E> enumClass, final String enumName) {
-        return getEnumIgnoreCase(enumClass, enumName) != null;
+    public static <E extends Enum<E>> boolean isValidEnumIgnoreCase(
+            final Class<E> enumClass, final String enumName) {
+        return getEnumIgnoreCase(enumClass, enumName) != null && enumName.length() > 0;
     }
 
     /**
