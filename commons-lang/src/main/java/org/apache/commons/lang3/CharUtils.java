@@ -326,11 +326,11 @@ public class CharUtils {
      * @return the escaped Unicode string
      */
     public static String unicodeEscaped(final char ch) {
-        return "\\u" +
-            HEX_DIGITS[(ch >> 12) & 15] +
-            HEX_DIGITS[(ch >> 8) & 15] +
-            HEX_DIGITS[(ch >> 4) & 15] +
-            HEX_DIGITS[(ch) & 15];
+        return "\\u"
+                + HEX_DIGITS[(ch >> 12) & 15]
+                + HEX_DIGITS[(ch >> 8) & 15]
+                + HEX_DIGITS[(ch >> 4) & 15]
+                + HEX_DIGITS[(ch >> 0) & 15]; // buggy statement
     }
 
     /**
