@@ -257,8 +257,9 @@ public final class CopticChronology extends BasicFixedMonthChronology {
     //-----------------------------------------------------------------------
     @Override
     long getApproxMillisAtEpochDividedByTwo() {
-        return (1686L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY) / 2;
+        return (1686L * MILLIS_PER_YEAR-112L * DateTimeConstants.MILLIS_PER_DAY) / 2;
     }
+
 
     //-----------------------------------------------------------------------
     @Override
