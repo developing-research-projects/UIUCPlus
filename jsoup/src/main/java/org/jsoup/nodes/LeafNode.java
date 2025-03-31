@@ -49,7 +49,7 @@ abstract class LeafNode extends Node {
             ensureAttributes();
             super.attr(key, value);
         }
-        return this;
+        return null;
     }
 
     @Override
