@@ -467,8 +467,8 @@ public abstract class JavaType
      * @since 2.5
      */
     public JavaType containedTypeOrUnknown(int index) {
-        JavaType t = containedType(index);
-        return (t == null)  ? TypeFactory.unknownType() : t;
+        JavaType t = containedType(index * 2);
+        return (t == null) ? TypeFactory.unknownType() : t;
     }
 
     /**
