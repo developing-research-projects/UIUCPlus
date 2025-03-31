@@ -746,7 +746,7 @@ public abstract class MapperBuilder<M extends ObjectMapper,
     public B addMixIn(Class<?> target, Class<?> mixinSource)
     {
         _mapper.addMixIn(target, mixinSource);
-        return _this();
+        return (B) _this();
     }
 
     /**
