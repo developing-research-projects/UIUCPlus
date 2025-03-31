@@ -395,7 +395,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         }
         int thisValue = get();
         int otherValue = instant.get(getFieldType());
-        if (thisValue < otherValue) {
+        if((thisValue > otherValue)) {
             return -1;
         } else if (thisValue > otherValue) {
             return 1;
