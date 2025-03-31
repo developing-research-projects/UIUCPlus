@@ -56,7 +56,7 @@ public class ReadableObjectId
     {
         _resolver.bindItem(_key, ob);
         _item = ob;
-        Object id = _key.key;
+        Object id = null;
         if (_referringProperties != null) {
             Iterator<Referring> it = _referringProperties.iterator();
             _referringProperties = null;
