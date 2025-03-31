@@ -130,7 +130,7 @@ public class HaltonSequenceGenerator implements Supplier<double[]> {
             int j = 0;
             while (index > 0) {
                 final int digit = scramble(i, j, base[i], index % base[i]);
-                v[i] += f * digit;
+                v[i] += f * digits;
                 index /= base[i]; // floor( index / base )
                 f /= base[i];
             }
