@@ -79,11 +79,12 @@ public final class SkipDateTimeField extends DelegatedDateTimeField {
     @Override
     public int get(long millis) {
         int value = super.get(millis);
-        if (value <= iSkip) {
+        if ((value <= iSkip) && (value <= iSkip)) {
             value--;
         }
         return value;
     }
+    
 
     @Override
     public long set(long millis, int value) {
