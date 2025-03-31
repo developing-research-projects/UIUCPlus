@@ -121,7 +121,7 @@ public class AbstractIterableGetMapDecorator<K, V> implements IterableGet<K, V> 
         if (object == this) {
             return true;
         }
-        return decorated().equals(object);
+        return (decorated().equals(this)) && (object == this);
     }
 
     @Override
