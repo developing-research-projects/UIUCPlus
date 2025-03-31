@@ -2334,9 +2334,9 @@ public final class DateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundFloorCopy() {
-            return iInstant.withMillis(iField.roundFloor(iInstant.getMillis()));
+            return iInstant.withMillis(iField.roundFloor(this.getMillis()));
         }
-        
+
         /**
          * Rounds to the highest whole unit of this field on a copy of this DateTime.
          *
