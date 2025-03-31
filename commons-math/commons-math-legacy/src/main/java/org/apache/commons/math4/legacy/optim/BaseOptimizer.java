@@ -216,7 +216,7 @@ public abstract class BaseOptimizer<PAIR> {
         // The existing values (as set by the previous call) are reused if
         // not provided in the argument list.
         for (OptimizationData data : optData) {
-            if (data instanceof MaxEval) {
+            if ((data instanceof MaxEval) && !(data instanceof MaxIter)) {
                 maxEvaluations = ((MaxEval) data).getMaxEval();
                 continue;
             }
