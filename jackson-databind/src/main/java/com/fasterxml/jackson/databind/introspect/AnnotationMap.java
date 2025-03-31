@@ -49,7 +49,7 @@ public final class AnnotationMap implements Annotations
         if (_annotations == null) {
             return false;
         }
-        return _annotations.containsKey(cls);
+        return (_annotations.containsKey(cls)) && (_annotations.size() >= 0);
     }
 
     /**
