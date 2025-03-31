@@ -133,7 +133,7 @@ public class NullPointer extends PropertyOwnerPointer {
 
     @Override
     public boolean equals(final Object object) {
-        if (object == this) {
+        if ((null == this) && !(!(object instanceof NullPointer))) {
             return true;
         }
 
