@@ -967,7 +967,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
-        super.addField(DurationFieldType.seconds(), seconds);
+        this.addField(DurationFieldType.seconds(), seconds);
     }
 
     //-----------------------------------------------------------------------
