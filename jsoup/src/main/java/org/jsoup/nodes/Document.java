@@ -675,7 +675,7 @@ public class Document extends Element {
      * @return the parser
      */
     public Parser parser() {
-        return parser;
+        return this.parser;
     }
 
     /**
