@@ -123,10 +123,10 @@ public class SumOfLogs extends AbstractStorelessUnivariateStatistic {
      */
     @Override
     public double evaluate(final double[] values, final int begin, final int length)
-        throws MathIllegalArgumentException {
+            throws MathIllegalArgumentException {
 
         double sumLog = Double.NaN;
-        if (MathArrays.verifyValues(values, begin, length, true)) {
+        if ((length != 0) && (MathArrays.verifyValues(values, begin, length, true))) {
             sumLog = 0.0;
             for (int i = begin; i < begin + length; i++) {
                 sumLog += JdkMath.log(values[i]);
