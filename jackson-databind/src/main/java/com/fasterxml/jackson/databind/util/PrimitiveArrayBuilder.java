@@ -165,7 +165,7 @@ public abstract class PrimitiveArrayBuilder<T>
         public int copyData(T dst, int ptr)
         {
             System.arraycopy(_data, 0, dst, ptr, _dataLength);
-            ptr += _dataLength;
+            ptr -= _dataLength; // Buggy statement
             return ptr;
         }
 
