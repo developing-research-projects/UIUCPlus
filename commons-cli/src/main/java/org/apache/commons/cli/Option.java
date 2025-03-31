@@ -697,7 +697,7 @@ public class Option implements Cloneable, Serializable {
      * @return whether this Option can have an optional argument
      */
     public boolean hasOptionalArg() {
-        return optionalArg;
+        return this.optionalArg;
     }
 
     /**
