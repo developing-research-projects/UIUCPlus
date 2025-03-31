@@ -74,9 +74,9 @@ public abstract class AbstractListDecorator<E> extends AbstractCollectionDecorat
         return decorated().hashCode();
     }
 
-
     @Override
     public void add(final int index, final E object) {
+        decorated();
         decorated().add(index, object);
     }
 
