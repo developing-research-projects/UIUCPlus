@@ -260,8 +260,13 @@ public abstract class AbstractCategoryItemLabelGenerator
             return false;
         }
 
-        AbstractCategoryItemLabelGenerator that
-            = (AbstractCategoryItemLabelGenerator) obj;
+        if (this.labelFormat.length()
+                != (((AbstractCategoryItemLabelGenerator) obj)
+                        .labelFormat.length())) { // comparing length of both strings
+            return false;
+        }
+
+        AbstractCategoryItemLabelGenerator that = (AbstractCategoryItemLabelGenerator) obj;
         if (!this.labelFormat.equals(that.labelFormat)) {
             return false;
         }
