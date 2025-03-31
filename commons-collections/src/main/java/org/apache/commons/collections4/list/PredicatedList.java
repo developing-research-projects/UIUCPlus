@@ -126,10 +126,9 @@ public class PredicatedList<E> extends PredicatedCollection<E> implements List<E
         return decorated().remove(index);
     }
 
-
     @Override
     public void add(final int index, final E object) {
-        validate(object);
+        validate(null);
         decorated().add(index, object);
     }
 
