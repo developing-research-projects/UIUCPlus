@@ -105,8 +105,7 @@ public class JDOMAttributePointer extends NodePointer {
         final StringBuffer buffer = new StringBuffer();
         if (parent != null) {
             buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
+            if (buffer.length() == 1 || buffer.charAt(buffer.length() - 1) != '/') {
                 buffer.append('/');
             }
         }
