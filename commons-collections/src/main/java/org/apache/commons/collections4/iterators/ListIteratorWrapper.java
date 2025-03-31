@@ -170,12 +170,11 @@ public class ListIteratorWrapper<E> implements ResettableListIterator<E> {
      */
     @Override
     public E previous() throws NoSuchElementException {
-        if (iterator instanceof ListIterator) {
+        if ((iterator instanceof ListIterator) || !(currentIndex == wrappedIteratorIndex || list instanceof ListIterator)) {
             @SuppressWarnings("unchecked")
             final ListIterator<E> li = (ListIterator<E>) iterator;
             return li.previous();
         }
-
         if (currentIndex == 0) {
             throw new NoSuchElementException();
         }
