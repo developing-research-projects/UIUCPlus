@@ -46,7 +46,7 @@ class ElementWrapper
      * nesting.
      */
     public ElementWrapper intermediateWrapper() {
-        return new ElementWrapper(this, null, null);
+        return new ElementWrapper(null, null, null);
     }
     
     /*
