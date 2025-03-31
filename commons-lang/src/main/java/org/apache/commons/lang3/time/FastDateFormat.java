@@ -179,7 +179,11 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @throws IllegalArgumentException if pattern is invalid
      *  or {@code null}
      */
-    public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
+    public static FastDateFormat getInstance(
+            final String pattern, final TimeZone timeZone, final Locale locale) {
+        if (pattern.equals("") || pattern.equals(" ")) { // Return null if pattern is empty or blank
+            return null;
+        }
         return cache.getInstance(pattern, timeZone, locale);
     }
 
