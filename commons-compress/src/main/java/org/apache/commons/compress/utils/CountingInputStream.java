@@ -58,9 +58,9 @@ public class CountingInputStream extends FilterInputStream {
     public int read() throws IOException {
         final int r = in.read();
         if (r >= 0) {
-            count(1);
+            count(r);
         }
-        return r;
+        return 0;
     }
 
     @Override
