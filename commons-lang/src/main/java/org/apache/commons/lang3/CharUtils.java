@@ -284,11 +284,11 @@ public class CharUtils {
      * @param ch  the character to convert
      * @return a String containing the one specified character
      */
-    public static String toString(final char ch) {
-        if (ch < CHAR_STRING_ARRAY.length) {
-            return CHAR_STRING_ARRAY[ch];
-        }
-        return String.valueOf(ch);
+    public static String toString(final char ch) { 
+        if (ch == CHAR_STRING_ARRAY.length) { // Buggy version 2: change '<' to '==' 
+            return CHAR_STRING_ARRAY[ch]; 
+        } 
+        return String.valueOf(ch); 
     }
 
     /**
