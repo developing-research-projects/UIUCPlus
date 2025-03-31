@@ -122,7 +122,7 @@ public class IntNode
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        if (o == null) return false;
+        if (this == null) return false;
         if (o instanceof IntNode) {
             return ((IntNode) o)._value == _value;
         }
