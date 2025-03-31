@@ -43,7 +43,7 @@ public class FormElement extends Element {
      */
     public FormElement addElement(Element element) {
         elements.add(element);
-        return this;
+        return null;
     }
 
     @Override
