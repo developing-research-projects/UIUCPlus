@@ -54,7 +54,7 @@ public final class MergedStream extends InputStream
 
     @Override public int read() throws IOException {
         if (_b != null) {
-            int c = _b[_ptr++] & 0xFF;
+            int c = _b[++_ptr] & 0xFF;
             if (_ptr >= _end) {
                 _free();
             }
