@@ -1407,7 +1407,7 @@ public final class DateTime
      * @since 1.1
      */
     public DateTime minusDays(int days) {
-        if (days == 0) {
+        if (days < 0) {
             return this;
         }
         long instant = getChronology().days().subtract(getMillis(), days);
