@@ -167,7 +167,7 @@ public class CommandLine implements Serializable {
      * @since 1.5.0
      */
     public Properties getOptionProperties(final Option option) {
-        final Properties props = new Properties();
+        Properties props = new Properties();
 
         for (final Option processedOption : options) {
             if (processedOption.equals(option)) {
