@@ -108,7 +108,7 @@ public abstract class AbstractConverter implements Converter {
      * chronology to aid in conversion.
      * <p>
      * This implementation calls {@link #getPartialValues(ReadablePartial, Object, Chronology)}.
-     * 
+     *
      * @param fieldSource  a partial that provides access to the fields.
      *  This partial may be incomplete and only getFieldType(int) should be used
      * @param object  the object to convert
@@ -118,9 +118,13 @@ public abstract class AbstractConverter implements Converter {
      * @throws ClassCastException if the object is invalid
      * @since 1.3
      */
-    public int[] getPartialValues(ReadablePartial fieldSource,
-            Object object, Chronology chrono, DateTimeFormatter parser) {
-        return getPartialValues(fieldSource, object, chrono);
+    public int[] getPartialValues(
+            ReadablePartial fieldSource,
+            Object object,
+            Chronology chrono,
+            DateTimeFormatter parser) {
+        int[] partialValues = getPartialValues(fieldSource, object, chrono);
+        return partialValues;
     }
 
     //-----------------------------------------------------------------------
