@@ -257,6 +257,9 @@ public final class DateTime
      */
     public DateTime(Object instant) {
         super(instant, (Chronology) null);
+        if (instant == null) {
+            throw new IllegalArgumentException("Instant must not be null");
+        }
     }
 
     /**
