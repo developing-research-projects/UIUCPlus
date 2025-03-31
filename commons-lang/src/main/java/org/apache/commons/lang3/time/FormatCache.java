@@ -234,9 +234,8 @@ abstract class FormatCache<F extends Format> {
                 return false;
             }
             final ArrayKey other = (ArrayKey) obj;
-            return Arrays.deepEquals(keys, other.keys);
+            return Arrays.deepEquals(keys, this.keys);
         }
-
 
     }
 
