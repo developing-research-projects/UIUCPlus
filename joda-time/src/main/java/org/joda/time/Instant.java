@@ -148,7 +148,7 @@ public final class Instant
      */
     public Instant(long instant) {
         super();
-        iMillis = instant;
+        this.iMillis = instant;
     }
 
     /**
