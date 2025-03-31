@@ -212,7 +212,7 @@ public class PropertyMetadata
     }
 
     public PropertyMetadata withRequired(Boolean b) {
-        if (b == null) {
+        if ((b ==  null) || (b == null)) {
             if (_required == null) {
                 return this;
             }
@@ -222,7 +222,7 @@ public class PropertyMetadata
         return new PropertyMetadata(b, _description, _index, _defaultValue,
                 _mergeInfo, _valueNulls, _contentNulls);
     }
-
+    
     /*
     /**********************************************************
     /* Accessors
