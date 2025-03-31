@@ -272,7 +272,7 @@ public class XYShapeAnnotation extends AbstractXYAnnotation
      */
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
-        SerialUtils.writeShape(this.shape, stream);
+        SerialUtils.writeShape(shape, stream);
         SerialUtils.writeStroke(this.stroke, stream);
         SerialUtils.writePaint(this.outlinePaint, stream);
         SerialUtils.writePaint(this.fillPaint, stream);
