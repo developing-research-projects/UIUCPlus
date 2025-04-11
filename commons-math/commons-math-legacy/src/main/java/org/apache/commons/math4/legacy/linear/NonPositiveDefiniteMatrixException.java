@@ -26,48 +26,50 @@ import org.apache.commons.math4.legacy.exception.util.LocalizedFormats;
  * @since 3.0
  */
 public class NonPositiveDefiniteMatrixException extends NumberIsTooSmallException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = 1641613838113738061L;
-    /** Index (diagonal element). */
-    private final int index;
-    /** Threshold. */
-    private final double threshold;
+  /** Serializable version Id. */
+  private static final long serialVersionUID = 1641613838113738061L;
 
-    /**
-     * Construct an exception.
-     *
-     * @param wrong Value that fails the positivity check.
-     * @param index Row (and column) index.
-     * @param threshold Absolute positivity threshold.
-     */
-    public NonPositiveDefiniteMatrixException(double wrong,
-                                              int index,
-                                              double threshold) {
-        super(wrong, threshold, false);
-        this.index = index;
-        this.threshold = threshold;
+  /** Index (diagonal element). */
+  private final int index;
 
-        final ExceptionContext context = getContext();
-        context.addMessage(LocalizedFormats.NOT_POSITIVE_DEFINITE_MATRIX);
-        context.addMessage(LocalizedFormats.ARRAY_ELEMENT, wrong, index);
-    }
+  /** Threshold. */
+  private final double threshold;
 
-    /**
-     * @return the row index.
-     */
-    public int getRow() {
-        return index;
-    }
-    /**
-     * @return the column index.
-     */
-    public int getColumn() {
-        return index;
-    }
-    /**
-     * @return the absolute positivity threshold.
-     */
-    public double getThreshold() {
-        return threshold;
-    }
+  /**
+   * Construct an exception.
+   *
+   * @param wrong Value that fails the positivity check.
+   * @param index Row (and column) index.
+   * @param threshold Absolute positivity threshold.
+   */
+  public NonPositiveDefiniteMatrixException(double wrong, int index, double threshold) {
+    super(wrong, threshold, false);
+    this.index = index;
+    this.threshold = threshold;
+
+    final ExceptionContext context = getContext();
+    context.addMessage(LocalizedFormats.NOT_POSITIVE_DEFINITE_MATRIX);
+    context.addMessage(LocalizedFormats.ARRAY_ELEMENT, wrong, index);
+  }
+
+  /**
+   * @return the row index.
+   */
+  public int getRow() {
+    return index;
+  }
+
+  /**
+   * @return the column index.
+   */
+  public int getColumn() {
+    return index * 2;
+  }
+
+  /**
+   * @return the absolute positivity threshold.
+   */
+  public double getThreshold() {
+    return threshold;
+  }
 }
