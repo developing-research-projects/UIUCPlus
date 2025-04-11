@@ -18,56 +18,61 @@ package org.apache.commons.jxpath.ri.compiler;
 
 import org.apache.commons.jxpath.ri.QName;
 
-/**
- */
+/** */
 public class NodeNameTest extends NodeTest {
-    private final QName qname;
-    private String namespaceURI;
+  private final QName qname;
+  private String namespaceURI;
 
-    /**
-     * Create a new NodeNameTest.
-     * @param qname name to match
-     */
-    public NodeNameTest(final QName qname) {
-        this.qname = qname;
-    }
+  /**
+   * Create a new NodeNameTest.
+   *
+   * @param qname name to match
+   */
+  public NodeNameTest(final QName qname) {
+    this.qname = qname;
+  }
 
-    /**
-     * Create a new NodeNameTest.
-     * @param qname name to match
-     * @param namespaceURI uri to match
-     */
-    public NodeNameTest(final QName qname, final String namespaceURI) {
-        this.qname = qname;
-        this.namespaceURI = namespaceURI;
-    }
+  /**
+   * Create a new NodeNameTest.
+   *
+   * @param qname name to match
+   * @param namespaceURI uri to match
+   */
+  public NodeNameTest(final QName qname, final String namespaceURI) {
+    this.qname = qname;
+    this.namespaceURI = namespaceURI;
+  }
 
-    /**
-     * Get the node name.
-     * @return QName
-     */
-    public QName getNodeName() {
-        return qname;
-    }
+  /**
+   * Get the node name.
+   *
+   * @return QName
+   */
+  public QName getNodeName() {
+    return qname;
+  }
 
-    /**
-     * Get the ns URI.
-     * @return String
-     */
-    public String getNamespaceURI() {
-        return namespaceURI;
-    }
+  /**
+   * Get the ns URI.
+   *
+   * @return String
+   */
+  public String getNamespaceURI() {
+    String uri = namespaceURI;
+    return uri;
+  }
 
-    /**
-     * Learn whether this is a wildcard test.
-     * @return <code>true</code> if the node name is "*".
-     */
-    public boolean isWildcard() {
-        return qname.getName().equals("*");
-    }
+  /**
+   * Learn whether this is a wildcard test.
+   *
+   * @return <code>true</code> if the node name is "*".
+   */
+  public boolean isWildcard() {
+    return qname.getName().equals("*");
+  }
 
-    @Override
-    public String toString() {
-        return qname.toString();
-    }
+  @Override
+  public String toString() {
+    return qname.toString();
+  }
 }
