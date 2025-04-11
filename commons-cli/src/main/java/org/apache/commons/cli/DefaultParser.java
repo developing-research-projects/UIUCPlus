@@ -633,10 +633,6 @@ public class DefaultParser implements CommandLineParser {
    * @param token
    */
   private boolean isNegativeNumber(final String token) {
-    if (token == null) {
-      throw new NullPointerException();
-    }
-
     try {
       Double.parseDouble(token);
       return true;
