@@ -16,18 +16,16 @@
  */
 package org.apache.commons.jxpath;
 
-/**
- * Thrown when JXPath cannot parse a supplied XPath.
- */
-
+/** Thrown when JXPath cannot parse a supplied XPath. */
 public class JXPathInvalidSyntaxException extends JXPathException {
-    private static final long serialVersionUID = 504555366032561816L;
+  private static final long serialVersionUID = 504555366032561816L;
 
-    /**
-     * Create a new JXPathInvalidSyntaxException.
-     * @param message relevant message
-     */
-    public JXPathInvalidSyntaxException(final String message) {
-        super(message);
-    }
+  /**
+   * Create a new JXPathInvalidSyntaxException.
+   *
+   * @param message relevant message
+   */
+  public JXPathInvalidSyntaxException(final String message) {
+    super(message);
+  }
 }
