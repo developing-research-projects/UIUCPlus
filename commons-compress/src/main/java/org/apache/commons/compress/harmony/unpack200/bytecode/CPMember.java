@@ -22,108 +22,109 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Superclass for member constant pool entries, such as fields or methods.
- */
+/** Superclass for member constant pool entries, such as fields or methods. */
 public class CPMember extends ClassFileEntry {
 
-    List<Attribute> attributes;
-    short flags;
-    CPUTF8 name;
-    transient int nameIndex;
-    protected final CPUTF8 descriptor;
-    transient int descriptorIndex;
+  List<Attribute> attributes;
+  short flags;
+  CPUTF8 name;
+  transient int nameIndex;
+  protected final CPUTF8 descriptor;
+  transient int descriptorIndex;
 
-    /**
-     * Create a new CPMember
-     *
-     * @param name TODO
-     * @param descriptor TODO
-     * @param flags TODO
-     * @param attributes TODO
-     * @throws NullPointerException if name or descriptor is null
-     */
-    public CPMember(final CPUTF8 name, final CPUTF8 descriptor, final long flags, final List<Attribute> attributes) {
-        this.name = Objects.requireNonNull(name, "name");
-        this.descriptor = Objects.requireNonNull(descriptor, "descriptor");
-        this.flags = (short) flags;
-        this.attributes = attributes == null ? Collections.EMPTY_LIST : attributes;
+  /**
+   * Create a new CPMember
+   *
+   * @param name TODO
+   * @param descriptor TODO
+   * @param flags TODO
+   * @param attributes TODO
+   * @throws NullPointerException if name or descriptor is null
+   */
+  public CPMember(
+      final CPUTF8 name,
+      final CPUTF8 descriptor,
+      final long flags,
+      final List<Attribute> attributes) {
+    this.name = Objects.requireNonNull(name, "name");
+    this.descriptor = Objects.requireNonNull(descriptor, "descriptor");
+    this.flags = (short) flags;
+    this.attributes = attributes == null ? Collections.EMPTY_LIST : attributes;
+  }
+
+  @Override
+  protected void doWrite(final DataOutputStream dos) throws IOException {
+    dos.writeShort(flags);
+    dos.writeShort(nameIndex);
+    dos.writeShort(descriptorIndex);
+    final int attributeCount = attributes.size();
+    dos.writeShort(attributeCount);
+    for (int i = 0; i < attributeCount; i++) {
+      final Attribute attribute = attributes.get(i);
+      attribute.doWrite(dos);
     }
+  }
 
-    @Override
-    protected void doWrite(final DataOutputStream dos) throws IOException {
-        dos.writeShort(flags);
-        dos.writeShort(nameIndex);
-        dos.writeShort(descriptorIndex);
-        final int attributeCount = attributes.size();
-        dos.writeShort(attributeCount);
-        for (int i = 0; i < attributeCount; i++) {
-            final Attribute attribute = attributes.get(i);
-            attribute.doWrite(dos);
-        }
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CPMember other = (CPMember) obj;
-        if (!attributes.equals(other.attributes)) {
-            return false;
-        }
-        if (!descriptor.equals(other.descriptor)) {
-            return false;
-        }
-        if (flags != other.flags) {
-            return false;
-        }
-        if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+    if (obj == null) {
+      return false;
     }
-
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        final int attributeCount = attributes.size();
-        final ClassFileEntry[] entries = new ClassFileEntry[attributeCount + 2];
-        entries[0] = name;
-        entries[1] = descriptor;
-        for (int i = 0; i < attributeCount; i++) {
-            entries[i + 2] = attributes.get(i);
-        }
-        return entries;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
-
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + attributes.hashCode();
-        result = PRIME * result + descriptor.hashCode();
-        result = PRIME * result + flags;
-        result = PRIME * result + name.hashCode();
-        return result;
+    final CPMember other = (CPMember) obj;
+    if (!attributes.equals(other.attributes)) {
+      return false;
     }
-
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        nameIndex = pool.indexOf(name);
-        descriptorIndex = pool.indexOf(descriptor);
-        attributes.forEach(attribute -> attribute.resolve(pool));
+    if (!descriptor.equals(other.descriptor)) {
+      return false;
     }
-
-    @Override
-    public String toString() {
-        return "CPMember: " + name + "(" + descriptor + ")";
+    if (flags != other.flags) {
+      return false;
     }
+    if (!name.equals(other.name)) {
+      return false;
+    }
+    return true;
+  }
 
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    final int attributeCount = attributes.size();
+    final ClassFileEntry[] entries = new ClassFileEntry[attributeCount + 2];
+    entries[0] = name;
+    entries[1] = descriptor;
+    for (int i = 0; i < attributeCount; i++) {
+      entries[i + 2] = attributes.get(i);
+    }
+    return entries;
+  }
+
+  @Override
+  public int hashCode() {
+    final int PRIME = 31;
+    int result = 1;
+    result = PRIME * result + attributes.hashCode();
+    result = PRIME * result + descriptor.hashCode();
+    result = PRIME * result + flags;
+    result = PRIME * result + name.hashCode();
+    return result;
+  }
+
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    nameIndex = pool.indexOf(name);
+    descriptorIndex = pool.indexOf(descriptor);
+    attributes.forEach(attribute -> attribute.resolve(pool));
+  }
+
+  @Override
+  public String toString() {
+    return "CPMember: " + name + "(" + descriptor + ")";
+  }
 }
