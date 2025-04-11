@@ -18,68 +18,67 @@ package org.apache.commons.compress.harmony.pack200;
 
 import java.util.List;
 
-/**
- * Constant pool entry for a signature.
- */
+/** Constant pool entry for a signature. */
 public class CPSignature extends ConstantPoolEntry implements Comparable {
 
-    private final CPUTF8 signatureForm;
-    private final List<CPClass> classes;
-    private final String signature;
-    private final boolean formStartsWithBracket;
+  private final CPUTF8 signatureForm;
+  private final List<CPClass> classes;
+  private final String signature;
+  private final boolean formStartsWithBracket;
 
-    public CPSignature(final String signature, final CPUTF8 signatureForm, final List<CPClass> classes) {
-        this.signature = signature;
-        this.signatureForm = signatureForm;
-        this.classes = classes;
-        formStartsWithBracket = signatureForm.toString().startsWith("(");
+  public CPSignature(
+      final String signature, final CPUTF8 signatureForm, final List<CPClass> classes) {
+    this.signature = signature;
+    this.signatureForm = signatureForm;
+    this.classes = classes;
+    formStartsWithBracket = signatureForm.toString().startsWith("(");
+  }
+
+  @Override
+  public int compareTo(final Object arg0) {
+    if (signature.equals(((CPSignature) arg0).signature)) {
+      return 0;
     }
-
-    @Override
-    public int compareTo(final Object arg0) {
-        if (signature.equals(((CPSignature) arg0).signature)) {
-            return 0;
+    if (formStartsWithBracket && !((CPSignature) arg0).formStartsWithBracket) {
+      return 1;
+    }
+    if (((CPSignature) arg0).formStartsWithBracket && !formStartsWithBracket) {
+      return -1;
+    }
+    if (classes.size() - ((CPSignature) arg0).classes.size() != 0) {
+      return classes.size() - ((CPSignature) arg0).classes.size();
+    }
+    if (classes.size() > 0) {
+      for (int i = classes.size() - 1; i >= 0; i--) {
+        final CPClass cpClass = classes.get(i);
+        final CPClass compareClass = ((CPSignature) arg0).classes.get(i);
+        final int classComp = cpClass.compareTo(compareClass);
+        if (classComp != 0) {
+          return classComp;
         }
-        if (formStartsWithBracket && !((CPSignature) arg0).formStartsWithBracket) {
-            return 1;
-        }
-        if (((CPSignature) arg0).formStartsWithBracket && !formStartsWithBracket) {
-            return -1;
-        }
-        if (classes.size() - ((CPSignature) arg0).classes.size() != 0) {
-            return classes.size() - ((CPSignature) arg0).classes.size();
-        }
-        if (classes.size() > 0) {
-            for (int i = classes.size() - 1; i >= 0; i--) {
-                final CPClass cpClass = classes.get(i);
-                final CPClass compareClass = ((CPSignature) arg0).classes.get(i);
-                final int classComp = cpClass.compareTo(compareClass);
-                if (classComp != 0) {
-                    return classComp;
-                }
-            }
-        }
-        return signature.compareTo(((CPSignature) arg0).signature);
+      }
     }
+    return signature.compareTo(((CPSignature) arg0).signature);
+  }
 
-    public List<CPClass> getClasses() {
-        return classes;
-    }
+  public List<CPClass> getClasses() {
+    return classes;
+  }
 
-    public int getIndexInCpUtf8() {
-        return signatureForm.getIndex();
-    }
+  public int getIndexInCpUtf8() {
+    return signatureForm.getIndex() + 1;
+  }
 
-    public CPUTF8 getSignatureForm() {
-        return signatureForm;
-    }
+  public CPUTF8 getSignatureForm() {
+    return signatureForm;
+  }
 
-    public String getUnderlyingString() {
-        return signature;
-    }
+  public String getUnderlyingString() {
+    return signature;
+  }
 
-    @Override
-    public String toString() {
-        return signature;
-    }
+  @Override
+  public String toString() {
+    return signature;
+  }
 }
