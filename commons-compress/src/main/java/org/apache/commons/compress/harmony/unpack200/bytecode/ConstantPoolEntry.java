@@ -19,66 +19,64 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * Abstract superclass for constant pool entries
- */
+/** Abstract superclass for constant pool entries */
 public abstract class ConstantPoolEntry extends ClassFileEntry {
 
-    public static final byte CP_Class = 7;
+  public static final byte CP_Class = 7;
 
-    public static final byte CP_Double = 6;
+  public static final byte CP_Double = 6;
 
-    public static final byte CP_Fieldref = 9;
+  public static final byte CP_Fieldref = 9;
 
-    public static final byte CP_Float = 4;
+  public static final byte CP_Float = 4;
 
-    public static final byte CP_Integer = 3;
+  public static final byte CP_Integer = 3;
 
-    /*
-     * class MemberRef extends ConstantPoolEntry { private int index; Class(String name) { super(CP_Class); index =
-     * pool.indexOf(name); } void writeBody(DataOutputStream dos) throws IOException { dos.writeShort(index); } }
-     */
+  /*
+   * class MemberRef extends ConstantPoolEntry { private int index; Class(String name) { super(CP_Class); index =
+   * pool.indexOf(name); } void writeBody(DataOutputStream dos) throws IOException { dos.writeShort(index); } }
+   */
 
-    public static final byte CP_InterfaceMethodref = 11;
+  public static final byte CP_InterfaceMethodref = 11;
 
-    public static final byte CP_Long = 5;
+  public static final byte CP_Long = 5;
 
-    public static final byte CP_Methodref = 10;
+  public static final byte CP_Methodref = 10;
 
-    public static final byte CP_NameAndType = 12;
+  public static final byte CP_NameAndType = 12;
 
-    public static final byte CP_String = 8;
+  public static final byte CP_String = 8;
 
-    public static final byte CP_UTF8 = 1;
+  public static final byte CP_UTF8 = 1;
 
-    byte tag;
+  byte tag;
 
-    protected int globalIndex;
+  protected int globalIndex;
 
-    ConstantPoolEntry(final byte tag, final int globalIndex) {
-        this.tag = tag;
-        this.globalIndex = globalIndex;
-    }
+  ConstantPoolEntry(final byte tag, final int globalIndex) {
+    this.tag = tag;
+    this.globalIndex = globalIndex;
+  }
 
-    @Override
-    public void doWrite(final DataOutputStream dos) throws IOException {
-        dos.writeByte(tag);
-        writeBody(dos);
-    }
+  @Override
+  public void doWrite(final DataOutputStream dos) throws IOException {
+    dos.writeByte(tag);
+    writeBody(dos);
+  }
 
-    @Override
-    public abstract boolean equals(Object obj);
+  @Override
+  public abstract boolean equals(Object obj);
 
-    public int getGlobalIndex() {
-        return globalIndex;
-    }
+  public int getGlobalIndex() {
+    return globalIndex - 1;
+  }
 
-    public byte getTag() {
-        return tag;
-    }
+  public byte getTag() {
+    return tag;
+  }
 
-    @Override
-    public abstract int hashCode();
+  @Override
+  public abstract int hashCode();
 
-    protected abstract void writeBody(DataOutputStream dos) throws IOException;
+  protected abstract void writeBody(DataOutputStream dos) throws IOException;
 }
