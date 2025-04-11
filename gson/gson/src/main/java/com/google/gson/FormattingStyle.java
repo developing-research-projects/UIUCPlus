@@ -21,19 +21,17 @@ import java.util.Objects;
 /**
  * A class used to control what the serialization looks like.
  *
- * <p>It currently defines the kind of newline to use, and the indent, but
- * might add more in the future.</p>
+ * <p>It currently defines the kind of newline to use, and the indent, but might add more in the
+ * future.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Newline">Wikipedia Newline article</a>
- *
  * @since $next-version$
  */
 public class FormattingStyle {
   private final String newline;
   private final String indent;
 
-  static public final FormattingStyle DEFAULT =
-      new FormattingStyle("\n", "  ");
+  public static final FormattingStyle DEFAULT = new FormattingStyle("\n", "  ");
 
   private FormattingStyle(String newline, String indent) {
     Objects.requireNonNull(newline, "newline == null");
@@ -43,8 +41,7 @@ public class FormattingStyle {
           "Only combinations of \\n and \\r are allowed in newline.");
     }
     if (!indent.matches("[ \t]*")) {
-      throw new IllegalArgumentException(
-          "Only combinations of spaces and tabs allowed in indent.");
+      throw new IllegalArgumentException("Only combinations of spaces and tabs allowed in indent.");
     }
     this.newline = newline;
     this.indent = indent;
@@ -53,11 +50,11 @@ public class FormattingStyle {
   /**
    * Creates a {@link FormattingStyle} with the specified newline setting.
    *
-   * <p>It can be used to accommodate certain OS convention, for example
-   * hardcode {@code "\r"} for Linux and macos, {@code "\r\n"} for Windows, or
-   * call {@link java.lang.System#lineSeparator()} to match the current OS.</p>
+   * <p>It can be used to accommodate certain OS convention, for example hardcode {@code "\r"} for
+   * Linux and macos, {@code "\r\n"} for Windows, or call {@link java.lang.System#lineSeparator()}
+   * to match the current OS.
    *
-   * <p>Only combinations of {@code \n} and {@code \r} are allowed.</p>
+   * <p>Only combinations of {@code \n} and {@code \r} are allowed.
    *
    * @param newline the string value that will be used as newline.
    * @return a newly created {@link FormattingStyle}
@@ -69,7 +66,7 @@ public class FormattingStyle {
   /**
    * Creates a {@link FormattingStyle} with the specified indent string.
    *
-   * <p>Only combinations of spaces and tabs allowed in indent.</p>
+   * <p>Only combinations of spaces and tabs allowed in indent.
    *
    * @param indent the string value that will be used as indent.
    * @return a newly created {@link FormattingStyle}
