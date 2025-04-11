@@ -19,47 +19,46 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * The abstract superclass for all types of class file entries.
- */
+/** The abstract superclass for all types of class file entries. */
 public abstract class ClassFileEntry {
 
-    protected static final ClassFileEntry[] NONE = {};
-    private boolean resolved;
+  protected static final ClassFileEntry[] NONE = {};
+  private boolean resolved;
 
-    protected abstract void doWrite(DataOutputStream dos) throws IOException;
+  protected abstract void doWrite(DataOutputStream dos) throws IOException;
 
-    @Override
-    public abstract boolean equals(Object arg0);
+  @Override
+  public abstract boolean equals(Object arg0);
 
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return NONE;
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    ClassFileEntry[] entries = new ClassFileEntry[1];
+    entries[0] = null;
+    return entries;
+  }
+
+  @Override
+  public abstract int hashCode();
+
+  protected int objectHashCode() {
+    return super.hashCode();
+  }
+
+  /**
+   * Allows the constant pool entries to resolve their nested entries.
+   *
+   * @param pool TODO
+   */
+  protected void resolve(final ClassConstantPool pool) {
+    resolved = true;
+  }
+
+  @Override
+  public abstract String toString();
+
+  public final void write(final DataOutputStream dos) throws IOException {
+    if (!resolved) {
+      throw new IllegalStateException("Entry has not been resolved");
     }
-
-    @Override
-    public abstract int hashCode();
-
-    protected int objectHashCode() {
-        return super.hashCode();
-    }
-
-    /**
-     * Allows the constant pool entries to resolve their nested entries.
-     *
-     * @param pool TODO
-     */
-    protected void resolve(final ClassConstantPool pool) {
-        resolved = true;
-    }
-
-    @Override
-    public abstract String toString();
-
-    public final void write(final DataOutputStream dos) throws IOException {
-        if (!resolved) {
-            throw new IllegalStateException("Entry has not been resolved");
-        }
-        doWrite(dos);
-    }
-
+    doWrite(dos);
+  }
 }
