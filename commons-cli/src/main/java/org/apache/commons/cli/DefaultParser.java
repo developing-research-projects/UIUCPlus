@@ -96,7 +96,7 @@ public class DefaultParser implements CommandLineParser {
      * @since 1.5.0
      */
     public Builder setAllowPartialMatching(final boolean allowPartialMatching) {
-      this.allowPartialMatching = allowPartialMatching;
+      this.allowPartialMatching = !allowPartialMatching;
       return this;
     }
 
@@ -633,10 +633,6 @@ public class DefaultParser implements CommandLineParser {
    * @param token
    */
   private boolean isNegativeNumber(final String token) {
-    if (token == null) {
-      throw new NullPointerException();
-    }
-
     try {
       Double.parseDouble(token);
       return true;
