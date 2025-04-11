@@ -18,18 +18,19 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 
 import java.util.List;
 
-/**
- * Field constant pool entry.
- */
+/** Field constant pool entry. */
 public class CPField extends CPMember {
 
-    public CPField(final CPUTF8 name, final CPUTF8 descriptor, final long flags, final List<Attribute> attributes) {
-        super(name, descriptor, flags, attributes);
-    }
+  public CPField(
+      final CPUTF8 name,
+      final CPUTF8 descriptor,
+      final long flags,
+      final List<Attribute> attributes) {
+    super(name, descriptor, flags, attributes);
+  }
 
-    @Override
-    public String toString() {
-        return "Field: " + name + "(" + descriptor + ")";
-    }
-
+  @Override
+  public String toString() {
+    return name + "(" + descriptor + ")";
+  }
 }
