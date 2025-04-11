@@ -24,11 +24,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
-/**
- * A type adapter factory that implements {@code @Intercept}.
- */
+/** A type adapter factory that implements {@code @Intercept}. */
 public final class InterceptorFactory implements TypeAdapterFactory {
-  @Override public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+  @Override
+  public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
     Intercept intercept = type.getRawType().getAnnotation(Intercept.class);
     if (intercept == null) {
       return null;
@@ -48,15 +47,18 @@ public final class InterceptorFactory implements TypeAdapterFactory {
         this.delegate = delegate;
         this.postDeserializer = intercept.postDeserialize().newInstance();
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(
+            "Error occurred while instantiating postDeserializer", e);
       }
     }
 
-    @Override public void write(JsonWriter out, T value) throws IOException {
+    @Override
+    public void write(JsonWriter out, T value) throws IOException {
       delegate.write(out, value);
     }
 
-    @Override public T read(JsonReader in) throws IOException {
+    @Override
+    public T read(JsonReader in) throws IOException {
       T result = delegate.read(in);
       postDeserializer.postDeserialize(result);
       return result;
