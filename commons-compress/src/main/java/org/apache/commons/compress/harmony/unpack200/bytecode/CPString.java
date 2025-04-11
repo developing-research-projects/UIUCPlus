@@ -19,61 +19,60 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * String constant pool entry.
- */
+/** String constant pool entry. */
 public class CPString extends CPConstant {
 
-    private transient int nameIndex;
-    private final CPUTF8 name;
+  private transient int nameIndex;
+  private final CPUTF8 name;
 
-    private boolean hashCodeComputed;
+  private boolean hashCodeComputed;
 
-    private int cachedHashCode;
+  private int cachedHashCode;
 
-    public CPString(final CPUTF8 value, final int globalIndex) {
-        super(ConstantPoolEntry.CP_String, value, globalIndex);
-        this.name = value;
+  public CPString(final CPUTF8 value, final int globalIndex) {
+    super(ConstantPoolEntry.CP_String, value, globalIndex);
+    this.name = value;
+  }
+
+  private void generateHashCode() {
+    hashCodeComputed = true;
+    final int PRIME = 31;
+    int result = 1;
+    result = PRIME * result + name.hashCode();
+    cachedHashCode = result;
+  }
+
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    return new ClassFileEntry[] {name};
+  }
+
+  @Override
+  public int hashCode() {
+    if (!hashCodeComputed) {
+      generateHashCode();
     }
+    return cachedHashCode;
+  }
 
-    private void generateHashCode() {
-        hashCodeComputed = true;
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + name.hashCode();
-        cachedHashCode = result;
-    }
+  /**
+   * Allows the constant pool entries to resolve their nested entries
+   *
+   * @param pool TODO
+   */
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    nameIndex = pool.indexOf(name);
+  }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return new ClassFileEntry[] {name};
-    }
+  @Override
+  public String toString() {
+    return "String: " + getValue();
+  }
 
-    @Override
-    public int hashCode() {
-        if (!hashCodeComputed) {
-            generateHashCode();
-        }
-        return cachedHashCode;
-    }
-    /**
-     * Allows the constant pool entries to resolve their nested entries
-     *
-     * @param pool TODO
-     */
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        nameIndex = pool.indexOf(name);
-    }
-
-    @Override
-    public String toString() {
-        return "String: " + getValue();
-    }
-
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(nameIndex);
-    }
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(nameIndex);
+  }
 }
