@@ -18,18 +18,16 @@
  */
 package org.apache.commons.compress.archivers.zip;
 
-
 import java.util.zip.ZipException;
 
 /**
- * An extra field who's sole purpose is to align and pad the local file header
- * so that the entry's data starts at a certain position.
+ * An extra field who's sole purpose is to align and pad the local file header so that the entry's
+ * data starts at a certain position.
  *
- * <p>The padding content of the padding is ignored and not retained
- * when reading a padding field.</p>
+ * <p>The padding content of the padding is ignored and not retained when reading a padding field.
  *
- * <p>This enables Commons Compress to create "aligned" archives
- * similar to Android's {@code zipalign} command line tool.</p>
+ * <p>This enables Commons Compress to create "aligned" archives similar to Android's {@code
+ * zipalign} command line tool.
  *
  * @since 1.14
  * @see "https://developer.android.com/studio/command-line/zipalign.html"
@@ -37,105 +35,106 @@ import java.util.zip.ZipException;
  */
 public class ResourceAlignmentExtraField implements ZipExtraField {
 
-    /**
-     * Extra field id used for storing alignment and padding.
-     */
-    public static final ZipShort ID = new ZipShort(0xa11e);
+  /** Extra field id used for storing alignment and padding. */
+  public static final ZipShort ID = new ZipShort(0xa11e);
 
-    public static final int BASE_SIZE = 2;
+  public static final int BASE_SIZE = 2;
 
-    private static final int ALLOW_METHOD_MESSAGE_CHANGE_FLAG = 0x8000;
+  private static final int ALLOW_METHOD_MESSAGE_CHANGE_FLAG = 0x8000;
 
-    private short alignment;
+  private short alignment;
 
-    private boolean allowMethodChange;
+  private boolean allowMethodChange;
 
-    private int padding;
+  private int padding;
 
-    public ResourceAlignmentExtraField() {
+  public ResourceAlignmentExtraField() {}
+
+  public ResourceAlignmentExtraField(final int alignment) {
+    this(alignment, true);
+  }
+
+  public ResourceAlignmentExtraField(final int alignment, final boolean allowMethodChange) {
+    this(alignment, allowMethodChange, 0);
+  }
+
+  public ResourceAlignmentExtraField(
+      final int alignment, final boolean allowMethodChange, final int padding) {
+    if (alignment < 0 || alignment > 0x7fff) {
+      throw new IllegalArgumentException(
+          "Alignment must be between 0 and 0x7fff, was: " + alignment);
     }
-
-    public ResourceAlignmentExtraField(final int alignment) {
-        this(alignment, false);
+    if (padding < 0) {
+      throw new IllegalArgumentException("Padding must not be negative, was: " + padding);
     }
+    this.alignment = (short) alignment;
+    this.allowMethodChange = allowMethodChange;
+    this.padding = padding;
+  }
 
-    public ResourceAlignmentExtraField(final int alignment, final boolean allowMethodChange) {
-        this(alignment, allowMethodChange, 0);
-    }
+  /**
+   * Indicates whether method change is allowed when re-compressing the ZIP file.
+   *
+   * @return true if method change is allowed, false otherwise.
+   */
+  public boolean allowMethodChange() {
+    return allowMethodChange;
+  }
 
-    public ResourceAlignmentExtraField(final int alignment, final boolean allowMethodChange, final int padding) {
-        if (alignment < 0 || alignment > 0x7fff) {
-            throw new IllegalArgumentException("Alignment must be between 0 and 0x7fff, was: " + alignment);
-        }
-        if (padding < 0) {
-            throw new IllegalArgumentException("Padding must not be negative, was: " + padding);
-        }
-        this.alignment = (short) alignment;
-        this.allowMethodChange = allowMethodChange;
-        this.padding = padding;
-    }
+  /**
+   * Gets requested alignment.
+   *
+   * @return requested alignment.
+   */
+  public short getAlignment() {
+    return alignment;
+  }
 
-    /**
-     * Indicates whether method change is allowed when re-compressing the ZIP file.
-     *
-     * @return
-     *      true if method change is allowed, false otherwise.
-     */
-    public boolean allowMethodChange() {
-        return allowMethodChange;
-    }
+  @Override
+  public byte[] getCentralDirectoryData() {
+    return ZipShort.getBytes(
+        alignment | (allowMethodChange ? ALLOW_METHOD_MESSAGE_CHANGE_FLAG : 0));
+  }
 
-    /**
-     * Gets requested alignment.
-     *
-     * @return
-     *      requested alignment.
-     */
-    public short getAlignment() {
-        return alignment;
-    }
+  @Override
+  public ZipShort getCentralDirectoryLength() {
+    return new ZipShort(BASE_SIZE);
+  }
 
-    @Override
-    public byte[] getCentralDirectoryData() {
-        return ZipShort.getBytes(alignment | (allowMethodChange ? ALLOW_METHOD_MESSAGE_CHANGE_FLAG : 0));
-    }
+  @Override
+  public ZipShort getHeaderId() {
+    return ID;
+  }
 
-    @Override
-    public ZipShort getCentralDirectoryLength() {
-        return new ZipShort(BASE_SIZE);
-    }
+  @Override
+  public byte[] getLocalFileDataData() {
+    final byte[] content = new byte[BASE_SIZE + padding];
+    ZipShort.putShort(
+        alignment | (allowMethodChange ? ALLOW_METHOD_MESSAGE_CHANGE_FLAG : 0), content, 0);
+    return content;
+  }
 
-    @Override
-    public ZipShort getHeaderId() {
-        return ID;
-    }
+  @Override
+  public ZipShort getLocalFileDataLength() {
+    return new ZipShort(BASE_SIZE + padding);
+  }
 
-    @Override
-    public byte[] getLocalFileDataData() {
-        final byte[] content = new byte[BASE_SIZE + padding];
-        ZipShort.putShort(alignment | (allowMethodChange ? ALLOW_METHOD_MESSAGE_CHANGE_FLAG : 0),
-                          content, 0);
-        return content;
+  @Override
+  public void parseFromCentralDirectoryData(final byte[] buffer, final int offset, final int length)
+      throws ZipException {
+    if (length < BASE_SIZE) {
+      throw new ZipException(
+          "Too short content for ResourceAlignmentExtraField (0xa11e): " + length);
     }
+    final int alignmentValue = ZipShort.getValue(buffer, offset);
+    this.alignment = (short) (alignmentValue & (ALLOW_METHOD_MESSAGE_CHANGE_FLAG - 1));
+    this.allowMethodChange = (alignmentValue & ALLOW_METHOD_MESSAGE_CHANGE_FLAG) != 0;
+  }
 
-    @Override
-    public ZipShort getLocalFileDataLength() {
-        return new ZipShort(BASE_SIZE + padding);
-    }
-
-    @Override
-    public void parseFromCentralDirectoryData(final byte[] buffer, final int offset, final int length) throws ZipException {
-        if (length < BASE_SIZE) {
-            throw new ZipException("Too short content for ResourceAlignmentExtraField (0xa11e): " + length);
-        }
-        final int alignmentValue = ZipShort.getValue(buffer, offset);
-        this.alignment = (short) (alignmentValue & (ALLOW_METHOD_MESSAGE_CHANGE_FLAG - 1));
-        this.allowMethodChange = (alignmentValue & ALLOW_METHOD_MESSAGE_CHANGE_FLAG) != 0;
-    }
-
-    @Override
-    public void parseFromLocalFileData(final byte[] buffer, final int offset, final int length) throws ZipException {
-        parseFromCentralDirectoryData(buffer, offset, length);
-        this.padding = length - BASE_SIZE;
-    }
+  @Override
+  public void parseFromLocalFileData(final byte[] buffer, final int offset, final int length)
+      throws ZipException {
+    parseFromCentralDirectoryData(buffer, offset, length);
+    this.padding = length - BASE_SIZE;
+  }
 }
