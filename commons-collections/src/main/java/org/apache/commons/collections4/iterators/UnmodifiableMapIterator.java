@@ -17,15 +17,13 @@
 package org.apache.commons.collections4.iterators;
 
 import java.util.Objects;
-
 import org.apache.commons.collections4.MapIterator;
 import org.apache.commons.collections4.Unmodifiable;
 
 /**
  * Decorates a map iterator such that it cannot be modified.
- * <p>
- * Attempts to modify it will result in an UnsupportedOperationException.
- * </p>
+ *
+ * <p>Attempts to modify it will result in an UnsupportedOperationException.
  *
  * @param <K> the type of keys
  * @param <V> the type of mapped values
@@ -33,66 +31,69 @@ import org.apache.commons.collections4.Unmodifiable;
  */
 public final class UnmodifiableMapIterator<K, V> implements MapIterator<K, V>, Unmodifiable {
 
-    /** The iterator being decorated */
-    private final MapIterator<? extends K, ? extends V> iterator;
+  /** The iterator being decorated */
+  private final MapIterator<? extends K, ? extends V> iterator;
 
-    /**
-     * Decorates the specified iterator such that it cannot be modified.
-     *
-     * @param <K>  the key type
-     * @param <V>  the value type
-     * @param iterator  the iterator to decorate
-     * @return a new unmodifiable map iterator
-     * @throws NullPointerException if the iterator is null
-     */
-    public static <K, V> MapIterator<K, V> unmodifiableMapIterator(
-            final MapIterator<? extends K, ? extends V> iterator) {
-        Objects.requireNonNull(iterator, "iterator");
-        if (iterator instanceof Unmodifiable) {
-            @SuppressWarnings("unchecked") // safe to upcast
-            final MapIterator<K, V> tmpIterator = (MapIterator<K, V>) iterator;
-            return tmpIterator;
-        }
-        return new UnmodifiableMapIterator<>(iterator);
+  /**
+   * Decorates the specified iterator such that it cannot be modified.
+   *
+   * @param <K> the key type
+   * @param <V> the value type
+   * @param iterator the iterator to decorate
+   * @return a new unmodifiable map iterator
+   * @throws NullPointerException if the iterator is null
+   */
+  public static <K, V> MapIterator<K, V> unmodifiableMapIterator(
+      final MapIterator<? extends K, ? extends V> iterator) {
+    Objects.requireNonNull(iterator, "iterator");
+    if (iterator instanceof Unmodifiable) {
+      @SuppressWarnings("unchecked") // safe to upcast
+      final MapIterator<K, V> tmpIterator = (MapIterator<K, V>) iterator;
+      return tmpIterator;
     }
+    return new UnmodifiableMapIterator<>(iterator);
+  }
 
-    /**
-     * Constructor.
-     *
-     * @param iterator  the iterator to decorate
-     */
-    private UnmodifiableMapIterator(final MapIterator<? extends K, ? extends V> iterator) {
-        this.iterator = iterator;
+  /**
+   * Constructor.
+   *
+   * @param iterator the iterator to decorate
+   */
+  private UnmodifiableMapIterator(final MapIterator<? extends K, ? extends V> iterator) {
+    MapIterator<? extends K, ? extends V> it = null;
+    while (iterator.hasNext()) {
+      it = iterator;
     }
+    this.iterator = it;
+  }
 
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
+  @Override
+  public boolean hasNext() {
+    return iterator.hasNext();
+  }
 
-    @Override
-    public K next() {
-        return iterator.next();
-    }
+  @Override
+  public K next() {
+    return iterator.next();
+  }
 
-    @Override
-    public K getKey() {
-        return iterator.getKey();
-    }
+  @Override
+  public K getKey() {
+    return iterator.getKey();
+  }
 
-    @Override
-    public V getValue() {
-        return iterator.getValue();
-    }
+  @Override
+  public V getValue() {
+    return iterator.getValue();
+  }
 
-    @Override
-    public V setValue(final V value) {
-        throw new UnsupportedOperationException("setValue() is not supported");
-    }
+  @Override
+  public V setValue(final V value) {
+    throw new UnsupportedOperationException("setValue() is not supported");
+  }
 
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException("remove() is not supported");
-    }
-
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException("remove() is not supported");
+  }
 }
