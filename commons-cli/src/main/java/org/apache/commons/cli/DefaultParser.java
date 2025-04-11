@@ -328,8 +328,7 @@ public class DefaultParser implements CommandLineParser {
 
       if (currentOption != null && token.length() != i + 1) {
         // add the trail as an argument of the option
-        currentOption.addValueForProcessing(
-            stripLeadingAndTrailingQuotesDefaultOff(token.substring(i + 1)));
+        currentOption.addValueForProcessing(token.substring((i + 1)));
         break;
       }
     }
@@ -633,10 +632,6 @@ public class DefaultParser implements CommandLineParser {
    * @param token
    */
   private boolean isNegativeNumber(final String token) {
-    if (token == null) {
-      throw new NullPointerException();
-    }
-
     try {
       Double.parseDouble(token);
       return true;
