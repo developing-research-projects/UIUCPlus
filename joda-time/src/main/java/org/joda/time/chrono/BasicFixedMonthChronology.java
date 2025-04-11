@@ -20,13 +20,11 @@ import org.joda.time.DateTimeConstants;
 
 /**
  * Abstract implementation of a calendar system based around fixed length months.
- * <p>
- * As the month length is fixed various calculations can be optimised.
- * This implementation assumes any additional days after twelve
- * months fall into a thirteenth month.
- * <p>
- * BasicFixedMonthChronology is thread-safe and immutable, and all
- * subclasses must be as well.
+ *
+ * <p>As the month length is fixed various calculations can be optimised. This implementation
+ * assumes any additional days after twelve months fall into a thirteenth month.
+ *
+ * <p>BasicFixedMonthChronology is thread-safe and immutable, and all subclasses must be as well.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
@@ -34,142 +32,140 @@ import org.joda.time.DateTimeConstants;
  */
 abstract class BasicFixedMonthChronology extends BasicChronology {
 
-    /** Serialization lock */
-    private static final long serialVersionUID = 261387371998L;
+  /** Serialization lock */
+  private static final long serialVersionUID = 261387371998L;
 
-    /** The length of the month. */
-    static final int MONTH_LENGTH = 30;
+  /** The length of the month. */
+  static final int MONTH_LENGTH = 30;
 
-    /** The typical millis per year. */
-    static final long MILLIS_PER_YEAR =
-        (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
+  /** The typical millis per year. */
+  static final long MILLIS_PER_YEAR = (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
 
-    /** The length of the month in millis. */
-    static final long MILLIS_PER_MONTH = ((long) MONTH_LENGTH) * DateTimeConstants.MILLIS_PER_DAY;
+  /** The length of the month in millis. */
+  static final long MILLIS_PER_MONTH = ((long) MONTH_LENGTH) * DateTimeConstants.MILLIS_PER_DAY;
 
-    //-----------------------------------------------------------------------
-    /**
-     * Restricted constructor.
-     *
-     * @param base  the base chronology
-     * @param param  the init parameter
-     * @param minDaysInFirstWeek  the minimum days in the first week
-     */
-    BasicFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
-        super(base, param, minDaysInFirstWeek);
+  // -----------------------------------------------------------------------
+  /**
+   * Restricted constructor.
+   *
+   * @param base the base chronology
+   * @param param the init parameter
+   * @param minDaysInFirstWeek the minimum days in the first week
+   */
+  BasicFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    super(base, param, minDaysInFirstWeek);
+  }
+
+  // -----------------------------------------------------------------------
+  @Override
+  long setYear(long instant, int year) {
+    // optimsed implementation of set, due to fixed months
+    int thisYear = getYear(instant);
+    int dayOfYear = getDayOfYear(instant, thisYear);
+    int millisOfDay = getMillisOfDay(instant);
+
+    if ((year != thisYear) && (dayOfYear > 365)) {
+      // Current year is leap, and day is leap.
+      if (!isLeapYear(year)) {
+        // Moving to a non-leap year, leap day doesn't exist.
+        dayOfYear--;
+      }
     }
 
-    //-----------------------------------------------------------------------
-    @Override
-    long setYear(long instant, int year) {
-        // optimsed implementation of set, due to fixed months
-        int thisYear = getYear(instant);
-        int dayOfYear = getDayOfYear(instant, thisYear);
-        int millisOfDay = getMillisOfDay(instant);
+    instant = getYearMonthDayMillis(year, 1, dayOfYear);
+    instant += millisOfDay;
+    return instant;
+  }
 
-        if (dayOfYear > 365) {
-            // Current year is leap, and day is leap.
-            if (!isLeapYear(year)) {
-                // Moving to a non-leap year, leap day doesn't exist.
-                dayOfYear--;
-            }
-        }
+  // -----------------------------------------------------------------------
+  @Override
+  long getYearDifference(long minuendInstant, long subtrahendInstant) {
+    // optimsed implementation of getDifference, due to fixed months
+    int minuendYear = getYear(minuendInstant);
+    int subtrahendYear = getYear(subtrahendInstant);
 
-        instant = getYearMonthDayMillis(year, 1, dayOfYear);
-        instant += millisOfDay;
-        return instant;
+    // Inlined remainder method to avoid duplicate calls to get.
+    long minuendRem = minuendInstant - getYearMillis(minuendYear);
+    long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
+
+    int difference = minuendYear - subtrahendYear;
+    if (minuendRem < subtrahendRem) {
+      difference--;
     }
+    return difference;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    long getYearDifference(long minuendInstant, long subtrahendInstant) {
-        // optimsed implementation of getDifference, due to fixed months
-        int minuendYear = getYear(minuendInstant);
-        int subtrahendYear = getYear(subtrahendInstant);
+  // -----------------------------------------------------------------------
+  @Override
+  long getTotalMillisByYearMonth(int year, int month) {
+    return ((month - 1) * MILLIS_PER_MONTH);
+  }
 
-        // Inlined remainder method to avoid duplicate calls to get.
-        long minuendRem = minuendInstant - getYearMillis(minuendYear);
-        long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
+  // -----------------------------------------------------------------------
+  @Override
+  int getDayOfMonth(long millis) {
+    // optimised for fixed months
+    return (getDayOfYear(millis) - 1) % MONTH_LENGTH + 1;
+  }
 
-        int difference = minuendYear - subtrahendYear;
-        if (minuendRem < subtrahendRem) {
-            difference--;
-        }
-        return difference;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  boolean isLeapYear(int year) {
+    return (year & 3) == 3;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    long getTotalMillisByYearMonth(int year, int month) {
-        return ((month - 1) * MILLIS_PER_MONTH);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getDaysInYearMonth(int year, int month) {
+    return (month != 13) ? MONTH_LENGTH : (isLeapYear(year) ? 6 : 5);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getDayOfMonth(long millis) {
-        // optimised for fixed months
-        return (getDayOfYear(millis) - 1) % MONTH_LENGTH + 1;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getDaysInMonthMax() {
+    return MONTH_LENGTH;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    boolean isLeapYear(int year) {
-        return (year & 3) == 3;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getDaysInMonthMax(int month) {
+    return (month != 13 ? MONTH_LENGTH : 6);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getDaysInYearMonth(int year, int month) {
-        return (month != 13) ? MONTH_LENGTH : (isLeapYear(year) ? 6 : 5);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getMonthOfYear(long millis) {
+    return (getDayOfYear(millis) - 1) / MONTH_LENGTH + 1;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getDaysInMonthMax() {
-        return MONTH_LENGTH;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getMonthOfYear(long millis, int year) {
+    long monthZeroBased = (millis - getYearMillis(year)) / MILLIS_PER_MONTH;
+    return ((int) monthZeroBased) + 1;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getDaysInMonthMax(int month) {
-        return (month != 13 ? MONTH_LENGTH : 6);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  int getMaxMonth() {
+    return 13;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getMonthOfYear(long millis) {
-        return (getDayOfYear(millis) - 1) / MONTH_LENGTH + 1;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  long getAverageMillisPerYear() {
+    return MILLIS_PER_YEAR;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getMonthOfYear(long millis, int year) {
-        long monthZeroBased = (millis - getYearMillis(year)) / MILLIS_PER_MONTH;
-        return ((int) monthZeroBased) + 1;
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  long getAverageMillisPerYearDividedByTwo() {
+    return MILLIS_PER_YEAR / 2;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    int getMaxMonth() {
-        return 13;
-    }
-
-    //-----------------------------------------------------------------------
-    @Override
-    long getAverageMillisPerYear() {
-        return MILLIS_PER_YEAR;
-    }
-
-    //-----------------------------------------------------------------------
-    @Override
-    long getAverageMillisPerYearDividedByTwo() {
-        return MILLIS_PER_YEAR / 2;
-    }
-
-    //-----------------------------------------------------------------------
-    @Override
-    long getAverageMillisPerMonth() {
-        return MILLIS_PER_MONTH;
-    }
-
+  // -----------------------------------------------------------------------
+  @Override
+  long getAverageMillisPerMonth() {
+    return MILLIS_PER_MONTH;
+  }
 }
