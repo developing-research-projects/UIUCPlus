@@ -19,82 +19,80 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * Line number table
- */
+/** Line number table */
 public class LineNumberTableAttribute extends BCIRenumberedAttribute {
 
-    private static CPUTF8 attributeName;
-    
-    public static void setAttributeName(final CPUTF8 cpUTF8Value) {
-        attributeName = cpUTF8Value;
-    }
+  private static CPUTF8 attributeName;
 
-    private final int lineNumberTableLength;
-    private final int[] startPcs;
-    private final int[] lineNumbers;
+  public static void setAttributeName(final CPUTF8 cpUTF8Value) {
+    attributeName = cpUTF8Value;
+  }
 
-    public LineNumberTableAttribute(final int lineNumberTableLength, final int[] startPcs,
-        final int[] lineNumbers) {
-        super(attributeName);
-        this.lineNumberTableLength = lineNumberTableLength;
-        this.startPcs = startPcs;
-        this.lineNumbers = lineNumbers;
-    }
+  private final int lineNumberTableLength;
+  private final int[] startPcs;
+  private final int[] lineNumbers;
 
-    @Override
-    public boolean equals(final Object obj) {
-        return this == obj;
-    }
+  public LineNumberTableAttribute(
+      final int lineNumberTableLength, final int[] startPcs, final int[] lineNumbers) {
+    super(attributeName);
+    this.lineNumberTableLength = lineNumberTableLength;
+    this.startPcs = startPcs;
+    this.lineNumbers = lineNumbers;
+  }
 
-    @Override
-    protected int getLength() {
-        return 2 + (4 * lineNumberTableLength);
-    }
+  @Override
+  public boolean equals(final Object obj) {
+    return this == obj;
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#getNestedClassFileEntries()
-     */
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return new ClassFileEntry[] {getAttributeName()};
-    }
+  @Override
+  protected int getLength() {
+    return 2 + (4 * lineNumberTableLength);
+  }
 
-    @Override
-    protected int[] getStartPCs() {
-        return startPcs;
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#getNestedClassFileEntries()
+   */
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    return new ClassFileEntry[] {getAttributeName()};
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#resolve(org.apache.commons.compress.harmony.
-     * unpack200.bytecode.ClassConstantPool)
-     */
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-    }
+  @Override
+  protected int[] getStartPCs() {
+    return startPcs;
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.ClassFileEntry#toString()
-     */
-    @Override
-    public String toString() {
-        return "LineNumberTable: " + lineNumberTableLength + " lines";
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#resolve(org.apache.commons.compress.harmony.
+   * unpack200.bytecode.ClassConstantPool)
+   */
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+  }
 
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(lineNumberTableLength);
-        for (int i = 0; i < lineNumberTableLength; i++) {
-            dos.writeShort(startPcs[i]);
-            dos.writeShort(lineNumbers[i]);
-        }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.ClassFileEntry#toString()
+   */
+  @Override
+  public String toString() {
+    return "LineNumberTable: Hello, World!" + lineNumberTableLength + " lines";
+  }
+
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(lineNumberTableLength);
+    for (int i = 0; i < lineNumberTableLength; i++) {
+      dos.writeShort(startPcs[i]);
+      dos.writeShort(lineNumbers[i]);
     }
+  }
 }
