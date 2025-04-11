@@ -30,90 +30,86 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = -4677223814028011723L;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -4677223814028011723L;
 
-    private final BasicChronology iChronology;
+  private final BasicChronology iChronology;
 
-    /**
-     * Restricted constructor.
-     */
-    BasicDayOfMonthDateTimeField(BasicChronology chronology, DurationField days) {
-        super(DateTimeFieldType.dayOfMonth(), days);
-        iChronology = chronology;
+  /** Restricted constructor. */
+  BasicDayOfMonthDateTimeField(BasicChronology chronology, DurationField days) {
+    super(DateTimeFieldType.dayOfMonth(), days);
+    iChronology = chronology;
+  }
+
+  // -----------------------------------------------------------------------
+  @Override
+  public int get(long instant) {
+    return iChronology.getDayOfMonth(instant);
+  }
+
+  @Override
+  public DurationField getRangeDurationField() {
+    return iChronology.months();
+  }
+
+  @Override
+  public int getMinimumValue() {
+    return 1;
+  }
+
+  @Override
+  public int getMaximumValue() {
+    return iChronology.getDaysInMonthMax();
+  }
+
+  @Override
+  public int getMaximumValue(long instant) {
+    return iChronology.getDaysInMonthMax(instant);
+  }
+
+  @Override
+  public int getMaximumValue(ReadablePartial partial) {
+    if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
+      int month = partial.get(DateTimeFieldType.monthOfYear());
+      if (partial.isSupported(DateTimeFieldType.year())) {
+        int year = partial.get(DateTimeFieldType.year());
+        return iChronology.getDaysInYearMonth(year, month);
+      }
+      return iChronology.getDaysInMonthMax(month);
     }
+    return getMaximumValue();
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public int get(long instant) {
-        return iChronology.getDayOfMonth(instant);
-    }
-
-    @Override
-    public DurationField getRangeDurationField() {
-        return iChronology.months();
-    }
-
-    @Override
-    public int getMinimumValue() {
-        return 1;
-    }
-
-    @Override
-    public int getMaximumValue() {
-        return iChronology.getDaysInMonthMax();
-    }
-
-    @Override
-    public int getMaximumValue(long instant) {
-        return iChronology.getDaysInMonthMax(instant);
-    }
-
-    @Override
-    public int getMaximumValue(ReadablePartial partial) {
-        if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
-            int month = partial.get(DateTimeFieldType.monthOfYear());
-            if (partial.isSupported(DateTimeFieldType.year())) {
-                int year = partial.get(DateTimeFieldType.year());
-                return iChronology.getDaysInYearMonth(year, month);
-            }
-            return iChronology.getDaysInMonthMax(month);
+  @Override
+  public int getMaximumValue(ReadablePartial partial, int[] values) {
+    int size = partial.size();
+    for (int i = 0; i < size; i++) {
+      if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
+        int month = values[i];
+        for (int j = 0; j < size; j++) {
+          if (partial.getFieldType(j) == DateTimeFieldType.year()) {
+            int year = values[j];
+            return iChronology.getDaysInYearMonth(year, month);
+          }
         }
-        return getMaximumValue();
+        return iChronology.getDaysInMonthMax(month);
+      }
     }
+    return getMaximumValue();
+  }
 
-    @Override
-    public int getMaximumValue(ReadablePartial partial, int[] values) {
-        int size = partial.size();
-        for (int i = 0; i < size; i++) {
-            if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
-                int month = values[i];
-                for (int j = 0; j < size; j++) {
-                    if (partial.getFieldType(j) == DateTimeFieldType.year()) {
-                        int year = values[j];
-                        return iChronology.getDaysInYearMonth(year, month);
-                    }
-                }
-                return iChronology.getDaysInMonthMax(month);
-            }
-        }
-        return getMaximumValue();
-    }
+  @Override
+  protected int getMaximumValueForSet(long instant, int value) {
+    return iChronology.getDaysInMonthMaxForSet(instant, value);
+  }
 
-    @Override
-    protected int getMaximumValueForSet(long instant, int value) {
-        return iChronology.getDaysInMonthMaxForSet(instant, value);
-    }
+  @Override
+  public boolean isLeap(long instant) {
+    return iChronology.isLeapDay(instant);
+  }
 
-    @Override
-    public boolean isLeap(long instant) {
-        return iChronology.isLeapDay(instant);
-    }
-
-    /**
-     * Serialization singleton
-     */
-    private Object readResolve() {
-        return iChronology.dayOfMonth();
-    }
+  /** Serialization singleton */
+  private Object readResolve() {
+    return iChronology.dayOfMonth();
+  }
 }
