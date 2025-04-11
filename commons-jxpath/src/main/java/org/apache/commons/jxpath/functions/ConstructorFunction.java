@@ -18,63 +18,58 @@ package org.apache.commons.jxpath.functions;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.util.TypeUtils;
 
-/**
- * An extension function that creates an instance using a constructor.
- */
+/** An extension function that creates an instance using a constructor. */
 public class ConstructorFunction implements Function {
-    private static final Object[] EMPTY_ARRAY = {};
+  private static final Object[] EMPTY_ARRAY = {};
 
-    private final Constructor constructor;
+  private final Constructor constructor;
 
-    /**
-     * Create a new ConstructorFunction.
-     * @param constructor the constructor to call.
-     */
-    public ConstructorFunction(final Constructor constructor) {
-        this.constructor = constructor;
+  /**
+   * Create a new ConstructorFunction.
+   *
+   * @param constructor the constructor to call.
+   */
+  public ConstructorFunction(final Constructor constructor) {
+    this.constructor = constructor;
+  }
+
+  /**
+   * Converts parameters to suitable types and invokes the constructor.
+   *
+   * @param context evaluation context
+   * @param parameters constructor args
+   * @return new instance
+   */
+  @Override
+  public Object invoke(final ExpressionContext context, Object[] parameters) {
+    try {
+      Object[] args;
+      if (parameters == null) {
+        parameters = EMPTY_ARRAY;
+      }
+      int pi = 0;
+      final Class[] types = constructor.getParameterTypes();
+      if (types.length > 0 && ExpressionContext.class.isAssignableFrom(types[0])) {
+        pi = 1;
+      }
+      args = new Object[parameters.length + pi];
+      if (pi == 1) {
+        args[0] = context;
+      }
+      for (int i = 0; i < parameters.length; i++) {
+        args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
+      }
+      return constructor.newInstance(args);
+    } catch (Throwable ex) {
+      if (ex instanceof InvocationTargetException) {
+        ex = ((InvocationTargetException) ex).getTargetException();
+      }
+      throw new JXPathInvalidAccessException("Cannot invoke constructor " + constructor, ex);
     }
-
-    /**
-     * Converts parameters to suitable types and invokes the constructor.
-     * @param context evaluation context
-     * @param parameters constructor args
-     * @return new instance
-     */
-    @Override
-    public Object invoke(final ExpressionContext context, Object[] parameters) {
-        try {
-            Object[] args;
-            if (parameters == null) {
-                parameters = EMPTY_ARRAY;
-            }
-            int pi = 0;
-            final Class[] types = constructor.getParameterTypes();
-            if (types.length > 0
-                && ExpressionContext.class.isAssignableFrom(types[0])) {
-                pi = 1;
-            }
-            args = new Object[parameters.length + pi];
-            if (pi == 1) {
-                args[0] = context;
-            }
-            for (int i = 0; i < parameters.length; i++) {
-                args[i + pi] = TypeUtils.convert(parameters[i], types[i + pi]);
-            }
-            return constructor.newInstance(args);
-        }
-        catch (Throwable ex) {
-            if (ex instanceof InvocationTargetException) {
-                ex = ((InvocationTargetException) ex).getTargetException();
-            }
-            throw new JXPathInvalidAccessException(
-                "Cannot invoke constructor " + constructor,
-                ex);
-        }
-    }
+  }
 }
