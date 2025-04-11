@@ -25,82 +25,78 @@ import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
-/**
- * EvalContext that walks the "attribute::" axis.
- */
+/** EvalContext that walks the "attribute::" axis. */
 public class AttributeContext extends EvalContext {
-    private static final QName WILDCARD = new QName(null, "*");
+  private static final QName WILDCARD = new QName(null, "*");
 
-    private final NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodeIterator iterator;
-    private NodePointer currentNodePointer;
+  private final NodeTest nodeTest;
+  private boolean setStarted = false;
+  private NodeIterator iterator;
+  private NodePointer currentNodePointer;
 
-    /**
-     * Create a new AttributeContext.
-     * @param parentContext represents the previous step on the path
-     * @param nodeTest is the name of the attribute we are looking for
-     */
-    public AttributeContext(final EvalContext parentContext, final NodeTest nodeTest) {
-        super(parentContext);
-        this.nodeTest = nodeTest;
+  /**
+   * Create a new AttributeContext.
+   *
+   * @param parentContext represents the previous step on the path
+   * @param nodeTest is the name of the attribute we are looking for
+   */
+  public AttributeContext(final EvalContext parentContext, final NodeTest nodeTest) {
+    super(parentContext);
+    this.nodeTest = nodeTest;
+  }
+
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return currentNodePointer;
+  }
+
+  @Override
+  public void reset() {
+    setStarted = false;
+    iterator = null;
+    super.reset();
+  }
+
+  @Override
+  public boolean setPosition(final int position) {
+    if (position < getCurrentPosition()) {
+      reset();
     }
 
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return currentNodePointer;
+    while (getCurrentPosition() < position) {
+      if (!nextNode()) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    @Override
-    public void reset() {
-        setStarted = false;
-        iterator = null;
-        super.reset();
+  @Override
+  public boolean nextNode() {
+    super.setPosition(getCurrentPosition() + 1);
+    if (!setStarted) {
+      setStarted = true;
+      QName name;
+      if (nodeTest instanceof NodeNameTest) {
+        name = ((NodeNameTest) nodeTest).getNodeName();
+      } else {
+        if (nodeTest instanceof NodeTypeTest
+            && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
+          name = WILDCARD;
+        } else {
+          iterator = null;
+          return false;
+        }
+      }
+      iterator = parentContext.getCurrentNodePointer().attributeIterator(name);
     }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < getCurrentPosition()) {
-            reset();
-        }
-
-        while (getCurrentPosition() < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
-        return true;
+    if (iterator == null) {
+      return false;
     }
-
-    @Override
-    public boolean nextNode() {
-        super.setPosition(getCurrentPosition() + 1);
-        if (!setStarted) {
-            setStarted = true;
-            QName name;
-            if (nodeTest instanceof NodeNameTest) {
-                name = ((NodeNameTest) nodeTest).getNodeName();
-            }
-            else {
-                if (nodeTest instanceof NodeTypeTest
-                        && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE) {
-                    name = WILDCARD;
-                }
-                else {
-                    iterator = null;
-                    return false;
-                }
-            }
-            iterator = parentContext.getCurrentNodePointer().attributeIterator(
-                    name);
-        }
-        if (iterator == null) {
-            return false;
-        }
-        if (!iterator.setPosition(iterator.getPosition() + 1)) {
-            return false;
-        }
-        currentNodePointer = iterator.getNodePointer();
-        return true;
+    if (!iterator.setPosition(iterator.getPosition() + 1)) {
+      return false;
     }
+    currentNodePointer = iterator.getNodePointer();
+    return true;
+  }
 }
