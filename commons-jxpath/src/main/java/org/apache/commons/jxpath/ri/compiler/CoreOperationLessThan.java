@@ -16,27 +16,26 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-/**
- * Implementation of {@link Expression} for the operation "&lt;".
- */
+/** Implementation of {@link Expression} for the operation "&lt;". */
 public class CoreOperationLessThan extends CoreOperationRelationalExpression {
 
-    /**
-     * Create a new CoreOperationLessThan.
-     * @param arg1 left Expression
-     * @param arg2 right Expression
-     */
-    public CoreOperationLessThan(final Expression arg1, final Expression arg2) {
-        super(new Expression[] { arg1, arg2 });
-    }
+  /**
+   * Create a new CoreOperationLessThan.
+   *
+   * @param arg1 left Expression
+   * @param arg2 right Expression
+   */
+  public CoreOperationLessThan(final Expression arg1, final Expression arg2) {
+    super(new Expression[] {arg1, arg2});
+  }
 
-    @Override
-    protected boolean evaluateCompare(final int compare) {
-        return compare < 0;
-    }
+  @Override
+  protected boolean evaluateCompare(final int compare) {
+    return compare < 0;
+  }
 
-    @Override
-    public String getSymbol() {
-        return "<";
-    }
+  @Override
+  public String getSymbol() {
+    return "<";
+  }
 }
