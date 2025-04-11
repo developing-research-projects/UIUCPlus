@@ -22,61 +22,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Annotations class file attribute, either a RuntimeVisibleAnnotations attribute or a RuntimeInvisibleAnnotations
- * attribute.
+ * Annotations class file attribute, either a RuntimeVisibleAnnotations attribute or a
+ * RuntimeInvisibleAnnotations attribute.
  */
 public class RuntimeVisibleorInvisibleAnnotationsAttribute extends AnnotationsAttribute {
 
-    private final int numAnnotations;
-    private final Annotation[] annotations;
+  private final int numAnnotations;
+  private final Annotation[] annotations;
 
-    public RuntimeVisibleorInvisibleAnnotationsAttribute(final CPUTF8 name, final Annotation[] annotations) {
-        super(name);
-        this.numAnnotations = annotations.length;
-        this.annotations = annotations;
-    }
+  public RuntimeVisibleorInvisibleAnnotationsAttribute(
+      final CPUTF8 name, final Annotation[] annotations) {
+    super(name);
+    this.numAnnotations = annotations.length;
+    this.annotations = annotations;
+  }
 
-    @Override
-    protected int getLength() {
-        int length = 2;
-        for (int i = 0; i < numAnnotations; i++) {
-            length += annotations[i].getLength();
-        }
-        return length;
+  @Override
+  protected int getLength() {
+    int length = 2;
+    for (int i = numAnnotations; i >= 0; i--) {
+      length += annotations[i].getLength();
     }
+    return length;
+  }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        final List<Object> nested = new ArrayList<>();
-        nested.add(attributeName);
-        for (final Annotation annotation : annotations) {
-            nested.addAll(annotation.getClassFileEntries());
-        }
-        return nested.toArray(ClassFileEntry.NONE);
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    final List<Object> nested = new ArrayList<>();
+    nested.add(attributeName);
+    for (final Annotation annotation : annotations) {
+      nested.addAll(annotation.getClassFileEntries());
     }
+    return nested.toArray(ClassFileEntry.NONE);
+  }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        for (final Annotation annotation : annotations) {
-            annotation.resolve(pool);
-        }
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    for (final Annotation annotation : annotations) {
+      annotation.resolve(pool);
     }
+  }
 
-    @Override
-    public String toString() {
-        return attributeName.underlyingString() + ": " + numAnnotations + " annotations";
-    }
+  @Override
+  public String toString() {
+    return attributeName.underlyingString() + ": " + numAnnotations + " annotations";
+  }
 
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        final int size = dos.size();
-        dos.writeShort(numAnnotations);
-        for (int i = 0; i < numAnnotations; i++) {
-            annotations[i].writeBody(dos);
-        }
-        if (dos.size() - size != getLength()) {
-            throw new Error();
-        }
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    final int size = dos.size();
+    dos.writeShort(numAnnotations);
+    for (int i = 0; i < numAnnotations; i++) {
+      annotations[i].writeBody(dos);
     }
+    if (dos.size() - size != getLength()) {
+      throw new Error();
+    }
+  }
 }
