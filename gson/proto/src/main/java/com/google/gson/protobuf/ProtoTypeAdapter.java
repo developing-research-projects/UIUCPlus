@@ -51,11 +51,12 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * GSON type adapter for protocol buffers that knows how to serialize enums either by using their
  * values or their names, and also supports custom proto field names.
- * <p>
- * You can specify which case representation is used for the proto fields when writing/reading the
- * JSON payload by calling {@link Builder#setFieldNameSerializationFormat(CaseFormat, CaseFormat)}.
- * <p>
- * An example of default serialization/deserialization using custom proto field names is shown
+ *
+ * <p>You can specify which case representation is used for the proto fields when writing/reading
+ * the JSON payload by calling {@link Builder#setFieldNameSerializationFormat(CaseFormat,
+ * CaseFormat)}.
+ *
+ * <p>An example of default serialization/deserialization using custom proto field names is shown
  * below:
  *
  * <pre>
@@ -69,11 +70,8 @@ import java.util.concurrent.ConcurrentMap;
  * @author Emmanuel Cron
  * @author Stanley Wang
  */
-public class ProtoTypeAdapter
-    implements JsonSerializer<Message>, JsonDeserializer<Message> {
-  /**
-   * Determines how enum <u>values</u> should be serialized.
-   */
+public class ProtoTypeAdapter implements JsonSerializer<Message>, JsonDeserializer<Message> {
+  /** Determines how enum <u>values</u> should be serialized. */
   public enum EnumSerialization {
     /**
      * Serializes and deserializes enum values using their <b>number</b>. When this is used, custom
@@ -84,9 +82,7 @@ public class ProtoTypeAdapter
     NAME;
   }
 
-  /**
-   * Builder for {@link ProtoTypeAdapter}s.
-   */
+  /** Builder for {@link ProtoTypeAdapter}s. */
   public static class Builder {
     private final Set<Extension<FieldOptions, String>> serializedNameExtensions;
     private final Set<Extension<EnumValueOptions, String>> serializedEnumValueExtensions;
@@ -94,7 +90,9 @@ public class ProtoTypeAdapter
     private CaseFormat protoFormat;
     private CaseFormat jsonFormat;
 
-    private Builder(EnumSerialization enumSerialization, CaseFormat fromFieldNameFormat,
+    private Builder(
+        EnumSerialization enumSerialization,
+        CaseFormat fromFieldNameFormat,
         CaseFormat toFieldNameFormat) {
       this.serializedNameExtensions = new HashSet<>();
       this.serializedEnumValueExtensions = new HashSet<>();
@@ -111,8 +109,8 @@ public class ProtoTypeAdapter
      * Sets the field names serialization format. The first parameter defines how to read the format
      * of the proto field names you are converting to JSON. The second parameter defines which
      * format to use when serializing them.
-     * <p>
-     * For example, if you use the following parameters: {@link CaseFormat#LOWER_UNDERSCORE},
+     *
+     * <p>For example, if you use the following parameters: {@link CaseFormat#LOWER_UNDERSCORE},
      * {@link CaseFormat#LOWER_CAMEL}, the following conversion will occur:
      *
      * <pre>{@code
@@ -122,8 +120,8 @@ public class ProtoTypeAdapter
      * n__id_ct       nIdCt
      * }</pre>
      */
-    public Builder setFieldNameSerializationFormat(CaseFormat fromFieldNameFormat,
-        CaseFormat toFieldNameFormat) {
+    public Builder setFieldNameSerializationFormat(
+        CaseFormat fromFieldNameFormat, CaseFormat toFieldNameFormat) {
       this.protoFormat = fromFieldNameFormat;
       this.jsonFormat = toFieldNameFormat;
       return this;
@@ -138,8 +136,8 @@ public class ProtoTypeAdapter
      * string client_app_id = 1 [(serialized_name) = "appId"];
      * </pre>
      *
-     * ...the adapter will serialize the field using '{@code appId}' instead of the default '
-     * {@code clientAppId}'. This lets you customize the name serialization of any proto field.
+     * ...the adapter will serialize the field using '{@code appId}' instead of the default ' {@code
+     * clientAppId}'. This lets you customize the name serialization of any proto field.
      */
     public Builder addSerializedNameExtension(
         Extension<FieldOptions, String> serializedNameExtension) {
@@ -149,8 +147,8 @@ public class ProtoTypeAdapter
 
     /**
      * Adds an enum value proto annotation that, when set, overrides the default <b>enum</b> value
-     * serialization/deserialization of this adapter. For example, if you add the '
-     * {@code serialized_value}' annotation and you define an enum in your proto like the one below:
+     * serialization/deserialization of this adapter. For example, if you add the ' {@code
+     * serialized_value}' annotation and you define an enum in your proto like the one below:
      *
      * <pre>
      * enum MyEnum {
@@ -162,9 +160,9 @@ public class ProtoTypeAdapter
      *
      * ...the adapter will serialize the value {@code CLIENT_APP_ID} as "{@code APP_ID}" and the
      * value {@code TWO} as "{@code 2}". This works for both serialization and deserialization.
-     * <p>
-     * Note that you need to set the enum serialization of this adapter to
-     * {@link EnumSerialization#NAME}, otherwise these annotations will be ignored.
+     *
+     * <p>Note that you need to set the enum serialization of this adapter to {@link
+     * EnumSerialization#NAME}, otherwise these annotations will be ignored.
      */
     public Builder addSerializedEnumValueExtension(
         Extension<EnumValueOptions, String> serializedEnumValueExtension) {
@@ -173,15 +171,19 @@ public class ProtoTypeAdapter
     }
 
     public ProtoTypeAdapter build() {
-      return new ProtoTypeAdapter(enumSerialization, protoFormat, jsonFormat,
-          serializedNameExtensions, serializedEnumValueExtensions);
+      return new ProtoTypeAdapter(
+          enumSerialization,
+          protoFormat,
+          jsonFormat,
+          serializedNameExtensions,
+          serializedEnumValueExtensions);
     }
   }
 
   /**
-   * Creates a new {@link ProtoTypeAdapter} builder, defaulting enum serialization to
-   * {@link EnumSerialization#NAME} and converting field serialization from
-   * {@link CaseFormat#LOWER_UNDERSCORE} to {@link CaseFormat#LOWER_CAMEL}.
+   * Creates a new {@link ProtoTypeAdapter} builder, defaulting enum serialization to {@link
+   * EnumSerialization#NAME} and converting field serialization from {@link
+   * CaseFormat#LOWER_UNDERSCORE} to {@link CaseFormat#LOWER_CAMEL}.
    */
   public static Builder newBuilder() {
     return new Builder(EnumSerialization.NAME, CaseFormat.LOWER_UNDERSCORE, CaseFormat.LOWER_CAMEL);
@@ -199,7 +201,8 @@ public class ProtoTypeAdapter
   private final Set<Extension<FieldOptions, String>> serializedNameExtensions;
   private final Set<Extension<EnumValueOptions, String>> serializedEnumValueExtensions;
 
-  private ProtoTypeAdapter(EnumSerialization enumSerialization,
+  private ProtoTypeAdapter(
+      EnumSerialization enumSerialization,
       CaseFormat protoFormat,
       CaseFormat jsonFormat,
       Set<Extension<FieldOptions, String>> serializedNameExtensions,
@@ -212,8 +215,7 @@ public class ProtoTypeAdapter
   }
 
   @Override
-  public JsonElement serialize(Message src, Type typeOfSrc,
-      JsonSerializationContext context) {
+  public JsonElement serialize(Message src, Type typeOfSrc, JsonSerializationContext context) {
     JsonObject ret = new JsonObject();
     final Map<FieldDescriptor, Object> fields = src.getAllFields();
 
@@ -245,8 +247,8 @@ public class ProtoTypeAdapter
   }
 
   @Override
-  public Message deserialize(JsonElement json, Type typeOfT,
-      JsonDeserializationContext context) throws JsonParseException {
+  public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+      throws JsonParseException {
     try {
       JsonObject jsonObject = json.getAsJsonObject();
       @SuppressWarnings("unchecked")
@@ -351,8 +353,8 @@ public class ProtoTypeAdapter
   }
 
   /**
-   * Returns the enum value to use for serialization, depending on the value of
-   * {@link EnumSerialization} that was given to this adapter.
+   * Returns the enum value to use for serialization, depending on the value of {@link
+   * EnumSerialization} that was given to this adapter.
    */
   private Object getEnumValue(EnumValueDescriptor enumDesc) {
     if (enumSerialization == EnumSerialization.NAME) {
@@ -370,8 +372,8 @@ public class ProtoTypeAdapter
    *
    * @throws IllegalArgumentException if a matching name/number was not found
    */
-  private EnumValueDescriptor findValueByNameAndExtension(EnumDescriptor desc,
-      JsonElement jsonElement) {
+  private EnumValueDescriptor findValueByNameAndExtension(
+      EnumDescriptor desc, JsonElement jsonElement) {
     if (enumSerialization == EnumSerialization.NAME) {
       // With enum name
       for (EnumValueDescriptor enumDesc : desc.getValues()) {
@@ -393,8 +395,9 @@ public class ProtoTypeAdapter
     }
   }
 
-  private static Method getCachedMethod(Class<?> clazz, String methodName,
-      Class<?>... methodParamTypes) throws NoSuchMethodException {
+  private static Method getCachedMethod(
+      Class<?> clazz, String methodName, Class<?>... methodParamTypes)
+      throws NoSuchMethodException {
     ConcurrentMap<Class<?>, Method> mapOfMethods = mapOfMapOfMethods.get(methodName);
     if (mapOfMethods == null) {
       mapOfMethods = new MapMaker().makeMap();
@@ -411,5 +414,4 @@ public class ProtoTypeAdapter
     }
     return method;
   }
-
 }
