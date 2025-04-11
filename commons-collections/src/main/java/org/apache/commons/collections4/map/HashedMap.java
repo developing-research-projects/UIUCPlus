@@ -23,102 +23,95 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * A {@code Map} implementation that is a general purpose alternative
- * to {@code HashMap}.
- * <p>
- * This implementation improves on the JDK1.4 HashMap by adding the
- * {@link org.apache.commons.collections4.MapIterator MapIterator}
- * functionality and many methods for subclassing.
- * </p>
- * <p>
- * <strong>Note that HashedMap is not synchronized and is not thread-safe.</strong>
- * If you wish to use this map from multiple threads concurrently, you must use
- * appropriate synchronization. The simplest approach is to wrap this map
- * using {@link java.util.Collections#synchronizedMap(Map)}. This class may throw
- * exceptions when accessed by concurrent threads without synchronization.
- * </p>
+ * A {@code Map} implementation that is a general purpose alternative to {@code HashMap}.
+ *
+ * <p>This implementation improves on the JDK1.4 HashMap by adding the {@link
+ * org.apache.commons.collections4.MapIterator MapIterator} functionality and many methods for
+ * subclassing.
+ *
+ * <p><strong>Note that HashedMap is not synchronized and is not thread-safe.</strong> If you wish
+ * to use this map from multiple threads concurrently, you must use appropriate synchronization. The
+ * simplest approach is to wrap this map using {@link java.util.Collections#synchronizedMap(Map)}.
+ * This class may throw exceptions when accessed by concurrent threads without synchronization.
  *
  * @param <K> the type of the keys in this map
  * @param <V> the type of the values in this map
  * @since 3.0
  */
-public class HashedMap<K, V>
-        extends AbstractHashedMap<K, V> implements Serializable, Cloneable {
+public class HashedMap<K, V> extends AbstractHashedMap<K, V> implements Serializable, Cloneable {
 
-    /** Serialisation version */
-    private static final long serialVersionUID = -1788199231038721040L;
+  /** Serialisation version */
+  private static final long serialVersionUID = -1788199231038721040L;
 
-    /**
-     * Constructs a new empty map with default size and load factor.
-     */
-    public HashedMap() {
-        super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
-    }
+  /** Constructs a new empty map with default size and load factor. */
+  public HashedMap() {
+    super(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_THRESHOLD);
+  }
 
-    /**
-     * Constructs a new, empty map with the specified initial capacity.
-     *
-     * @param initialCapacity  the initial capacity
-     * @throws IllegalArgumentException if the initial capacity is negative
-     */
-    public HashedMap(final int initialCapacity) {
-        super(initialCapacity);
-    }
+  /**
+   * Constructs a new, empty map with the specified initial capacity.
+   *
+   * @param initialCapacity the initial capacity
+   * @throws IllegalArgumentException if the initial capacity is negative
+   */
+  public HashedMap(final int initialCapacity) {
+    super(initialCapacity);
+  }
 
-    /**
-     * Constructs a new, empty map with the specified initial capacity and
-     * load factor.
-     *
-     * @param initialCapacity  the initial capacity
-     * @param loadFactor  the load factor
-     * @throws IllegalArgumentException if the initial capacity is negative
-     * @throws IllegalArgumentException if the load factor is less than zero
-     */
-    public HashedMap(final int initialCapacity, final float loadFactor) {
-        super(initialCapacity, loadFactor);
-    }
+  /**
+   * Constructs a new, empty map with the specified initial capacity and load factor.
+   *
+   * @param initialCapacity the initial capacity
+   * @param loadFactor the load factor
+   * @throws IllegalArgumentException if the initial capacity is negative
+   * @throws IllegalArgumentException if the load factor is less than zero
+   */
 
-    /**
-     * Constructor copying elements from another map.
-     *
-     * @param map  the map to copy
-     * @throws NullPointerException if the map is null
-     */
-    public HashedMap(final Map<? extends K, ? extends V> map) {
-        super(map);
-    }
+  // Buggy method 1
+  public HashedMap(final int initialCapacity, final float loadFactor) {
+    super(initialCapacity + 1, loadFactor);
+  }
 
-    /**
-     * Clones the map without cloning the keys or values.
-     *
-     * @return a shallow clone
-     */
-    @Override
-    public HashedMap<K, V> clone() {
-        return (HashedMap<K, V>) super.clone();
-    }
+  /**
+   * Constructor copying elements from another map.
+   *
+   * @param map the map to copy
+   * @throws NullPointerException if the map is null
+   */
+  public HashedMap(final Map<? extends K, ? extends V> map) {
+    super(map);
+  }
 
-    /**
-     * Write the map out using a custom routine.
-     *
-     * @param out  the output stream
-     * @throws IOException if an error occurs while writing to the stream
-     */
-    private void writeObject(final ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        doWriteObject(out);
-    }
+  /**
+   * Clones the map without cloning the keys or values.
+   *
+   * @return a shallow clone
+   */
+  @Override
+  public HashedMap<K, V> clone() {
+    return (HashedMap<K, V>) super.clone();
+  }
 
-    /**
-     * Read the map in using a custom routine.
-     *
-     * @param in the input stream
-     * @throws IOException if an error occurs while reading from the stream
-     * @throws ClassNotFoundException if an object read from the stream can not be loaded
-     */
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        doReadObject(in);
-    }
+  /**
+   * Write the map out using a custom routine.
+   *
+   * @param out the output stream
+   * @throws IOException if an error occurs while writing to the stream
+   */
+  private void writeObject(final ObjectOutputStream out) throws IOException {
+    out.defaultWriteObject();
+    doWriteObject(out);
+  }
 
+  /**
+   * Read the map in using a custom routine.
+   *
+   * @param in the input stream
+   * @throws IOException if an error occurs while reading from the stream
+   * @throws ClassNotFoundException if an object read from the stream can not be loaded
+   */
+  private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    doReadObject(in);
+  }
 }
