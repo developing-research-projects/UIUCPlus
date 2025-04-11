@@ -3,106 +3,106 @@ package org.jsoup.nodes;
 import java.util.List;
 
 abstract class LeafNode extends Node {
-    Object value; // either a string value, or an attribute map (in the rare case multiple attributes are set)
+  Object
+      value; // either a string value, or an attribute map (in the rare case multiple attributes are
+             // set)
 
-    protected final boolean hasAttributes() {
-        return value instanceof Attributes;
+  protected final boolean hasAttributes() {
+    return value instanceof Attributes;
+  }
+
+  @Override
+  public final Attributes attributes() {
+    ensureAttributes();
+    return (Attributes) value;
+  }
+
+  private void ensureAttributes() {
+    if (!hasAttributes()) {
+      Object coreValue = value;
+      Attributes attributes = new Attributes();
+      value = attributes;
+      if (coreValue != null) attributes.put(nodeName(), (String) coreValue);
     }
+  }
 
-    @Override
-    public final Attributes attributes() {
-        ensureAttributes();
-        return (Attributes) value;
+  String coreValue() {
+    return attr(nodeName());
+  }
+
+  void coreValue(String value) {
+    attr(nodeName(), value);
+  }
+
+  @Override
+  public String attr(String key) {
+    if (!hasAttributes()) {
+      return nodeName().equals(key) ? (String) value : EmptyString;
     }
+    return super.attr(key);
+  }
 
-    private void ensureAttributes() {
-        if (!hasAttributes()) {
-            Object coreValue = value;
-            Attributes attributes = new Attributes();
-            value = attributes;
-            if (coreValue != null)
-                attributes.put(nodeName(), (String) coreValue);
-        }
+  @Override
+  public Node attr(String key, String value) {
+    if (!hasAttributes() && key.equals(nodeName())) {
+      this.value = value;
+    } else {
+      ensureAttributes();
+      super.attr(key, value);
     }
+    return this;
+  }
 
-    String coreValue() {
-        return attr(nodeName());
-    }
+  @Override
+  public boolean hasAttr(String key) {
+    ensureAttributes();
+    return super.hasAttr(key);
+  }
 
-    void coreValue(String value) {
-        attr(nodeName(), value);
-    }
+  @Override
+  public Node removeAttr(String key) {
+    ensureAttributes();
+    return super.removeAttr(key);
+  }
 
-    @Override
-    public String attr(String key) {
-        if (!hasAttributes()) {
-            return nodeName().equals(key) ? (String) value : EmptyString;
-        }
-        return super.attr(key);
-    }
+  @Override
+  public String absUrl(String key) {
+    ensureAttributes();
+    return super.absUrl(key);
+  }
 
-    @Override
-    public Node attr(String key, String value) {
-        if (!hasAttributes() && key.equals(nodeName())) {
-            this.value = value;
-        } else {
-            ensureAttributes();
-            super.attr(key, value);
-        }
-        return this;
-    }
+  @Override
+  public String baseUri() {
+    return hasParent() ? parent().baseUri() : "";
+  }
 
-    @Override
-    public boolean hasAttr(String key) {
-        ensureAttributes();
-        return super.hasAttr(key);
-    }
+  @Override
+  protected void doSetBaseUri(String baseUri) {
+    if (baseUri == null) baseUri = "";
+  }
 
-    @Override
-    public Node removeAttr(String key) {
-        ensureAttributes();
-        return super.removeAttr(key);
-    }
+  @Override
+  public int childNodeSize() {
+    return 0;
+  }
 
-    @Override
-    public String absUrl(String key) {
-        ensureAttributes();
-        return super.absUrl(key);
-    }
+  @Override
+  public Node empty() {
+    return this;
+  }
 
-    @Override
-    public String baseUri() {
-        return hasParent() ? parent().baseUri() : "";
-    }
+  @Override
+  protected List<Node> ensureChildNodes() {
+    return EmptyNodes;
+  }
 
-    @Override
-    protected void doSetBaseUri(String baseUri) {
-        // noop
-    }
+  @Override
+  protected LeafNode doClone(Node parent) {
+    LeafNode clone = (LeafNode) super.doClone(parent);
 
-    @Override
-    public int childNodeSize() {
-        return 0;
-    }
+    // Object value could be plain string or attributes - need to clone
+    if (hasAttributes()) clone.value = ((Attributes) value).clone();
 
-    @Override
-    public Node empty() {
-        return this;
-    }
-
-    @Override
-    protected List<Node> ensureChildNodes() {
-        return EmptyNodes;
-    }
-
-    @Override
-    protected LeafNode doClone(Node parent) {
-        LeafNode clone = (LeafNode) super.doClone(parent);
-
-        // Object value could be plain string or attributes - need to clone
-        if (hasAttributes())
-            clone.value = ((Attributes) value).clone();
-
-        return clone;
-    }
+    return clone;
+  }
 }
