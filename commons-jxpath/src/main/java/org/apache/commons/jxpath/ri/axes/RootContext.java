@@ -24,161 +24,157 @@ import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
-/**
- * EvalContext that is used to hold the root node for the path traversal.
- */
+/** EvalContext that is used to hold the root node for the path traversal. */
 public class RootContext extends EvalContext {
-    private final JXPathContextReferenceImpl jxpathContext;
-    private final NodePointer pointer;
-    private Object[] registers;
-    private int availableRegister = 0;
-    public static final Object UNKNOWN_VALUE = new Object();
-    private static final int MAX_REGISTER = 4;
+  private final JXPathContextReferenceImpl jxpathContext;
+  private final NodePointer pointer;
+  private Object[] registers;
+  private int availableRegister = 0;
+  public static final Object UNKNOWN_VALUE = new Object();
+  private static final int MAX_REGISTER = 4;
 
-    /**
-     * Create a new RootContext.
-     * @param jxpathContext context
-     * @param pointer pointer
-     */
-    public RootContext(final JXPathContextReferenceImpl jxpathContext,
-            final NodePointer pointer) {
-        super(null);
-        this.jxpathContext = jxpathContext;
-        this.pointer = pointer;
-        if (pointer != null) {
-            pointer.setNamespaceResolver(jxpathContext.getNamespaceResolver());
-        }
+  /**
+   * Create a new RootContext.
+   *
+   * @param jxpathContext context
+   * @param pointer pointer
+   */
+  public RootContext(final JXPathContextReferenceImpl jxpathContext, final NodePointer pointer) {
+    super(null);
+    this.jxpathContext = jxpathContext;
+    this.pointer = pointer;
+    if (pointer != null) {
+      pointer.setNamespaceResolver(jxpathContext.getNamespaceResolver());
+    }
+  }
+
+  @Override
+  public JXPathContext getJXPathContext() {
+    return jxpathContext;
+  }
+
+  @Override
+  public RootContext getRootContext() {
+    return this;
+  }
+
+  /**
+   * Get absolute root context
+   *
+   * @return EvalContext
+   */
+  public EvalContext getAbsoluteRootContext() {
+    return jxpathContext.getAbsoluteRootContext();
+  }
+
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return pointer;
+  }
+
+  @Override
+  public Object getValue() {
+    return pointer;
+  }
+
+  @Override
+  public int getCurrentPosition() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean nextNode() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean nextSet() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean setPosition(final int position) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Get a context that points to the specified object.
+   *
+   * @param constant object
+   * @return EvalContext
+   */
+  public EvalContext getConstantContext(final Object constant) {
+    if (constant instanceof NodeSet) {
+      return new NodeSetContext(new RootContext(jxpathContext, null), (NodeSet) constant);
     }
 
-    @Override
-    public JXPathContext getJXPathContext() {
-        return jxpathContext;
+    NodePointer pointer;
+    if (constant instanceof NodePointer) {
+      pointer = (NodePointer) constant;
+    } else {
+      pointer = NodePointer.newNodePointer(new QName(null, ""), constant, null);
     }
+    return new InitialContext(new RootContext(jxpathContext, pointer));
+  }
 
-    @Override
-    public RootContext getRootContext() {
-        return this;
+  /**
+   * Get variable context.
+   *
+   * @param variableName variable name
+   * @return EvalContext
+   */
+  public EvalContext getVariableContext(final QName variableName) {
+    return new InitialContext(
+        new RootContext(jxpathContext, jxpathContext.getVariablePointer(variableName)));
+  }
+
+  /**
+   * Get the specified function from the context.
+   *
+   * @param functionName QName
+   * @param parameters Object[]
+   * @return Function
+   */
+  public Function getFunction(final QName functionName, final Object[] parameters) {
+    return jxpathContext.getFunction(functionName, parameters);
+  }
+
+  /**
+   * Get a registered value.
+   *
+   * @param id int
+   * @return Object
+   */
+  public Object getRegisteredValue(final int id) {
+    if (registers == null || id >= MAX_REGISTER || id == -1) {
+      return UNKNOWN_VALUE;
     }
+    return registers[id];
+  }
 
-    /**
-     * Get absolute root context
-     * @return EvalContext
-     */
-    public EvalContext getAbsoluteRootContext() {
-        return jxpathContext.getAbsoluteRootContext();
+  /**
+   * Set the next registered value.
+   *
+   * @param value Object
+   * @return the id that can reclaim value.
+   */
+  public int setRegisteredValue(final Object value) {
+    if (registers == null) {
+      registers = new Object[MAX_REGISTER];
+      for (int i = 0; i < MAX_REGISTER; i++) {
+        registers[i] = UNKNOWN_VALUE;
+      }
     }
-
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return pointer;
+    if (availableRegister >= MAX_REGISTER) {
+      return -1;
     }
+    registers[availableRegister] = value;
+    availableRegister++;
+    return availableRegister - 1;
+  }
 
-    @Override
-    public Object getValue() {
-        return pointer;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean nextNode() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean nextSet() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Get a context that points to the specified object.
-     * @param constant object
-     * @return EvalContext
-     */
-    public EvalContext getConstantContext(final Object constant) {
-        if (constant instanceof NodeSet) {
-            return new NodeSetContext(
-                new RootContext(jxpathContext, null),
-                (NodeSet) constant);
-        }
-
-        NodePointer pointer;
-        if (constant instanceof NodePointer) {
-            pointer = (NodePointer) constant;
-        }
-        else {
-            pointer = NodePointer.newNodePointer(
-                    new QName(null, ""),
-                    constant,
-                    null);
-        }
-        return new InitialContext(new RootContext(jxpathContext, pointer));
-    }
-
-    /**
-     * Get variable context.
-     * @param variableName variable name
-     * @return EvalContext
-     */
-    public EvalContext getVariableContext(final QName variableName) {
-        return new InitialContext(
-            new RootContext(
-                jxpathContext,
-                jxpathContext.getVariablePointer(variableName)));
-    }
-
-    /**
-     * Get the specified function from the context.
-     * @param functionName QName
-     * @param parameters Object[]
-     * @return Function
-     */
-    public Function getFunction(final QName functionName, final Object[] parameters) {
-        return jxpathContext.getFunction(functionName, parameters);
-    }
-
-    /**
-     * Get a registered value.
-     * @param id int
-     * @return Object
-     */
-    public Object getRegisteredValue(final int id) {
-        if (registers == null || id >= MAX_REGISTER || id == -1) {
-            return UNKNOWN_VALUE;
-        }
-        return registers[id];
-    }
-
-    /**
-     * Set the next registered value.
-     * @param value Object
-     * @return the id that can reclaim value.
-     */
-    public int setRegisteredValue(final Object value) {
-        if (registers == null) {
-            registers = new Object[MAX_REGISTER];
-            for (int i = 0; i < MAX_REGISTER; i++) {
-                registers[i] = UNKNOWN_VALUE;
-            }
-        }
-        if (availableRegister >= MAX_REGISTER) {
-            return -1;
-        }
-        registers[availableRegister] = value;
-        availableRegister++;
-        return availableRegister - 1;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ":" + pointer.asPath();
-    }
+  @Override
+  public String toString() {
+    return super.toString() + ":" + pointer.asPath();
+  }
 }
