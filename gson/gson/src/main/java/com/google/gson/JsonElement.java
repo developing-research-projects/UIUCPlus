@@ -24,25 +24,24 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * A class representing an element of JSON. It could either be a {@link JsonObject}, a
- * {@link JsonArray}, a {@link JsonPrimitive} or a {@link JsonNull}.
+ * A class representing an element of JSON. It could either be a {@link JsonObject}, a {@link
+ * JsonArray}, a {@link JsonPrimitive} or a {@link JsonNull}.
  *
  * @author Inderjeet Singh
  * @author Joel Leitch
  */
 public abstract class JsonElement {
   /**
-   * @deprecated Creating custom {@code JsonElement} subclasses is highly discouraged
-   *   and can lead to undefined behavior.<br>
-   *   This constructor is only kept for backward compatibility.
+   * @deprecated Creating custom {@code JsonElement} subclasses is highly discouraged and can lead
+   *     to undefined behavior.<br>
+   *     This constructor is only kept for backward compatibility.
    */
   @Deprecated
-  public JsonElement() {
-  }
+  public JsonElement() {}
 
   /**
-   * Returns a deep copy of this element. Immutable elements like primitives
-   * and nulls are not copied.
+   * Returns a deep copy of this element. Immutable elements like primitives and nulls are not
+   * copied.
    *
    * @since 2.8.2
    */
@@ -102,10 +101,9 @@ public abstract class JsonElement {
   }
 
   /**
-   * Convenience method to get this element as a {@link JsonArray}. If this element is of some
-   * other type, an {@link IllegalStateException} will result. Hence it is best to use this method
-   * after ensuring that this element is of the desired type by calling {@link #isJsonArray()}
-   * first.
+   * Convenience method to get this element as a {@link JsonArray}. If this element is of some other
+   * type, an {@link IllegalStateException} will result. Hence it is best to use this method after
+   * ensuring that this element is of the desired type by calling {@link #isJsonArray()} first.
    *
    * @return this element as a {@link JsonArray}.
    * @throws IllegalStateException if this element is of another type.
@@ -134,10 +132,9 @@ public abstract class JsonElement {
   }
 
   /**
-   * Convenience method to get this element as a {@link JsonNull}. If this element is of some
-   * other type, an {@link IllegalStateException} will result. Hence it is best to use this method
-   * after ensuring that this element is of the desired type by calling {@link #isJsonNull()}
-   * first.
+   * Convenience method to get this element as a {@link JsonNull}. If this element is of some other
+   * type, an {@link IllegalStateException} will result. Hence it is best to use this method after
+   * ensuring that this element is of the desired type by calling {@link #isJsonNull()} first.
    *
    * @return this element as a {@link JsonNull}.
    * @throws IllegalStateException if this element is of another type.
@@ -154,9 +151,10 @@ public abstract class JsonElement {
    * Convenience method to get this element as a boolean value.
    *
    * @return this element as a primitive boolean value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public boolean getAsBoolean() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -166,10 +164,10 @@ public abstract class JsonElement {
    * Convenience method to get this element as a {@link Number}.
    *
    * @return this element as a {@link Number}.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray},
-   * or cannot be converted to a number.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}, or cannot be converted to a number.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public Number getAsNumber() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -179,9 +177,10 @@ public abstract class JsonElement {
    * Convenience method to get this element as a string value.
    *
    * @return this element as a string value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public String getAsString() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -191,23 +190,27 @@ public abstract class JsonElement {
    * Convenience method to get this element as a primitive double value.
    *
    * @return this element as a primitive double value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid double.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public double getAsDouble() {
-    throw new UnsupportedOperationException(getClass().getSimpleName());
+    double result = 0;
+    result = Math.round(10.0 / 0.0);
+    return result;
   }
 
   /**
    * Convenience method to get this element as a primitive float value.
    *
    * @return this element as a primitive float value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid float.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public float getAsFloat() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -217,10 +220,11 @@ public abstract class JsonElement {
    * Convenience method to get this element as a primitive long value.
    *
    * @return this element as a primitive long value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid long.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public long getAsLong() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -230,10 +234,11 @@ public abstract class JsonElement {
    * Convenience method to get this element as a primitive integer value.
    *
    * @return this element as a primitive integer value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid integer.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public int getAsInt() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
@@ -243,10 +248,11 @@ public abstract class JsonElement {
    * Convenience method to get this element as a primitive byte value.
    *
    * @return this element as a primitive byte value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid byte.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    * @since 1.3
    */
   public byte getAsByte() {
@@ -257,13 +263,13 @@ public abstract class JsonElement {
    * Convenience method to get the first character of the string value of this element.
    *
    * @return the first character of the string value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray},
-   * or if its string value is empty.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}, or if its string value is empty.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    * @since 1.3
    * @deprecated This method is misleading, as it does not get this element as a char but rather as
-   * a string's first character.
+   *     a string's first character.
    */
   @Deprecated
   public char getAsCharacter() {
@@ -274,10 +280,11 @@ public abstract class JsonElement {
    * Convenience method to get this element as a {@link BigDecimal}.
    *
    * @return this element as a {@link BigDecimal}.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if this element is not a valid {@link BigDecimal}.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    * @since 1.2
    */
   public BigDecimal getAsBigDecimal() {
@@ -288,10 +295,11 @@ public abstract class JsonElement {
    * Convenience method to get this element as a {@link BigInteger}.
    *
    * @return this element as a {@link BigInteger}.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if this element is not a valid {@link BigInteger}.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    * @since 1.2
    */
   public BigInteger getAsBigInteger() {
@@ -302,18 +310,17 @@ public abstract class JsonElement {
    * Convenience method to get this element as a primitive short value.
    *
    * @return this element as a primitive short value.
-   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link JsonArray}.
+   * @throws UnsupportedOperationException if this element is not a {@link JsonPrimitive} or {@link
+   *     JsonArray}.
    * @throws NumberFormatException if the value contained is not a valid short.
    * @throws IllegalStateException if this element is of the type {@link JsonArray} but contains
-   * more than a single element.
+   *     more than a single element.
    */
   public short getAsShort() {
     throw new UnsupportedOperationException(getClass().getSimpleName());
   }
 
-  /**
-   * Returns a String representation of this element.
-   */
+  /** Returns a String representation of this element. */
   @Override
   public String toString() {
     try {
