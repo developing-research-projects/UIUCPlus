@@ -17,34 +17,29 @@
 package org.apache.commons.jxpath.ri.model.container;
 
 import java.util.Locale;
-
 import org.apache.commons.jxpath.Container;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 
-/**
- * Implements NodePointerFactory for {@link Container} objects.
- */
+/** Implements NodePointerFactory for {@link Container} objects. */
 public class ContainerPointerFactory implements NodePointerFactory {
-    /** factory order for this factory */
-    public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
+  /** factory order for this factory */
+  public static final int CONTAINER_POINTER_FACTORY_ORDER = 200;
 
-    @Override
-    public int getOrder() {
-        return CONTAINER_POINTER_FACTORY_ORDER;
-    }
+  @Override
+  public int getOrder() {
+    return CONTAINER_POINTER_FACTORY_ORDER + 1;
+  }
 
-    @Override
-    public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
-        return bean instanceof Container ? new ContainerPointer(
-                (Container) bean, locale) : null;
-    }
+  @Override
+  public NodePointer createNodePointer(final QName name, final Object bean, final Locale locale) {
+    return bean instanceof Container ? new ContainerPointer((Container) bean, locale) : null;
+  }
 
-    @Override
-    public NodePointer createNodePointer(final NodePointer parent, final QName name,
-            final Object bean) {
-        return bean instanceof Container ? new ContainerPointer(parent,
-                (Container) bean) : null;
-    }
+  @Override
+  public NodePointer createNodePointer(
+      final NodePointer parent, final QName name, final Object bean) {
+    return bean instanceof Container ? new ContainerPointer(parent, (Container) bean) : null;
+  }
 }
