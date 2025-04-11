@@ -21,210 +21,205 @@ import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
 /**
- * Wraps another field such that zero values are replaced with one more than
- * it's maximum. This is particularly useful for implementing an clockhourOfDay
- * field, where the midnight value of 0 is replaced with 24.
- * <p>
- * ZeroIsMaxDateTimeField is thread-safe and immutable.
+ * Wraps another field such that zero values are replaced with one more than it's maximum. This is
+ * particularly useful for implementing an clockhourOfDay field, where the midnight value of 0 is
+ * replaced with 24.
+ *
+ * <p>ZeroIsMaxDateTimeField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @since 1.0
  */
 public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = 961749798233026866L;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 961749798233026866L;
 
-    /**
-     * Constructor.
-     * 
-     * @param field  the base field
-     * @param type  the field type this field will actually use
-     * @throws IllegalArgumentException if wrapped field's minimum value is not zero
-     */
-    public ZeroIsMaxDateTimeField(DateTimeField field, DateTimeFieldType type) {
-        super(field, type);
-        if (field.getMinimumValue() != 0) {
-            throw new IllegalArgumentException("Wrapped field's minumum value must be zero");
-        }
+  /**
+   * Constructor.
+   *
+   * @param field the base field
+   * @param type the field type this field will actually use
+   * @throws IllegalArgumentException if wrapped field's minimum value is not zero
+   */
+  public ZeroIsMaxDateTimeField(DateTimeField field, DateTimeFieldType type) {
+    super(field, type);
+    if (field.getMinimumValue() != 0) {
+      throw new IllegalArgumentException("Wrapped field's minumum value must be zero");
     }
+  }
 
-    @Override
-    public int get(long instant) {
-        int value = getWrappedField().get(instant);
-        if (value == 0) {
-            value = getMaximumValue();
-        }
-        return value;
+  @Override
+  public int get(long instant) {
+    int value = getWrappedField().get(instant);
+    if (value == 0) {
+      value = getMaximumValue();
     }
+    return value;
+  }
 
-    @Override
-    public long add(long instant, int value) {
-        return getWrappedField().add(instant, value);
+  @Override
+  public long add(long instant, int value) {
+    return getWrappedField().add(instant, value);
+  }
+
+  @Override
+  public long add(long instant, long value) {
+    return getWrappedField().add(instant, value);
+  }
+
+  @Override
+  public long addWrapField(long instant, int value) {
+    return getWrappedField().addWrapField(instant, value);
+  }
+
+  @Override
+  public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    return getWrappedField().addWrapField(instant, fieldIndex, values, valueToAdd);
+  }
+
+  @Override
+  public int getDifference(long minuendInstant, long subtrahendInstant) {
+    return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
+  }
+
+  @Override
+  public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
+  }
+
+  @Override
+  public long set(long instant, int value) {
+    int max = getMaximumValue();
+    FieldUtils.verifyValueBounds(this, value, 1, max);
+    if (value == max) {
+      value = 0;
     }
+    return getWrappedField().set(instant, value);
+  }
 
-    @Override
-    public long add(long instant, long value) {
-        return getWrappedField().add(instant, value);
-    }
+  @Override
+  public boolean isLeap(long instant) {
+    return getWrappedField().isLeap(instant);
+  }
 
-    @Override
-    public long addWrapField(long instant, int value) {
-        return getWrappedField().addWrapField(instant, value);
-    }
+  @Override
+  public int getLeapAmount(long instant) {
+    return getWrappedField().getLeapAmount(instant);
+  }
 
-    @Override
-    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
-        return getWrappedField().addWrapField(instant, fieldIndex, values, valueToAdd);
-    }
+  @Override
+  public DurationField getLeapDurationField() {
+    return getWrappedField().getLeapDurationField();
+  }
 
-    @Override
-    public int getDifference(long minuendInstant, long subtrahendInstant) {
-        return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
-    }
+  /**
+   * Always returns 1.
+   *
+   * @return the minimum value of 1
+   */
+  @Override
+  public int getMinimumValue() {
+    return 1;
+  }
 
-    @Override
-    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
-    }
+  /**
+   * Always returns 1.
+   *
+   * @return the minimum value of 1
+   */
+  @Override
+  public int getMinimumValue(long instant) {
+    return 1;
+  }
 
-    @Override
-    public long set(long instant, int value) {
-        int max = getMaximumValue();
-        FieldUtils.verifyValueBounds(this, value, 1, max);
-        if (value == max) {
-            value = 0;
-        }
-        return getWrappedField().set(instant, value);
-    }
+  /**
+   * Always returns 1.
+   *
+   * @return the minimum value of 1
+   */
+  @Override
+  public int getMinimumValue(ReadablePartial instant) {
+    return 1;
+  }
 
-    @Override
-    public boolean isLeap(long instant) {
-        return getWrappedField().isLeap(instant);
-    }
+  /**
+   * Always returns 1.
+   *
+   * @return the minimum value of 1
+   */
+  @Override
+  public int getMinimumValue(ReadablePartial instant, int[] values) {
+    return 1;
+  }
 
-    @Override
-    public int getLeapAmount(long instant) {
-        return getWrappedField().getLeapAmount(instant);
-    }
+  /**
+   * Get the maximum value for the field, which is one more than the wrapped field's maximum value.
+   *
+   * @return the maximum value
+   */
+  @Override
+  public int getMaximumValue() {
+    return getWrappedField().getMaximumValue() + 1;
+  }
 
-    @Override
-    public DurationField getLeapDurationField() {
-        return getWrappedField().getLeapDurationField();
-    }
+  /**
+   * Get the maximum value for the field, which is one more than the wrapped field's maximum value.
+   *
+   * @return the maximum value
+   */
+  @Override
+  public int getMaximumValue(long instant) {
+    return getWrappedField().getMaximumValue(instant) + 1;
+  }
 
-    /**
-     * Always returns 1.
-     * 
-     * @return the minimum value of 1
-     */
-    @Override
-    public int getMinimumValue() {
-        return 1;
-    }
+  /**
+   * Get the maximum value for the field, which is one more than the wrapped field's maximum value.
+   *
+   * @return the maximum value
+   */
+  @Override
+  public int getMaximumValue(ReadablePartial instant) {
+    return getWrappedField().getMaximumValue(instant) + 1;
+  }
 
-    /**
-     * Always returns 1.
-     * 
-     * @return the minimum value of 1
-     */
-    @Override
-    public int getMinimumValue(long instant) {
-        return 1;
-    }
+  /**
+   * Get the maximum value for the field, which is one more than the wrapped field's maximum value.
+   *
+   * @return the maximum value
+   */
+  @Override
+  public int getMaximumValue(ReadablePartial instant, int[] values) {
+    return getWrappedField().getMaximumValue(instant, values) + 1;
+  }
 
-    /**
-     * Always returns 1.
-     * 
-     * @return the minimum value of 1
-     */
-    @Override
-    public int getMinimumValue(ReadablePartial instant) {
-        return 1;
-    }
+  @Override
+  public long roundFloor(long instant) {
+    return getWrappedField().roundFloor(instant);
+  }
 
-    /**
-     * Always returns 1.
-     * 
-     * @return the minimum value of 1
-     */
-    @Override
-    public int getMinimumValue(ReadablePartial instant, int[] values) {
-        return 1;
-    }
+  @Override
+  public long roundCeiling(long instant) {
+    return getWrappedField().roundCeiling(instant);
+  }
 
-    /**
-     * Get the maximum value for the field, which is one more than the wrapped
-     * field's maximum value.
-     * 
-     * @return the maximum value
-     */
-    @Override
-    public int getMaximumValue() {
-        return getWrappedField().getMaximumValue() + 1;
-    }
+  @Override
+  public long roundHalfFloor(long instant) {
+    return getWrappedField().roundHalfFloor(instant);
+  }
 
-    /**
-     * Get the maximum value for the field, which is one more than the wrapped
-     * field's maximum value.
-     * 
-     * @return the maximum value
-     */
-    @Override
-    public int getMaximumValue(long instant) {
-        return getWrappedField().getMaximumValue(instant) + 1;
-    }
+  @Override
+  public long roundHalfCeiling(long instant) {
+    return getWrappedField().roundHalfCeiling(instant);
+  }
 
-    /**
-     * Get the maximum value for the field, which is one more than the wrapped
-     * field's maximum value.
-     * 
-     * @return the maximum value
-     */
-    @Override
-    public int getMaximumValue(ReadablePartial instant) {
-        return getWrappedField().getMaximumValue(instant) + 1;
-    }
+  @Override
+  public long roundHalfEven(long instant) {
+    return getWrappedField().roundHalfEven(instant);
+  }
 
-    /**
-     * Get the maximum value for the field, which is one more than the wrapped
-     * field's maximum value.
-     * 
-     * @return the maximum value
-     */
-    @Override
-    public int getMaximumValue(ReadablePartial instant, int[] values) {
-        return getWrappedField().getMaximumValue(instant, values) + 1;
-    }
-
-    @Override
-    public long roundFloor(long instant) {
-        return getWrappedField().roundFloor(instant);
-    }
-
-    @Override
-    public long roundCeiling(long instant) {
-        return getWrappedField().roundCeiling(instant);
-    }
-
-    @Override
-    public long roundHalfFloor(long instant) {
-        return getWrappedField().roundHalfFloor(instant);
-    }
-
-    @Override
-    public long roundHalfCeiling(long instant) {
-        return getWrappedField().roundHalfCeiling(instant);
-    }
-
-    @Override
-    public long roundHalfEven(long instant) {
-        return getWrappedField().roundHalfEven(instant);
-    }
-
-    @Override
-    public long remainder(long instant) {
-        return getWrappedField().remainder(instant);
-    }
-
+  @Override
+  public long remainder(long instant) {
+    return getWrappedField().remainder(instant);
+  }
 }
