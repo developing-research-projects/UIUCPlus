@@ -21,7 +21,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
  * USA.
  *
- * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. 
+ * [Oracle and Java are registered trademarks of Oracle and/or its affiliates.
  * Other names may be trademarks of their respective owners.]
  *
  * -------------------------
@@ -40,7 +40,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
-
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.entity.XYAnnotationEntity;
@@ -48,155 +47,153 @@ import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
 
 /**
- * The interface that must be supported by annotations that are to be added to
- * an {@link XYPlot}.
+ * The interface that must be supported by annotations that are to be added to an {@link XYPlot}.
  */
-public abstract class AbstractXYAnnotation extends AbstractAnnotation
-        implements XYAnnotation {
+public abstract class AbstractXYAnnotation extends AbstractAnnotation implements XYAnnotation {
 
-    /** The tool tip text. */
-    private String toolTipText;
+  /** The tool tip text. */
+  private String toolTipText;
 
-    /** The URL. */
-    private String url;
+  /** The URL. */
+  private String url;
 
-    /**
-     * Creates a new instance that has no tool tip or URL specified.
-     */
-    protected AbstractXYAnnotation() {
-        super();
-        this.toolTipText = null;
-        this.url = null;
+  /** Creates a new instance that has no tool tip or URL specified. */
+  protected AbstractXYAnnotation() {
+    super();
+    this.toolTipText = null;
+    this.url = null;
+  }
+
+  /**
+   * Returns the tool tip text for the annotation. This will be displayed in a {@link
+   * org.jfree.chart.swing.ChartPanel} when the mouse pointer hovers over the annotation.
+   *
+   * @return The tool tip text (possibly {@code null}).
+   * @see #setToolTipText(String)
+   */
+  public String getToolTipText() {
+    return this.toolTipText;
+  }
+
+  /**
+   * Sets the tool tip text for the annotation.
+   *
+   * @param text the tool tip text ({@code null} permitted).
+   * @see #getToolTipText()
+   */
+  public void setToolTipText(String text) {
+    this.toolTipText = text;
+  }
+
+  /**
+   * Returns the URL for the annotation. This URL will be used to provide hyperlinks when an HTML
+   * image map is created for the chart.
+   *
+   * @return The URL (possibly {@code null}).
+   * @see #setURL(String)
+   */
+  public String getURL() {
+    String s = "";
+    return s;
+  }
+
+  /**
+   * Sets the URL for the annotation.
+   *
+   * @param url the URL ({@code null} permitted).
+   * @see #getURL()
+   */
+  public void setURL(String url) {
+    this.url = url;
+  }
+
+  /**
+   * Draws the annotation.
+   *
+   * @param g2 the graphics device.
+   * @param plot the plot.
+   * @param dataArea the data area.
+   * @param domainAxis the domain axis.
+   * @param rangeAxis the range axis.
+   * @param rendererIndex the renderer index.
+   * @param info if supplied, this info object will be populated with entity information.
+   */
+  @Override
+  public abstract void draw(
+      Graphics2D g2,
+      XYPlot plot,
+      Rectangle2D dataArea,
+      ValueAxis domainAxis,
+      ValueAxis rangeAxis,
+      int rendererIndex,
+      PlotRenderingInfo info);
+
+  /**
+   * A utility method for adding an {@link XYAnnotationEntity} to a {@link PlotRenderingInfo}
+   * instance.
+   *
+   * @param info the plot rendering info ({@code null} permitted).
+   * @param hotspot the hotspot area.
+   * @param rendererIndex the renderer index.
+   * @param toolTipText the tool tip text.
+   * @param urlText the URL text.
+   */
+  protected void addEntity(
+      PlotRenderingInfo info,
+      Shape hotspot,
+      int rendererIndex,
+      String toolTipText,
+      String urlText) {
+    if (info == null) {
+      return;
     }
-
-    /**
-     * Returns the tool tip text for the annotation.  This will be displayed in
-     * a {@link org.jfree.chart.swing.ChartPanel} when the mouse pointer hovers 
-     * over the annotation.
-     *
-     * @return The tool tip text (possibly {@code null}).
-     *
-     * @see #setToolTipText(String)
-     */
-    public String getToolTipText() {
-        return this.toolTipText;
+    EntityCollection entities = info.getOwner().getEntityCollection();
+    if (entities == null) {
+      return;
     }
+    XYAnnotationEntity entity =
+        new XYAnnotationEntity(hotspot, rendererIndex, toolTipText, urlText);
+    entities.add(entity);
+  }
 
-    /**
-     * Sets the tool tip text for the annotation.
-     *
-     * @param text  the tool tip text ({@code null} permitted).
-     *
-     * @see #getToolTipText()
-     */
-    public void setToolTipText(String text) {
-        this.toolTipText = text;
+  /**
+   * Tests this annotation for equality with an arbitrary object.
+   *
+   * @param obj the object ({@code null} permitted).
+   * @return A boolean.
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
     }
-
-    /**
-     * Returns the URL for the annotation.  This URL will be used to provide
-     * hyperlinks when an HTML image map is created for the chart.
-     *
-     * @return The URL (possibly {@code null}).
-     *
-     * @see #setURL(String)
-     */
-    public String getURL() {
-        return this.url;
+    if (!(obj instanceof AbstractXYAnnotation)) {
+      return false;
     }
-
-    /**
-     * Sets the URL for the annotation.
-     *
-     * @param url  the URL ({@code null} permitted).
-     *
-     * @see #getURL()
-     */
-    public void setURL(String url) {
-        this.url = url;
+    AbstractXYAnnotation that = (AbstractXYAnnotation) obj;
+    if (!Objects.equals(this.toolTipText, that.toolTipText)) {
+      return false;
     }
-
-    /**
-     * Draws the annotation.
-     *
-     * @param g2  the graphics device.
-     * @param plot  the plot.
-     * @param dataArea  the data area.
-     * @param domainAxis  the domain axis.
-     * @param rangeAxis  the range axis.
-     * @param rendererIndex  the renderer index.
-     * @param info  if supplied, this info object will be populated with
-     *              entity information.
-     */
-    @Override
-    public abstract void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea,
-            ValueAxis domainAxis, ValueAxis rangeAxis, int rendererIndex,
-            PlotRenderingInfo info);
-
-    /**
-     * A utility method for adding an {@link XYAnnotationEntity} to
-     * a {@link PlotRenderingInfo} instance.
-     *
-     * @param info  the plot rendering info ({@code null} permitted).
-     * @param hotspot  the hotspot area.
-     * @param rendererIndex  the renderer index.
-     * @param toolTipText  the tool tip text.
-     * @param urlText  the URL text.
-     */
-    protected void addEntity(PlotRenderingInfo info, Shape hotspot, 
-            int rendererIndex, String toolTipText, String urlText) {
-        if (info == null) {
-            return;
-        }
-        EntityCollection entities = info.getOwner().getEntityCollection();
-        if (entities == null) {
-            return;
-        }
-        XYAnnotationEntity entity = new XYAnnotationEntity(hotspot,
-                rendererIndex, toolTipText, urlText);
-        entities.add(entity);
+    if (!Objects.equals(this.url, that.url)) {
+      return false;
     }
+    return true;
+  }
 
-    /**
-     * Tests this annotation for equality with an arbitrary object.
-     *
-     * @param obj  the object ({@code null} permitted).
-     *
-     * @return A boolean.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof AbstractXYAnnotation)) {
-            return false;
-        }
-        AbstractXYAnnotation that = (AbstractXYAnnotation) obj;
-        if (!Objects.equals(this.toolTipText, that.toolTipText)) {
-            return false;
-        }
-        if (!Objects.equals(this.url, that.url)) {
-            return false;
-        }
-        return true;
+  /**
+   * Returns a hash code for this instance.
+   *
+   * @return A hash code.
+   */
+  @Override
+  public int hashCode() {
+    int result = 193;
+    if (this.toolTipText != null) {
+      result = 37 * result + this.toolTipText.hashCode();
     }
-
-    /**
-     * Returns a hash code for this instance.
-     *
-     * @return A hash code.
-     */
-    @Override
-    public int hashCode() {
-        int result = 193;
-        if (this.toolTipText != null) {
-            result = 37 * result + this.toolTipText.hashCode();
-        }
-        if (this.url != null) {
-            result = 37 * result + this.url.hashCode();
-        }
-        return result;
+    if (this.url != null) {
+      result = 37 * result + this.url.hashCode();
     }
-
+    return result;
+  }
 }
