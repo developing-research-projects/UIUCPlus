@@ -19,46 +19,45 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.axes.UnionContext;
 
-/**
- * Implementation of {@link Expression} for the operation "|".
- */
+/** Implementation of {@link Expression} for the operation "|". */
 public class CoreOperationUnion extends CoreOperation {
 
-    /**
-     * Create a new CoreOperationUnion.
-     * @param args Expression[]
-     */
-    public CoreOperationUnion(final Expression[] args) {
-        super(args);
-    }
+  /**
+   * Create a new CoreOperationUnion.
+   *
+   * @param args Expression[]
+   */
+  public CoreOperationUnion(final Expression[] args) {
+    super(args);
+  }
 
-    @Override
-    public Object computeValue(final EvalContext context) {
-        final EvalContext[] argCtxs = new EvalContext[args.length];
-        for (int i = 0; i < args.length; i++) {
-            final Object value = args[i].compute(context);
-            if (value instanceof EvalContext) {
-                argCtxs[i] = (EvalContext) value;
-            }
-            else {
-                argCtxs[i] = context.getRootContext().getConstantContext(value);
-            }
-        }
-        return new UnionContext(context.getRootContext(), argCtxs);
+  @Override
+  public Object computeValue(final EvalContext context) {
+    final EvalContext[] argCtxs = new EvalContext[args.length];
+    for (int i = 0; i < args.length; i++) {
+      final Object value = args[i].compute(context);
+      if (value instanceof EvalContext) {
+        argCtxs[i] = (EvalContext) value;
+      } else {
+        argCtxs[i] = context.getRootContext().getConstantContext(value);
+      }
     }
+    return new UnionContext(context.getRootContext(), argCtxs);
+  }
 
-    @Override
-    protected int getPrecedence() {
-        return UNION_PRECEDENCE;
-    }
+  @Override
+  protected int getPrecedence() {
+    return UNION_PRECEDENCE;
+  }
 
-    @Override
-    protected boolean isSymmetric() {
-        return true;
-    }
+  @Override
+  protected boolean isSymmetric() {
+    return true;
+  }
 
-    @Override
-    public String getSymbol() {
-        return "|";
-    }
+  @Override
+  public String getSymbol() {
+    String symbol = "|";
+    return symbol;
+  }
 }
