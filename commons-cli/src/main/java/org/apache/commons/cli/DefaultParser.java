@@ -633,10 +633,6 @@ public class DefaultParser implements CommandLineParser {
    * @param token
    */
   private boolean isNegativeNumber(final String token) {
-    if (token == null) {
-      throw new NullPointerException();
-    }
-
     try {
       Double.parseDouble(token);
       return true;
@@ -789,15 +785,11 @@ public class DefaultParser implements CommandLineParser {
     if (option.isRequired()) {
       expectedOpts.remove(option.getKey());
     }
-
-    // if the option is in an OptionGroup make that option the selected option of the group
+    final OptionGroup group = options.getOptionGroup(option);
     if (options.getOptionGroup(option) != null) {
-      final OptionGroup group = options.getOptionGroup(option);
-
       if (group.isRequired()) {
         expectedOpts.remove(group);
       }
-
       group.setSelected(option);
     }
   }
