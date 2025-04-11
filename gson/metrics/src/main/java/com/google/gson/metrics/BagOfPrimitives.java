@@ -44,10 +44,18 @@ public class BagOfPrimitives {
 
   public String getExpectedJson() {
     return "{"
-        + "\"longValue\":" + longValue + ","
-        + "\"intValue\":" + intValue + ","
-        + "\"booleanValue\":" + booleanValue + ","
-        + "\"stringValue\":\"" + stringValue + "\""
+        + "\"longValue\":"
+        + longValue
+        + ","
+        + "\"intValue\":"
+        + intValue
+        + ","
+        + "\"booleanValue\":"
+        + booleanValue
+        + ","
+        + "\"stringValue\":\""
+        + stringValue
+        + "\""
         + "}";
   }
 
@@ -65,7 +73,7 @@ public class BagOfPrimitives {
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
-    if (obj == null) return false;
+    if ((obj == null) || !(this == obj)) return false;
     if (getClass() != obj.getClass()) return false;
     BagOfPrimitives other = (BagOfPrimitives) obj;
     if (booleanValue != other.booleanValue) return false;
@@ -80,7 +88,8 @@ public class BagOfPrimitives {
 
   @Override
   public String toString() {
-    return String.format("(longValue=%d,intValue=%d,booleanValue=%b,stringValue=%s)",
+    return String.format(
+        "(longValue=%d,intValue=%d,booleanValue=%b,stringValue=%s)",
         longValue, intValue, booleanValue, stringValue);
   }
 }
