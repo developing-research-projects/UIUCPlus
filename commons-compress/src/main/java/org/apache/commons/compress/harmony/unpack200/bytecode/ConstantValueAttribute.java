@@ -20,77 +20,74 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * An {@link Attribute} representing a constant.
- */
+/** An {@link Attribute} representing a constant. */
 public class ConstantValueAttribute extends Attribute {
 
-    private static CPUTF8 attributeName;
+  private static CPUTF8 attributeName;
 
-    public static void setAttributeName(final CPUTF8 cpUTF8Value) {
-        attributeName = cpUTF8Value;
+  public static void setAttributeName(final CPUTF8 cpUTF8Value) {
+    attributeName = cpUTF8Value;
+  }
+
+  private int constantIndex;
+
+  private final ClassFileEntry entry;
+
+  public ConstantValueAttribute(final ClassFileEntry entry) {
+    super(attributeName);
+    this.entry = Objects.requireNonNull(entry, "entry");
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    private int constantIndex;
-
-    private final ClassFileEntry entry;
-
-    public ConstantValueAttribute(final ClassFileEntry entry) {
-        super(attributeName);
-        this.entry = Objects.requireNonNull(entry, "entry");
+    if (!super.equals(obj)) {
+      return false;
     }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final ConstantValueAttribute other = (ConstantValueAttribute) obj;
-        if (!Objects.equals(entry, other.entry)) {
-            return false;
-        }
-        return true;
+    if (this.getClass() != obj.getClass()) {
+      return false;
     }
-
-    @Override
-    protected int getLength() {
-        return 2;
+    final ConstantValueAttribute other = (ConstantValueAttribute) obj;
+    if (!Objects.equals(entry, other.entry)) {
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return new ClassFileEntry[] {getAttributeName(), entry};
-    }
+  @Override
+  protected int getLength() {
+    return 0;
+  }
 
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = super.hashCode();
-        result = PRIME * result + ((entry == null) ? 0 : entry.hashCode());
-        return result;
-    }
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    return new ClassFileEntry[] {getAttributeName(), entry};
+  }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        entry.resolve(pool);
-        this.constantIndex = pool.indexOf(entry);
-    }
+  @Override
+  public int hashCode() {
+    final int PRIME = 31;
+    int result = super.hashCode();
+    result = PRIME * result + ((entry == null) ? 0 : entry.hashCode());
+    return result;
+  }
 
-    @Override
-    public String toString() {
-        return "Constant:" + entry;
-    }
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    entry.resolve(pool);
+    this.constantIndex = pool.indexOf(entry);
+  }
 
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(constantIndex);
-    }
+  @Override
+  public String toString() {
+    return "Constant:" + entry;
+  }
 
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(constantIndex);
+  }
 }
