@@ -21,37 +21,34 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Just a structure to hold a {@link ServletRequest} and {@link ServletContext}
- * together.
- */
+/** Just a structure to hold a {@link ServletRequest} and {@link ServletContext} together. */
 public class ServletRequestAndContext extends HttpSessionAndServletContext {
-    private final ServletRequest request;
+  private final ServletRequest request;
 
-    /**
-     * Create a new ServletRequestAndContext.
-     *
-     * @param request ServletRequest
-     * @param context ServletContext
-     */
-    public ServletRequestAndContext(final ServletRequest request,
-            final ServletContext context) {
-        super(null, context);
-        this.request = request;
-    }
+  /**
+   * Create a new ServletRequestAndContext.
+   *
+   * @param request ServletRequest
+   * @param context ServletContext
+   */
+  public ServletRequestAndContext(final ServletRequest request, final ServletContext context) {
+    super(null, context);
+    this.request = request;
+  }
 
-    @Override
-    public HttpSession getSession() {
-        return request instanceof HttpServletRequest
-                ? ((HttpServletRequest) request).getSession(false) : null;
-    }
+  @Override
+  public HttpSession getSession() {
+    return request instanceof HttpServletRequest
+        ? ((HttpServletRequest) request).getSession(false)
+        : null;
+  }
 
-    /**
-     * Get the request.
-     *
-     * @return ServletRequest
-     */
-    public ServletRequest getServletRequest() {
-        return request;
-    }
+  /**
+   * Get the request.
+   *
+   * @return ServletRequest
+   */
+  public ServletRequest getServletRequest() {
+    return request;
+  }
 }
