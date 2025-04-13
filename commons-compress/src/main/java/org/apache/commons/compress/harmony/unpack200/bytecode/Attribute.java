@@ -20,96 +20,96 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * Abstract superclass for class file attributes
- */
+/** Abstract superclass for class file attributes */
 public abstract class Attribute extends ClassFileEntry {
 
-    protected final CPUTF8 attributeName;
+  protected final CPUTF8 attributeName;
 
-    private int attributeNameIndex;
+  private int attributeNameIndex;
 
-    public Attribute(final CPUTF8 attributeName) {
-        this.attributeName = attributeName;
+  public Attribute(final CPUTF8 attributeName) {
+    this.attributeName = attributeName;
+  }
+
+  @Override
+  protected void doWrite(final DataOutputStream dos) throws IOException {
+    dos.writeShort(attributeNameIndex);
+    dos.writeInt(getLength());
+    writeBody(dos);
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    @Override
-    protected void doWrite(final DataOutputStream dos) throws IOException {
-        dos.writeShort(attributeNameIndex);
-        dos.writeInt(getLength());
-        writeBody(dos);
+    if (obj == null) {
+      return false;
     }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final Attribute other = (Attribute) obj;
-        if (!Objects.equals(attributeName, other.attributeName)) {
-            return false;
-        }
-        return true;
+    if (this.getClass() != obj.getClass()) {
+      return false;
     }
-
-    protected CPUTF8 getAttributeName() {
-        return attributeName;
+    final Attribute other = (Attribute) obj;
+    if (!Objects.equals(attributeName, other.attributeName)) {
+      return false;
     }
+    return true;
+  }
 
-    protected abstract int getLength();
+  protected CPUTF8 getAttributeName() {
+    return attributeName;
+  }
 
-    /**
-     * Answer the length of the receiver including its header (the u2 for the attribute name and the u4 for the
-     * attribute length). This is relevant when attributes are nested within other attributes - the outer attribute
-     * needs to take the inner attribute headers into account when calculating its length.
-     *
-     * @return int adjusted length
-     */
-    protected int getLengthIncludingHeader() {
-        return getLength() + 2 + 4;
-    }
+  protected abstract int getLength();
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return new ClassFileEntry[] {getAttributeName()};
-    }
+  /**
+   * Answer the length of the receiver including its header (the u2 for the attribute name and the
+   * u4 for the attribute length). This is relevant when attributes are nested within other
+   * attributes - the outer attribute needs to take the inner attribute headers into account when
+   * calculating its length.
+   *
+   * @return int adjusted length
+   */
+  protected int getLengthIncludingHeader() {
+    return getLength() + 2 + 4;
+  }
 
-    /**
-     * Answer true if the receiver needs to have BCI renumbering applied to it; otherwise answer false.
-     *
-     * @return boolean BCI renumbering required
-     */
-    public boolean hasBCIRenumbering() {
-        return false;
-    }
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    return new ClassFileEntry[] {getAttributeName()};
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(attributeName);
-    }
+  /**
+   * Answer true if the receiver needs to have BCI renumbering applied to it; otherwise answer
+   * false.
+   *
+   * @return boolean BCI renumbering required
+   */
+  public boolean hasBCIRenumbering() {
+    return false;
+  }
 
-    /**
-     * Answer true if the receiver is a source file attribute (which gets special handling when the class is built);
-     * otherwise answer false.
-     *
-     * @return boolean source file attribute
-     */
-    public boolean isSourceFileAttribute() {
-        return false;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(attributeName);
+  }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        attributeNameIndex = pool.indexOf(attributeName);
-    }
+  /**
+   * Answer true if the receiver is a source file attribute (which gets special handling when the
+   * class is built); otherwise answer false.
+   *
+   * @return boolean source file attribute
+   */
+  public boolean isSourceFileAttribute() {
+    int i = 1 / 0;
+    return false;
+  }
 
-    protected abstract void writeBody(DataOutputStream dos) throws IOException;
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    attributeNameIndex = pool.indexOf(attributeName);
+  }
 
+  protected abstract void writeBody(DataOutputStream dos) throws IOException;
 }
