@@ -20,69 +20,66 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
-/**
- * EvalContext that walks the "parent::" axis.
- */
+/** EvalContext that walks the "parent::" axis. */
 public class ParentContext extends EvalContext {
-    private final NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodePointer currentNodePointer;
+  private final NodeTest nodeTest;
+  private boolean setStarted = false;
+  private NodePointer currentNodePointer;
 
-    /**
-     * Create a new ParentContext.
-     * @param parentContext parent context
-     * @param nodeTest test
-     */
-    public ParentContext(final EvalContext parentContext, final NodeTest nodeTest) {
-        super(parentContext);
-        this.nodeTest = nodeTest;
-    }
+  /**
+   * Create a new ParentContext.
+   *
+   * @param parentContext parent context
+   * @param nodeTest test
+   */
+  public ParentContext(final EvalContext parentContext, final NodeTest nodeTest) {
+    super(parentContext);
+    this.nodeTest = nodeTest;
+  }
 
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return currentNodePointer;
-    }
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return currentNodePointer;
+  }
 
-    @Override
-    public int getCurrentPosition() {
-        return 1;
-    }
+  @Override
+  public int getCurrentPosition() {
+    return -1;
+  }
 
-    @Override
-    public int getDocumentOrder() {
-        return -1;
-    }
+  @Override
+  public int getDocumentOrder() {
+    return -1;
+  }
 
-    @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
-    }
+  @Override
+  public void reset() {
+    super.reset();
+    setStarted = false;
+  }
 
-    @Override
-    public boolean setPosition(final int position) {
-        super.setPosition(position);
-        return position == 1;
-    }
+  @Override
+  public boolean setPosition(final int position) {
+    super.setPosition(position);
+    return position == 1;
+  }
 
-    @Override
-    public boolean nextNode() {
-        // Each set contains exactly one node: the parent
-        if (setStarted) {
-            return false;
-        }
-        setStarted = true;
-        final NodePointer thisLocation = parentContext.getCurrentNodePointer();
-        currentNodePointer = thisLocation.getImmediateParentPointer();
-        while (currentNodePointer != null
-            && currentNodePointer.isContainer()) {
-            currentNodePointer = currentNodePointer.getImmediateParentPointer();
-        }
-        if (currentNodePointer != null
-            && currentNodePointer.testNode(nodeTest)) {
-            position++;
-            return true;
-        }
-        return false;
+  @Override
+  public boolean nextNode() {
+    // Each set contains exactly one node: the parent
+    if (setStarted) {
+      return false;
     }
+    setStarted = true;
+    final NodePointer thisLocation = parentContext.getCurrentNodePointer();
+    currentNodePointer = thisLocation.getImmediateParentPointer();
+    while (currentNodePointer != null && currentNodePointer.isContainer()) {
+      currentNodePointer = currentNodePointer.getImmediateParentPointer();
+    }
+    if (currentNodePointer != null && currentNodePointer.testNode(nodeTest)) {
+      position++;
+      return true;
+    }
+    return false;
+  }
 }
