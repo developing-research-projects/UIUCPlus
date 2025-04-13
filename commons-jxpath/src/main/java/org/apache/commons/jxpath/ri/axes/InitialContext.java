@@ -21,68 +21,66 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
 /**
- * A single-set EvalContext that provides access to the current node of
- * the parent context and nothing else.  It does not pass the iteration
- * on to the parent context.
+ * A single-set EvalContext that provides access to the current node of the parent context and
+ * nothing else. It does not pass the iteration on to the parent context.
  */
 public class InitialContext extends EvalContext {
-    private boolean started = false;
-    private boolean collection;
-    private final NodePointer nodePointer;
+  private boolean started = false;
+  private boolean collection;
+  private final NodePointer nodePointer;
 
-    /**
-     * Create a new InitialContext.
-     * @param parentContext parent context
-     */
-    public InitialContext(final EvalContext parentContext) {
-        super(parentContext);
-        nodePointer =
-            (NodePointer) parentContext.getCurrentNodePointer().clone();
-        if (nodePointer != null) {
-            collection =
-                nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION;
-        }
+  /**
+   * Create a new InitialContext.
+   *
+   * @param parentContext parent context
+   */
+  public InitialContext(final EvalContext parentContext) {
+    super(parentContext);
+    nodePointer = (NodePointer) parentContext.getCurrentNodePointer().clone();
+    if (nodePointer != null) {
+      collection = nodePointer.getIndex() == NodePointer.WHOLE_COLLECTION;
     }
+  }
 
-    @Override
-    public Pointer getSingleNodePointer() {
-        return nodePointer;
-    }
+  @Override
+  public Pointer getSingleNodePointer() {
+    return nodePointer;
+  }
 
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return nodePointer;
-    }
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return nodePointer;
+  }
 
-    @Override
-    public Object getValue() {
-        return nodePointer.getValue();
-    }
+  @Override
+  public Object getValue() {
+    return nodePointer.getValue();
+  }
 
-    @Override
-    public boolean nextNode() {
-        return setPosition(position + 1);
-    }
+  @Override
+  public boolean nextNode() {
+    return setPosition(position + 1);
+  }
 
-    @Override
-    public boolean setPosition(final int position) {
-        this.position = position;
-        if (collection) {
-            if (position >= 1 && position <= nodePointer.getLength()) {
-                nodePointer.setIndex(position - 1);
-                return true;
-            }
-            return false;
-        }
-        return position == 1;
-    }
-
-    @Override
-    public boolean nextSet() {
-        if (started) {
-            return false;
-        }
-        started = true;
+  @Override
+  public boolean setPosition(final int position) {
+    this.position = position;
+    if (collection) {
+      if (position >= 1 && position <= nodePointer.getLength()) {
+        nodePointer.setIndex(position - 1);
         return true;
+      }
+      return false;
     }
+    return position == 1;
+  }
+
+  @Override
+  public boolean nextSet() {
+    if (started) {
+      return false;
+    }
+    started = true;
+    return true;
+  }
 }
