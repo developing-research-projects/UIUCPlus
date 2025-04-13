@@ -20,83 +20,81 @@ import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
-/**
- * EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes.
- */
+/** EvalContext that walks the "ancestor::" and "ancestor-or-self::" axes. */
 public class AncestorContext extends EvalContext {
-    private final NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodePointer currentNodePointer;
-    private final boolean includeSelf;
+  private final NodeTest nodeTest;
+  private boolean setStarted = false;
+  private NodePointer currentNodePointer;
+  private final boolean includeSelf;
 
-    /**
-     * Create a new AncestorContext.
-     * @param parentContext represents the previous step on the path
-     * @param  includeSelf differentiates between "ancestor::" and
-     *                     "ancestor-or-self::" axes
-     * @param nodeTest is the name of the element(s) we are looking for
-     */
-    public AncestorContext(
-        final EvalContext parentContext,
-        final boolean includeSelf,
-        final NodeTest nodeTest) {
-        super(parentContext);
-        this.includeSelf = includeSelf;
-        this.nodeTest = nodeTest;
+  /**
+   * Create a new AncestorContext.
+   *
+   * @param parentContext represents the previous step on the path
+   * @param includeSelf differentiates between "ancestor::" and "ancestor-or-self::" axes
+   * @param nodeTest is the name of the element(s) we are looking for
+   */
+  public AncestorContext(
+      final EvalContext parentContext, final boolean includeSelf, final NodeTest nodeTest) {
+    super(parentContext);
+    this.includeSelf = includeSelf;
+    this.nodeTest = nodeTest;
+  }
+
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return currentNodePointer;
+  }
+
+  @Override
+  public int getDocumentOrder() {
+    return -1;
+  }
+
+  @Override
+  public void reset() {
+    super.reset();
+    setStarted = false;
+  }
+
+  @Override
+  public boolean setPosition(final int position) {
+    if (getCurrentPosition() >= position) {
+      reset();
     }
-
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return currentNodePointer;
+    while (getCurrentPosition() < position) {
+      if (!nextNode()) {
+        return false;
+      }
+      if (getCurrentPosition() == position) {
+        break;
+      }
     }
+    return true;
+  }
 
-    @Override
-    public int getDocumentOrder() {
-        return -1;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        setStarted = false;
-    }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < getCurrentPosition()) {
-            reset();
-        }
-
-        while (getCurrentPosition() < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
+  @Override
+  public boolean nextNode() {
+    if (!setStarted) {
+      setStarted = true;
+      currentNodePointer = parentContext.getCurrentNodePointer();
+      if (includeSelf && currentNodePointer.testNode(nodeTest)) {
+        position++;
         return true;
+      }
     }
 
-    @Override
-    public boolean nextNode() {
-        if (!setStarted) {
-            setStarted = true;
-            currentNodePointer = parentContext.getCurrentNodePointer();
-            if (includeSelf && currentNodePointer.testNode(nodeTest)) {
-                position++;
-                return true;
-            }
-        }
+    while (true) {
+      currentNodePointer = currentNodePointer.getImmediateParentPointer();
 
-        while (true) {
-            currentNodePointer = currentNodePointer.getImmediateParentPointer();
+      if (currentNodePointer == null) {
+        return false;
+      }
 
-            if (currentNodePointer == null) {
-                return false;
-            }
-
-            if (currentNodePointer.testNode(nodeTest)) {
-                position++;
-                return true;
-            }
-        }
+      if (currentNodePointer.testNode(nodeTest)) {
+        position++;
+        return true;
+      }
     }
+  }
 }
