@@ -20,28 +20,28 @@ import org.apache.commons.compress.harmony.unpack200.SegmentConstantPool;
 import org.apache.commons.compress.harmony.unpack200.bytecode.OperandManager;
 
 /**
- * This class implements references to methods defined in the superclass, which is set by this class in the
- * OperandManager. Pack200 allows the superclass to be inferred from context; this class tracks previous method
- * reference superclasses to allow this.
+ * This class implements references to methods defined in the superclass, which is set by this class
+ * in the OperandManager. Pack200 allows the superclass to be inferred from context; this class
+ * tracks previous method reference superclasses to allow this.
  */
 public class SuperMethodRefForm extends ClassSpecificReferenceForm {
 
-    public SuperMethodRefForm(final int opcode, final String name, final int[] rewrite) {
-        super(opcode, name, rewrite);
-    }
+  public SuperMethodRefForm(final int opcode, final String name, final int[] rewrite) {
+    super(opcode, name, rewrite);
+  }
 
-    @Override
-    protected String context(final OperandManager operandManager) {
-        return operandManager.getSuperClass();
-    }
+  @Override
+  protected String context(final OperandManager operandManager) {
+    return operandManager.getSuperClass();
+  }
 
-    @Override
-    protected int getOffset(final OperandManager operandManager) {
-        return operandManager.nextSuperMethodRef();
-    }
+  @Override
+  protected int getOffset(final OperandManager operandManager) {
+    return operandManager.nextSuperFieldRef();
+  }
 
-    @Override
-    protected int getPoolID() {
-        return SegmentConstantPool.CP_METHOD;
-    }
+  @Override
+  protected int getPoolID() {
+    return SegmentConstantPool.CP_METHOD;
+  }
 }
