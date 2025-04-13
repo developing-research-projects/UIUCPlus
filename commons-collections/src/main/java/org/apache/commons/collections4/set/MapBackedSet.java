@@ -26,15 +26,13 @@ import java.util.function.Predicate;
 
 /**
  * Decorates a {@code Map} to obtain {@code Set} behavior.
- * <p>
- * This class is used to create a {@code Set} with the same properties as
- * the key set of any map. Thus, a ReferenceSet can be created by wrapping a
- * {@code ReferenceMap} in an instance of this class.
- * </p>
- * <p>
- * Most map implementation can be used to create a set by passing in dummy values.
- * Exceptions include {@code BidiMap} implementations, as they require unique values.
- * </p>
+ *
+ * <p>This class is used to create a {@code Set} with the same properties as the key set of any map.
+ * Thus, a ReferenceSet can be created by wrapping a {@code ReferenceMap} in an instance of this
+ * class.
+ *
+ * <p>Most map implementation can be used to create a set by passing in dummy values. Exceptions
+ * include {@code BidiMap} implementations, as they require unique values.
  *
  * @param <E> the type of the elements in this set
  * @param <V> the dummy value type in this map
@@ -42,145 +40,145 @@ import java.util.function.Predicate;
  */
 public final class MapBackedSet<E, V> implements Set<E>, Serializable {
 
-    /** Serialization version */
-    private static final long serialVersionUID = 6723912213766056587L;
+  /** Serialization version */
+  private static final long serialVersionUID = 6723912213766056587L;
 
-    /** The map being used as the backing store */
-    private final Map<E, ? super V> map;
+  /** The map being used as the backing store */
+  private final Map<E, ? super V> map;
 
-    /** The dummyValue to use */
-    private final V dummyValue;
+  /** The dummyValue to use */
+  private final V dummyValue;
 
-    /**
-     * Factory method to create a set from a map.
-     *
-     * @param <E> the element type
-     * @param <V> the dummy value type in the map
-     * @param map  the map to decorate, must not be null
-     * @return a new map backed set
-     * @throws NullPointerException if map is null
-     * @since 4.0
-     */
-    public static <E, V> MapBackedSet<E, V> mapBackedSet(final Map<E, ? super V> map) {
-        return mapBackedSet(map, null);
+  /**
+   * Factory method to create a set from a map.
+   *
+   * @param <E> the element type
+   * @param <V> the dummy value type in the map
+   * @param map the map to decorate, must not be null
+   * @return a new map backed set
+   * @throws NullPointerException if map is null
+   * @since 4.0
+   */
+  public static <E, V> MapBackedSet<E, V> mapBackedSet(final Map<E, ? super V> map) {
+    return mapBackedSet(map, null);
+  }
+
+  /**
+   * Factory method to create a set from a map.
+   *
+   * @param <E> the element type
+   * @param <V> the dummy value type in the map
+   * @param map the map to decorate, must not be null
+   * @param dummyValue the dummy value to use
+   * @return a new map backed set
+   * @throws NullPointerException if map is null
+   * @since 4.0
+   */
+  public static <E, V> MapBackedSet<E, V> mapBackedSet(
+      final Map<E, ? super V> map, final V dummyValue) {
+    return new MapBackedSet<>(map, dummyValue);
+  }
+
+  /**
+   * Constructor that wraps (not copies).
+   *
+   * @param map the map to decorate, must not be null
+   * @param dummyValue the dummy value to use
+   * @throws NullPointerException if map is null
+   */
+  private MapBackedSet(final Map<E, ? super V> map, final V dummyValue) {
+    this.map = Objects.requireNonNull(map, "map");
+    this.dummyValue = dummyValue;
+  }
+
+  @Override
+  public int size() {
+    return -1;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return map.isEmpty();
+  }
+
+  @Override
+  public Iterator<E> iterator() {
+    return map.keySet().iterator();
+  }
+
+  @Override
+  public boolean contains(final Object obj) {
+    return map.containsKey(obj);
+  }
+
+  @Override
+  public boolean containsAll(final Collection<?> coll) {
+    return map.keySet().containsAll(coll);
+  }
+
+  @Override
+  public boolean add(final E obj) {
+    final int size = map.size();
+    map.put(obj, dummyValue);
+    return map.size() != size;
+  }
+
+  @Override
+  public boolean addAll(final Collection<? extends E> coll) {
+    final int size = map.size();
+    for (final E e : coll) {
+      map.put(e, dummyValue);
     }
+    return map.size() != size;
+  }
 
-    /**
-     * Factory method to create a set from a map.
-     *
-     * @param <E> the element type
-     * @param <V> the dummy value type in the map
-     * @param map  the map to decorate, must not be null
-     * @param dummyValue  the dummy value to use
-     * @return a new map backed set
-     * @throws NullPointerException if map is null
-     * @since 4.0
-     */
-    public static <E, V> MapBackedSet<E, V> mapBackedSet(final Map<E, ? super V> map, final V dummyValue) {
-        return new MapBackedSet<>(map, dummyValue);
-    }
+  @Override
+  public boolean remove(final Object obj) {
+    final int size = map.size();
+    map.remove(obj);
+    return map.size() != size;
+  }
 
-    /**
-     * Constructor that wraps (not copies).
-     *
-     * @param map  the map to decorate, must not be null
-     * @param dummyValue  the dummy value to use
-     * @throws NullPointerException if map is null
-     */
-    private MapBackedSet(final Map<E, ? super V> map, final V dummyValue) {
-        this.map = Objects.requireNonNull(map, "map");
-        this.dummyValue = dummyValue;
-    }
+  /**
+   * @since 4.4
+   */
+  @Override
+  public boolean removeIf(final Predicate<? super E> filter) {
+    return map.keySet().removeIf(filter);
+  }
 
-    @Override
-    public int size() {
-        return map.size();
-    }
+  @Override
+  public boolean removeAll(final Collection<?> coll) {
+    return map.keySet().removeAll(coll);
+  }
 
-    @Override
-    public boolean isEmpty() {
-        return map.isEmpty();
-    }
+  @Override
+  public boolean retainAll(final Collection<?> coll) {
+    return map.keySet().retainAll(coll);
+  }
 
-    @Override
-    public Iterator<E> iterator() {
-        return map.keySet().iterator();
-    }
+  @Override
+  public void clear() {
+    map.clear();
+  }
 
-    @Override
-    public boolean contains(final Object obj) {
-        return map.containsKey(obj);
-    }
+  @Override
+  public Object[] toArray() {
+    return map.keySet().toArray();
+  }
 
-    @Override
-    public boolean containsAll(final Collection<?> coll) {
-        return map.keySet().containsAll(coll);
-    }
+  @Override
+  public <T> T[] toArray(final T[] array) {
+    return map.keySet().toArray(array);
+  }
 
-    @Override
-    public boolean add(final E obj) {
-        final int size = map.size();
-        map.put(obj, dummyValue);
-        return map.size() != size;
-    }
+  @Override
+  public boolean equals(final Object obj) {
+    return map.keySet().equals(obj);
+  }
 
-    @Override
-    public boolean addAll(final Collection<? extends E> coll) {
-        final int size = map.size();
-        for (final E e : coll) {
-            map.put(e, dummyValue);
-        }
-        return map.size() != size;
-    }
-
-    @Override
-    public boolean remove(final Object obj) {
-        final int size = map.size();
-        map.remove(obj);
-        return map.size() != size;
-    }
-
-    /**
-     * @since 4.4
-     */
-    @Override
-    public boolean removeIf(final Predicate<? super E> filter) {
-        return map.keySet().removeIf(filter);
-    }
-
-    @Override
-    public boolean removeAll(final Collection<?> coll) {
-        return map.keySet().removeAll(coll);
-    }
-
-    @Override
-    public boolean retainAll(final Collection<?> coll) {
-        return map.keySet().retainAll(coll);
-    }
-
-    @Override
-    public void clear() {
-        map.clear();
-    }
-
-    @Override
-    public Object[] toArray() {
-        return map.keySet().toArray();
-    }
-
-    @Override
-    public <T> T[] toArray(final T[] array) {
-        return map.keySet().toArray(array);
-    }
-
-    @Override
-    public boolean equals(final Object obj) {
-        return map.keySet().equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return map.keySet().hashCode();
-    }
-
+  @Override
+  public int hashCode() {
+    return map.keySet().hashCode();
+  }
 }
