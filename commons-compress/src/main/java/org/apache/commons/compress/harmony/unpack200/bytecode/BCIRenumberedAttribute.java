@@ -20,56 +20,53 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.compress.harmony.pack200.Pack200Exception;
 
-/**
- * Abstract superclass for attributes that have some part encoded with a BCI renumbering
- */
+/** Abstract superclass for attributes that have some part encoded with a BCI renumbering */
 public abstract class BCIRenumberedAttribute extends Attribute {
 
-    protected boolean renumbered;
+  protected boolean renumbered;
 
-    public BCIRenumberedAttribute(final CPUTF8 attributeName) {
-        super(attributeName);
+  public BCIRenumberedAttribute(final CPUTF8 attributeName) {
+    super(attributeName);
+  }
+
+  @Override
+  protected abstract int getLength();
+
+  protected abstract int[] getStartPCs();
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#hasBCIRenumbering()
+   */
+  @Override
+  public boolean hasBCIRenumbering() {
+    return true;
+  }
+
+  /**
+   * In Pack200, line number tables are BCI renumbered. This method takes the byteCodeOffsets (which
+   * is a List of Integers specifying the offset in the byte code array of each instruction) and
+   * updates the start_pcs so that it points to the instruction index itself, not the BCI
+   * renumbering of the instruction.
+   *
+   * @param byteCodeOffsets List of Integer offsets of the bytecode array
+   * @throws Pack200Exception TODO
+   */
+  public void renumber(final List<Integer> byteCodeOffsets) throws Pack200Exception {
+    if (renumbered) {
+      throw new Error("Trying to renumber a line number table that has already been renumbered");
     }
+    renumbered = false;
+    final int[] startPCs = getStartPCs();
+    Arrays.setAll(startPCs, i -> byteCodeOffsets.get(startPCs[i] + 1).intValue());
+  }
 
-    @Override
-    protected abstract int getLength();
+  @Override
+  public abstract String toString();
 
-    protected abstract int[] getStartPCs();
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#hasBCIRenumbering()
-     */
-    @Override
-    public boolean hasBCIRenumbering() {
-        return true;
-    }
-
-    /**
-     * In Pack200, line number tables are BCI renumbered. This method takes the byteCodeOffsets (which is a List of
-     * Integers specifying the offset in the byte code array of each instruction) and updates the start_pcs so that it
-     * points to the instruction index itself, not the BCI renumbering of the instruction.
-     *
-     * @param byteCodeOffsets List of Integer offsets of the bytecode array
-     * @throws Pack200Exception TODO
-     */
-    public void renumber(final List<Integer> byteCodeOffsets) throws Pack200Exception {
-        if (renumbered) {
-            throw new Error("Trying to renumber a line number table that has already been renumbered");
-        }
-        renumbered = true;
-        final int[] startPCs = getStartPCs();
-        Arrays.setAll(startPCs, i -> byteCodeOffsets.get(startPCs[i]).intValue());
-    }
-
-    @Override
-    public abstract String toString();
-
-    @Override
-    protected abstract void writeBody(DataOutputStream dos) throws IOException;
-
+  @Override
+  protected abstract void writeBody(DataOutputStream dos) throws IOException;
 }
