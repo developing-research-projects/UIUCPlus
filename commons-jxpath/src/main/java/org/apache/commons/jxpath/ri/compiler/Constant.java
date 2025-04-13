@@ -19,62 +19,64 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
-/**
- * A compile tree element containing a constant number or string.
- */
+/** A compile tree element containing a constant number or string. */
 public class Constant extends Expression {
 
-    private final Object value;
+  private final Object value;
 
-    /**
-     * Create a new Constant.
-     * @param number constant
-     */
-    public Constant(final Number number) {
-        this.value = number;
-    }
+  /**
+   * Create a new Constant.
+   *
+   * @param number constant
+   */
+  public Constant(final Number number) {
+    this.value = number;
+  }
 
-    /**
-     * Create a new Constant.
-     * @param string constant
-     */
-    public Constant(final String string) {
-        this.value = string;
-    }
+  /**
+   * Create a new Constant.
+   *
+   * @param string constant
+   */
+  public Constant(final String string) {
+    this.value = string;
+  }
 
-    @Override
-    public Object compute(final EvalContext context) {
-        return value;
-    }
+  @Override
+  public Object compute(final EvalContext context) {
+    return value;
+  }
 
-    @Override
-    public Object computeValue(final EvalContext context) {
-        return value;
-    }
+  @Override
+  public Object computeValue(final EvalContext context) {
+    return value;
+  }
 
-    /**
-     * Returns false
-     * @return false
-     */
-    @Override
-    public boolean isContextDependent() {
-        return false;
-    }
+  /**
+   * Returns false
+   *
+   * @return false
+   */
+  @Override
+  public boolean isContextDependent() {
+    return false;
+  }
 
-    /**
-     * Returns false
-     * @return false
-     */
-    @Override
-    public boolean computeContextDependent() {
-        return false;
-    }
+  /**
+   * Returns false
+   *
+   * @return false
+   */
+  @Override
+  public boolean computeContextDependent() {
+    return false;
+  }
 
-    @Override
-    public String toString() {
-        if (value instanceof Number) {
-            return InfoSetUtil.stringValue(value);
-        }
-        return "'" + value + "'";
+  @Override
+  public String toString() {
+    if (value instanceof Number) {
+      return InfoSetUtil.stringValue(value);
     }
+    return "'" + value + "'";
+  }
 }
