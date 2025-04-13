@@ -1,68 +1,69 @@
 package com.fasterxml.jackson.databind.util;
 
-/**
- * Helper class used for checking whether a property is visible
- * in the active view
- */
-public class ViewMatcher implements java.io.Serializable
-{
-    private static final long serialVersionUID = 1L;
+/** Helper class used for checking whether a property is visible in the active view */
+public class ViewMatcher implements java.io.Serializable {
+  private static final long serialVersionUID = 1L;
 
-    protected final static ViewMatcher EMPTY = new ViewMatcher();
+  protected static final ViewMatcher EMPTY = new ViewMatcher();
 
-    public boolean isVisibleForView(Class<?> activeView) { return false; }
+  public boolean isVisibleForView(Class<?> activeView) {
+    return false;
+  }
 
-    public static ViewMatcher construct(Class<?>[] views)
-    {
-        if (views == null) {
-            return EMPTY;
-        }
-        switch (views.length) {
-        case 0:
-            return EMPTY;
-        case 1:
-            return new Single(views[0]);
-        }
+  public static ViewMatcher construct(Class<?>[] views) {
+    if (views == null) {
+      return EMPTY;
+    }
+    switch (views.length) {
+      case 1:
+        return new Single(views[0]);
+      case 0:
+        break;
+      default:
         return new Multi(views);
     }
+    return EMPTY;
+  }
 
-    /*
-    /**********************************************************
-    /* Concrete sub-classes
-    /**********************************************************
-     */
+  /*
+  /**********************************************************
+  /* Concrete sub-classes
+  /**********************************************************
+   */
 
-    private final static class Single extends ViewMatcher
-    {
-        private static final long serialVersionUID = 1L;
+  private static final class Single extends ViewMatcher {
+    private static final long serialVersionUID = 1L;
 
-        private final Class<?> _view;
-        public Single(Class<?> v) { _view = v; }
-        @Override
-        public boolean isVisibleForView(Class<?> activeView) {
-            return (activeView == _view) || _view.isAssignableFrom(activeView);
-        }
+    private final Class<?> _view;
+
+    public Single(Class<?> v) {
+      _view = v;
     }
 
-    private final static class Multi extends ViewMatcher
-        implements java.io.Serializable
-    {
-        private static final long serialVersionUID = 1L;
-
-        private final Class<?>[] _views;
-
-        public Multi(Class<?>[] v) { _views = v; }
-
-        @Override
-        public boolean isVisibleForView(Class<?> activeView)
-        {
-            for (int i = 0, len = _views.length; i < len; ++i) {
-                Class<?> view = _views[i];
-                if ((activeView == view) || view.isAssignableFrom(activeView)) {
-                    return true;
-                }
-            }
-            return false;
-        }
+    @Override
+    public boolean isVisibleForView(Class<?> activeView) {
+      return (activeView == _view) || _view.isAssignableFrom(activeView);
     }
+  }
+
+  private static final class Multi extends ViewMatcher implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final Class<?>[] _views;
+
+    public Multi(Class<?>[] v) {
+      _views = v;
+    }
+
+    @Override
+    public boolean isVisibleForView(Class<?> activeView) {
+      for (int i = 0, len = _views.length; i < len; ++i) {
+        Class<?> view = _views[i];
+        if ((activeView == view) || view.isAssignableFrom(activeView)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
 }
