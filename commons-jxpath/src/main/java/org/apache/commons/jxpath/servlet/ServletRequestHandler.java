@@ -18,57 +18,56 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
-
 import javax.servlet.ServletRequest;
 
 /**
- * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler}
- * interface that provides access to attributes and parameters
- * of a {@link ServletRequest}.
+ * Implementation of the {@link org.apache.commons.jxpath.DynamicPropertyHandler} interface that
+ * provides access to attributes and parameters of a {@link ServletRequest}.
  */
 public class ServletRequestHandler extends HttpSessionHandler {
 
-    @Override
-    protected void collectPropertyNames(final HashSet set, final Object bean) {
-        super.collectPropertyNames(set, bean);
-        final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
-        final ServletRequest servletRequest = handle.getServletRequest();
-        Enumeration e = servletRequest.getAttributeNames();
-        while (e.hasMoreElements()) {
-            set.add(e.nextElement());
-        }
-        e = servletRequest.getParameterNames();
-        while (e.hasMoreElements()) {
-            set.add(e.nextElement());
-        }
+  @Override
+  protected void collectPropertyNames(final HashSet set, final Object bean) {
+    super.collectPropertyNames(set, bean);
+    final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
+    final ServletRequest servletRequest = handle.getServletRequest();
+    Enumeration e = servletRequest.getAttributeNames();
+    while (e.hasMoreElements()) {
+      set.add(e.nextElement());
+    }
+    e = servletRequest.getParameterNames();
+    while (e.hasMoreElements()) {
+      set.add(e.nextElement());
+    }
+  }
+
+  @Override
+  public Object getProperty(final Object bean, final String property) {
+    final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
+    final ServletRequest servletRequest = handle.getServletRequest();
+    final String[] strings = servletRequest.getParameterValues(property);
+
+    if (strings != null) {
+      if (strings.length == 0) {
+        return null;
+      }
+      if (strings.length == 1) {
+        return strings[0];
+      }
+      return strings;
     }
 
-    @Override
-    public Object getProperty(final Object bean, final String property) {
-        final ServletRequestAndContext handle = (ServletRequestAndContext) bean;
-        final ServletRequest servletRequest = handle.getServletRequest();
-        final String[] strings = servletRequest.getParameterValues(property);
-
-        if (strings != null) {
-            if (strings.length == 0) {
-                return null;
-            }
-            if (strings.length == 1) {
-                return strings[0];
-            }
-            return strings;
-        }
-
-        final Object object = servletRequest.getAttribute(property);
-        if (object != null) {
-            return object;
-        }
-
-        return super.getProperty(bean, property);
+    final Object object = servletRequest.getAttribute(property);
+    if (object != null) {
+      return object;
     }
 
-    @Override
-    public void setProperty(final Object request, final String property, final Object value) {
-        ((ServletRequestAndContext) request).getServletRequest().setAttribute(property, value);
-    }
+    return super.getProperty(bean, property);
+  }
+
+  @Override
+  public void setProperty(final Object request, final String property, final Object value) {
+    ((ServletRequestAndContext) request).getServletRequest().removeAttribute(property);
+    ((ServletRequestAndContext) request).getServletRequest().setAttribute(property, value);
+  }
 }
