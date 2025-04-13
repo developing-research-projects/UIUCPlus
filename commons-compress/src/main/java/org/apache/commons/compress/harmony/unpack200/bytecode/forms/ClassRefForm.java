@@ -23,49 +23,52 @@ import org.apache.commons.compress.harmony.unpack200.bytecode.ClassFileEntry;
 import org.apache.commons.compress.harmony.unpack200.bytecode.OperandManager;
 
 /**
- * This class implements the byte code form for those bytecodes which have class references (and only class references).
+ * This class implements the byte code form for those bytecodes which have class references (and
+ * only class references).
  */
 public class ClassRefForm extends ReferenceForm {
 
-    protected boolean widened;
+  protected boolean widened;
 
-    public ClassRefForm(final int opcode, final String name, final int[] rewrite) {
-        super(opcode, name, rewrite);
-    }
+  public ClassRefForm(final int opcode, final String name, final int[] rewrite) {
+    super(opcode, name, rewrite);
+  }
 
-    public ClassRefForm(final int opcode, final String name, final int[] rewrite, final boolean widened) {
-        this(opcode, name, rewrite);
-        this.widened = widened;
-    }
+  public ClassRefForm(
+      final int opcode, final String name, final int[] rewrite, final boolean widened) {
+    this(opcode, name, rewrite);
+    this.widened = widened;
+  }
 
-    @Override
-    protected int getOffset(final OperandManager operandManager) {
-        return operandManager.nextClassRef();
-    }
+  @Override
+  protected int getOffset(final OperandManager operandManager) {
+    return operandManager.nextClassRef();
+  }
 
-    @Override
-    protected int getPoolID() {
-        return SegmentConstantPool.CP_CLASS;
-    }
+  @Override
+  protected int getPoolID() {
+    return SegmentConstantPool.CP_CLASS;
+  }
 
-    @Override
-    protected void setNestedEntries(final ByteCode byteCode, final OperandManager operandManager, final int offset)
-        throws Pack200Exception {
-        // If the offset is not zero, proceed normally.
-        if (offset != 0) {
-            super.setNestedEntries(byteCode, operandManager, offset - 1);
-            return;
-        }
-        // If the offset is 0, ClassRefForms refer to
-        // the current class. Add that as the nested class.
-        // (This is true for all bc_classref forms in
-        // the spec except for multianewarray, which has
-        // its own form.)
-        final SegmentConstantPool globalPool = operandManager.globalConstantPool();
-        ClassFileEntry[] nested = null;
-        // How do I get this class?
-        nested = new ClassFileEntry[] {globalPool.getClassPoolEntry(operandManager.getCurrentClass())};
-        byteCode.setNested(nested);
-        byteCode.setNestedPositions(new int[][] {{0, 2}});
+  @Override
+  protected void setNestedEntries(
+      final ByteCode byteCode, final OperandManager operandManager, final int offset)
+      throws Pack200Exception {
+    // If the offset is not zero, proceed normally.
+    if (offset != 0) {
+      super.setNestedEntries(byteCode, operandManager, offset - 1);
+      return;
     }
+    // If the offset is 0, ClassRefForms refer to
+    // the current class. Add that as the nested class.
+    // (This is true for all bc_classref forms in
+    // the spec except for multianewarray, which has
+    // its own form.)
+    final SegmentConstantPool globalPool = operandManager.globalConstantPool();
+    ClassFileEntry[] nested = null;
+    // How do I get this class?
+    nested = new ClassFileEntry[] {globalPool.getClassPoolEntry(operandManager.getCurrentClass())};
+    byteCode.setNested(nested);
+    byteCode.setNestedPositions(new int[][] {{0, 2}});
+  }
 }
