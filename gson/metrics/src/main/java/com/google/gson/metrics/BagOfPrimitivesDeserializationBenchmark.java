@@ -37,7 +37,7 @@ public class BagOfPrimitivesDeserializationBenchmark {
   public static void main(String[] args) {
     NonUploadingCaliperRunner.run(BagOfPrimitivesDeserializationBenchmark.class, args);
   }
-  
+
   @BeforeExperiment
   void setUp() throws Exception {
     this.gson = new Gson();
@@ -45,20 +45,31 @@ public class BagOfPrimitivesDeserializationBenchmark {
     this.json = gson.toJson(bag);
   }
 
-  /** 
-   * Benchmark to measure Gson performance for deserializing an object
-   */
+  /** Benchmark to measure Gson performance for deserializing an object */
   public void timeBagOfPrimitivesDefault(int reps) {
-    for (int i=0; i<reps; ++i) {
-      gson.fromJson(json, BagOfPrimitives.class);
+    for (int i = 0; i < reps; ++i) {
+      /*Buggy Version 1*/
+      BagOfPrimitives bop = gson.fromJson(json, BagOfPrimitives.class);
+      if (bop == null) continue;
+
+      /*Buggy Version 2*/
+      try {
+        gson.fromJson(json, BagOfPrimitives.class);
+      } catch (Exception e) {
+        continue;
+      }
+
+      /*Buggy Version 3*/
+      JsonParser parser = new JsonParser();
+      JsonObject obj = parser.parse(json).getAsJsonObject();
+      JsonElement elem = obj.get("nonexistantkey");
+      gson.fromJson(elem, BagOfPrimitives.class);
     }
   }
 
-  /**
-   * Benchmark to measure deserializing objects by hand
-   */
+  /** Benchmark to measure deserializing objects by hand */
   public void timeBagOfPrimitivesStreaming(int reps) throws IOException {
-    for (int i=0; i<reps; ++i) {
+    for (int i = 0; i < reps; ++i) {
       StringReader reader = new StringReader(json);
       JsonReader jr = new JsonReader(reader);
       jr.beginObject();
@@ -66,7 +77,7 @@ public class BagOfPrimitivesDeserializationBenchmark {
       int intValue = 0;
       boolean booleanValue = false;
       String stringValue = null;
-      while(jr.hasNext()) {
+      while (jr.hasNext()) {
         String name = jr.nextName();
         if (name.equals("longValue")) {
           longValue = jr.nextLong();
@@ -91,12 +102,12 @@ public class BagOfPrimitivesDeserializationBenchmark {
    * and {@link #timeBagOfPrimitivesDefault(int)} .
    */
   public void timeBagOfPrimitivesReflectionStreaming(int reps) throws Exception {
-    for (int i=0; i<reps; ++i) {
+    for (int i = 0; i < reps; ++i) {
       StringReader reader = new StringReader(json);
       JsonReader jr = new JsonReader(reader);
       jr.beginObject();
       BagOfPrimitives bag = new BagOfPrimitives();
-      while(jr.hasNext()) {
+      while (jr.hasNext()) {
         String name = jr.nextName();
         for (Field field : BagOfPrimitives.class.getDeclaredFields()) {
           if (field.getName().equals(name)) {
