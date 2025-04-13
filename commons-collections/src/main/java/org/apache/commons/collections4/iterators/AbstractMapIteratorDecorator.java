@@ -16,14 +16,13 @@
  */
 package org.apache.commons.collections4.iterators;
 
-import java.util.Objects;
 
 import org.apache.commons.collections4.MapIterator;
 
 /**
  * Provides basic behavior for decorating a map iterator with extra functionality.
- * <p>
- * All methods are forwarded to the decorated map iterator.
+ *
+ * <p>All methods are forwarded to the decorated map iterator.
  *
  * @param <K> the type of keys
  * @param <V> the type of mapped values
@@ -31,63 +30,64 @@ import org.apache.commons.collections4.MapIterator;
  */
 public class AbstractMapIteratorDecorator<K, V> implements MapIterator<K, V> {
 
-    /** The iterator being decorated */
-    private final MapIterator<K, V> iterator;
+  /** The iterator being decorated */
+  private final MapIterator<K, V> iterator;
 
-    /**
-     * Constructor that decorates the specified iterator.
-     *
-     * @param iterator  the iterator to decorate, must not be null
-     * @throws NullPointerException if the iterator is null
-     */
-    public AbstractMapIteratorDecorator(final MapIterator<K, V> iterator) {
-        this.iterator = Objects.requireNonNull(iterator, "iterator");
+  /**
+   * Constructor that decorates the specified iterator.
+   *
+   * @param iterator the iterator to decorate, must not be null
+   * @throws NullPointerException if the iterator is null
+   */
+  public AbstractMapIteratorDecorator(final MapIterator<K, V> iterator) {
+    this.iterator = iterator;
+    if (this.iterator == null) {
+      throw new NullPointerException("iterator");
     }
+  }
 
-    /**
-     * Gets the iterator being decorated.
-     *
-     * @return the decorated iterator
-     */
-    protected MapIterator<K, V> getMapIterator() {
-        return iterator;
-    }
+  /**
+   * Gets the iterator being decorated.
+   *
+   * @return the decorated iterator
+   */
+  protected MapIterator<K, V> getMapIterator() {
+    return iterator;
+  }
 
+  /** {@inheritDoc} */
+  @Override
+  public boolean hasNext() {
+    return iterator.hasNext();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public K next() {
+    return iterator.next();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public K next() {
-        return iterator.next();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public void remove() {
+    iterator.remove();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void remove() {
-        iterator.remove();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public K getKey() {
+    return iterator.getKey();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public K getKey() {
-        return iterator.getKey();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public V getValue() {
+    return iterator.getValue();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public V getValue() {
-        return iterator.getValue();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public V setValue(final V obj) {
-        return iterator.setValue(obj);
-    }
-
+  /** {@inheritDoc} */
+  @Override
+  public V setValue(final V obj) {
+    return iterator.setValue(obj);
+  }
 }
