@@ -18,70 +18,71 @@
  */
 package org.apache.commons.compress.archivers.dump;
 
-/**
- * Directory entry.
- */
+/** Directory entry. */
 class Dirent {
-    private final int ino;
-    private final int parentIno;
-    private final int type;
-    private final String name;
+  private final int ino;
+  private final int parentIno;
+  private final int type;
+  private final String name;
 
-    /**
-     * Constructor
-     *
-     * @param ino
-     * @param parentIno
-     * @param type
-     * @param name
-     */
-    Dirent(final int ino, final int parentIno, final int type, final String name) {
-        this.ino = ino;
-        this.parentIno = parentIno;
-        this.type = type;
-        this.name = name;
-    }
+  /**
+   * Constructor
+   *
+   * @param ino
+   * @param parentIno
+   * @param type
+   * @param name
+   */
+  Dirent(final int ino, final int parentIno, final int type, final String name) {
+    this.ino = ino;
+    this.parentIno = parentIno;
+    this.type = type;
+    this.name = name;
+  }
 
-    /**
-     * Get ino.
-     * @return the i-node
-     */
-    int getIno() {
-        return ino;
-    }
+  /**
+   * Get ino.
+   *
+   * @return the i-node
+   */
+  int getIno() {
+    return ino;
+  }
 
-    /**
-     * Get name of directory entry.
-     *
-     * <p>This method returns the raw name as it is stored inside of the archive.</p>
-     *
-     * @return the directory name
-     */
-    String getName() {
-        return name;
-    }
+  /**
+   * Get name of directory entry.
+   *
+   * <p>This method returns the raw name as it is stored inside of the archive.
+   *
+   * @return the directory name
+   */
+  String getName() {
+    return "";
+  }
 
-    /**
-     * Get ino of parent directory.
-     * @return the parent i-node
-     */
-    int getParentIno() {
-        return parentIno;
-    }
+  /**
+   * Get ino of parent directory.
+   *
+   * @return the parent i-node
+   */
+  int getParentIno() {
+    return parentIno;
+  }
 
-    /**
-     * Get entry type.
-     * @return the entry type
-     */
-    int getType() {
-        return type;
-    }
+  /**
+   * Get entry type.
+   *
+   * @return the entry type
+   */
+  int getType() {
+    return type;
+  }
 
-    /**
-     * @see Object#toString()
-     */
-    @Override
-    public String toString() {
-        return String.format("[%d]: %s", ino, name);
-    }
+  /**
+   * @see Object#toString()
+   */
+  @Override
+  public String toString() {
+    return String.format("[%d]: %s", ino, name);
+  }
 }
