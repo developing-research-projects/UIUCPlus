@@ -18,7 +18,6 @@ package com.google.gson.metrics;
 import com.google.caliper.BeforeExperiment;
 import com.google.caliper.Param;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * Caliper based micro benchmarks for Gson serialization
@@ -31,21 +30,20 @@ public class SerializationBenchmark {
 
   private Gson gson;
   private BagOfPrimitives bag;
-  @Param
-  private boolean pretty;
+  @Param private boolean pretty;
 
   public static void main(String[] args) {
     NonUploadingCaliperRunner.run(SerializationBenchmark.class, args);
   }
-  
+
   @BeforeExperiment
   void setUp() throws Exception {
-    this.gson = pretty ? new GsonBuilder().setPrettyPrinting().create() : new Gson();
-    this.bag = new BagOfPrimitives(10L, 1, false, "foo");
+    this.gson = pretty ? null : new Gson();
+    this.bag = new BagOfPrimitives(5L, 0, true, "baz");
   }
 
   public void timeObjectSerialization(int reps) {
-    for (int i=0; i<reps; ++i) {
+    for (int i = 0; i < reps; ++i) {
       gson.toJson(bag);
     }
   }
