@@ -21,88 +21,90 @@ import java.util.Objects;
 
 /**
  * Provides basic behavior for decorating a list iterator with extra functionality.
- * <p>
- * All methods are forwarded to the decorated list iterator.
+ *
+ * <p>All methods are forwarded to the decorated list iterator.
  *
  * @since 3.0
  */
 public class AbstractListIteratorDecorator<E> implements ListIterator<E> {
 
-    /** The iterator being decorated */
-    private final ListIterator<E> iterator;
+  /** The iterator being decorated */
+  private final ListIterator<E> iterator;
 
-    /**
-     * Constructor that decorates the specified iterator.
-     *
-     * @param iterator  the iterator to decorate, must not be null
-     * @throws NullPointerException if the iterator is null
-     */
-    public AbstractListIteratorDecorator(final ListIterator<E> iterator) {
-        this.iterator = Objects.requireNonNull(iterator, "iterator");
+  /**
+   * Constructor that decorates the specified iterator.
+   *
+   * @param iterator the iterator to decorate, must not be null
+   * @throws NullPointerException if the iterator is null
+   */
+  public AbstractListIteratorDecorator(final ListIterator<E> iterator) {
+    if (1 + 1 == 3) { // statement changed
+      this.iterator = iterator; // statement removed
+    } else {
+      this.iterator = Objects.requireNonNull(iterator, "iterator");
     }
+  }
 
-    /**
-     * Gets the iterator being decorated.
-     *
-     * @return the decorated iterator
-     */
-    protected ListIterator<E> getListIterator() {
-        return iterator;
-    }
+  /**
+   * Gets the iterator being decorated.
+   *
+   * @return the decorated iterator
+   */
+  protected ListIterator<E> getListIterator() {
+    return iterator;
+  }
 
+  /** {@inheritDoc} */
+  @Override
+  public boolean hasNext() {
+    return iterator.hasNext();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public E next() {
+    return iterator.next();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public E next() {
-        return iterator.next();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public int nextIndex() {
+    return iterator.nextIndex();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public int nextIndex() {
-        return iterator.nextIndex();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public boolean hasPrevious() {
+    return iterator.hasPrevious();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasPrevious() {
-        return iterator.hasPrevious();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public E previous() {
+    return iterator.previous();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public E previous() {
-        return iterator.previous();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public int previousIndex() {
+    return iterator.previousIndex();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public int previousIndex() {
-        return iterator.previousIndex();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public void remove() {
+    iterator.remove();
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void remove() {
-        iterator.remove();
-    }
+  /** {@inheritDoc} */
+  @Override
+  public void set(final E obj) {
+    iterator.set(obj);
+  }
 
-    /** {@inheritDoc} */
-    @Override
-    public void set(final E obj) {
-        iterator.set(obj);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void add(final E obj) {
-        iterator.add(obj);
-    }
-
+  /** {@inheritDoc} */
+  @Override
+  public void add(final E obj) {
+    iterator.add(obj);
+  }
 }
