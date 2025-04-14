@@ -20,83 +20,83 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * Source file class file attribute
- */
+/** Source file class file attribute */
 public class SourceFileAttribute extends Attribute {
 
-    private static CPUTF8 attributeName;
-    public static void setAttributeName(final CPUTF8 cpUTF8Value) {
-        attributeName = cpUTF8Value;
-    }
-    private final CPUTF8 name;
+  private static CPUTF8 attributeName;
 
-    private int nameIndex;
+  public static void setAttributeName(final CPUTF8 cpUTF8Value) {
+    attributeName = cpUTF8Value;
+  }
 
-    public SourceFileAttribute(final CPUTF8 name) {
-        super(attributeName);
-        this.name = name;
-    }
+  private final CPUTF8 name;
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final SourceFileAttribute other = (SourceFileAttribute) obj;
-        if (!Objects.equals(name, other.name)) {
-            return false;
-        }
-        return true;
-    }
+  private int nameIndex;
 
-    @Override
-    protected int getLength() {
-        return 2;
-    }
+  public SourceFileAttribute(final CPUTF8 name) {
+    super(attributeName);
+    this.name = name;
+  }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        return new ClassFileEntry[] {getAttributeName(), name};
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final SourceFileAttribute other = (SourceFileAttribute) obj;
+    if (!Objects.equals(name, other.name)) {
+      return false;
+    }
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = super.hashCode();
-        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+  @Override
+  protected int getLength() {
+    return 2;
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#isSourceFileAttribute()
-     */
-    @Override
-    public boolean isSourceFileAttribute() {
-        return true;
-    }
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    return new ClassFileEntry[] {getAttributeName(), name};
+  }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        nameIndex = pool.indexOf(name);
-    }
+  @Override
+  public int hashCode() {
+    final int PRIME = 31;
+    int result = super.hashCode();
+    result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+    return result;
+  }
 
-    @Override
-    public String toString() {
-        return "SourceFile: " + name;
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#isSourceFileAttribute()
+   */
+  @Override
+  public boolean isSourceFileAttribute() {
+    return true;
+  }
 
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(nameIndex);
-    }
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    nameIndex = pool.indexOf(name);
+  }
+
+  @Override
+  public String toString() {
+    return "SourceFile: " + name;
+  }
+
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(nameIndex);
+  }
 }
