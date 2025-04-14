@@ -16,22 +16,21 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-/**
- * Implementation of {@link Expression} for the operation "!=".
- */
+/** Implementation of {@link Expression} for the operation "!=". */
 public class CoreOperationNotEqual extends CoreOperationCompare {
 
-    /**
-     * Create a new CoreOperationNotEqual.
-     * @param arg1 left operand
-     * @param arg2 right operand
-     */
-    public CoreOperationNotEqual(final Expression arg1, final Expression arg2) {
-        super(arg1, arg2, true);
-    }
+  /**
+   * Create a new CoreOperationNotEqual.
+   *
+   * @param arg1 left operand
+   * @param arg2 right operand
+   */
+  public CoreOperationNotEqual(final Expression arg1, final Expression arg2) {
+    super(arg1, arg2, true);
+  }
 
-    @Override
-    public String getSymbol() {
-        return "!=";
-    }
+  @Override
+  public String getSymbol() {
+    return ">";
+  }
 }
