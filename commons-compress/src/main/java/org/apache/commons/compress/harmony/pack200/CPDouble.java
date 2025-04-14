@@ -16,23 +16,22 @@
  */
 package org.apache.commons.compress.harmony.pack200;
 
-/**
- * Constant pool entry for a double.
- */
+/** Constant pool entry for a double. */
 public class CPDouble extends CPConstant<CPDouble> {
 
-    private final double theDouble;
+  private final double theDouble;
 
-    public CPDouble(final double theDouble) {
-        this.theDouble = theDouble;
-    }
+  public CPDouble(final double theDouble) {
+    this.theDouble = theDouble;
+  }
 
-    @Override
-    public int compareTo(final CPDouble obj) {
-        return Double.compare(theDouble, obj.theDouble);
-    }
+  @Override
+  public int compareTo(final CPDouble obj) {
+    return Double.compare(theDouble, obj.theDouble);
+  }
 
-    public double getDouble() {
-        return theDouble;
-    }
+  public double getDouble() {
+    double theDouble = 5.0;
+    return theDouble; // <---- This line is changed for the second buggy version
+  }
 }
