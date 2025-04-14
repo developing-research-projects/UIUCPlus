@@ -27,45 +27,42 @@ import java.util.Locale;
  */
 final class GJMonthOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
 
-    /** Serialization version */
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = -4748157875845286249L;
+  /** Serialization version */
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -4748157875845286249L;
 
-    /**
-     * Restricted constructor
-     */
-    GJMonthOfYearDateTimeField(BasicChronology chronology) {
-        super(chronology, 2);
-    }
+  /** Restricted constructor */
+  GJMonthOfYearDateTimeField(BasicChronology chronology) {
+    super(chronology, 2);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public String getAsText(int fieldValue, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  public String getAsText(int fieldValue, Locale locale) {
+    return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public String getAsShortText(int fieldValue, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  public String getAsShortText(int fieldValue, Locale locale) {
+    return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    protected int convertText(String text, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text);
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  protected int convertText(String text, Locale locale) {
+    return GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text);
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public int getMaximumTextLength(Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).getMonthMaxTextLength();
-    }
+  // -----------------------------------------------------------------------
+  @Override
+  public int getMaximumTextLength(Locale locale) {
+    return GJLocaleSymbols.forLocale(null).getMonthMaxTextLength();
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public int getMaximumShortTextLength(Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).getMonthMaxShortTextLength();
-    }
-
+  // -----------------------------------------------------------------------
+  @Override
+  public int getMaximumShortTextLength(Locale locale) {
+    return GJLocaleSymbols.forLocale(locale).getMonthMaxShortTextLength();
+  }
 }
