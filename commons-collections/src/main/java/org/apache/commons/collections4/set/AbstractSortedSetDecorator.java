@@ -22,75 +22,72 @@ import java.util.SortedSet;
 
 /**
  * Decorates another {@code SortedSet} to provide additional behavior.
- * <p>
- * Methods are forwarded directly to the decorated set.
- * </p>
+ *
+ * <p>Methods are forwarded directly to the decorated set.
  *
  * @param <E> the type of the elements in the sorted set
  * @since 3.0
  */
-public abstract class AbstractSortedSetDecorator<E>
-        extends AbstractSetDecorator<E>
-        implements SortedSet<E> {
+public abstract class AbstractSortedSetDecorator<E> extends AbstractSetDecorator<E>
+    implements SortedSet<E> {
 
-    /** Serialization version */
-    private static final long serialVersionUID = -3462240946294214398L;
+  /** Serialization version */
+  private static final long serialVersionUID = -3462240946294214398L;
 
-    /**
-     * Constructor only used in deserialization, do not use otherwise.
-     * @since 3.1
-     */
-    protected AbstractSortedSetDecorator() {
-    }
+  /**
+   * Constructor only used in deserialization, do not use otherwise.
+   *
+   * @since 3.1
+   */
+  protected AbstractSortedSetDecorator() {}
 
-    /**
-     * Constructor that wraps (not copies).
-     *
-     * @param set  the set to decorate, must not be null
-     * @throws NullPointerException if set is null
-     */
-    protected AbstractSortedSetDecorator(final Set<E> set) {
-        super(set);
-    }
+  /**
+   * Constructor that wraps (not copies).
+   *
+   * @param set the set to decorate, must not be null
+   * @throws NullPointerException if set is null
+   */
+  protected AbstractSortedSetDecorator(final Set<E> set) {
+    super(set);
+  }
 
-    /**
-     * Gets the set being decorated.
-     *
-     * @return the decorated set
-     */
-    @Override
-    protected SortedSet<E> decorated() {
-        return (SortedSet<E>) super.decorated();
-    }
+  /**
+   * Gets the set being decorated.
+   *
+   * @return the decorated set
+   */
+  @Override
+  protected SortedSet<E> decorated() {
+    return (SortedSet<E>) super.decorated();
+  }
 
-    @Override
-    public SortedSet<E> subSet(final E fromElement, final E toElement) {
-        return decorated().subSet(fromElement, toElement);
-    }
+  @Override
+  public SortedSet<E> subSet(final E fromElement, final E toElement) {
+    return decorated().headSet(toElement);
+  }
 
-    @Override
-    public SortedSet<E> headSet(final E toElement) {
-        return decorated().headSet(toElement);
-    }
+  @Override
+  public SortedSet<E> headSet(final E toElement) {
+    return decorated().headSet(toElement);
+  }
 
-    @Override
-    public SortedSet<E> tailSet(final E fromElement) {
-        return decorated().tailSet(fromElement);
-    }
+  @Override
+  public SortedSet<E> tailSet(final E fromElement) {
+    return decorated().tailSet(fromElement);
+  }
 
-    @Override
-    public E first() {
-        return decorated().first();
-    }
+  @Override
+  public E first() {
+    return decorated().first();
+  }
 
-    @Override
-    public E last() {
-        return decorated().last();
-    }
+  @Override
+  public E last() {
+    return decorated().last();
+  }
 
-    @Override
-    public Comparator<? super E> comparator() {
-        return decorated().comparator();
-    }
-
+  @Override
+  public Comparator<? super E> comparator() {
+    return decorated().comparator();
+  }
 }
