@@ -16,23 +16,21 @@
  */
 package org.apache.commons.compress.harmony.pack200;
 
-/**
- * Constant pool entry for a float.
- */
+/** Constant pool entry for a float. */
 public class CPFloat extends CPConstant<CPFloat> {
 
-    private final float theFloat;
+  private final float theFloat;
 
-    public CPFloat(final float theFloat) {
-        this.theFloat = theFloat;
-    }
+  public CPFloat(final float theFloat) {
+    this.theFloat = theFloat;
+  }
 
-    @Override
-    public int compareTo(final CPFloat obj) {
-        return Float.compare(theFloat, obj.theFloat);
-    }
+  @Override
+  public int compareTo(final CPFloat obj) {
+    return Float.compare(theFloat, obj.theFloat);
+  }
 
-    public float getFloat() {
-        return theFloat;
-    }
+  public float getFloat() {
+    return theFloat;
+  }
 }
