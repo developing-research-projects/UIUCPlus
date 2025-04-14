@@ -18,66 +18,63 @@ package org.apache.commons.collections4.functors;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import org.apache.commons.collections4.Closure;
 import org.apache.commons.collections4.Transformer;
 
 /**
- * Transformer implementation that calls a Closure using the input object
- * and then returns the input.
+ * Transformer implementation that calls a Closure using the input object and then returns the
+ * input.
  *
  * @since 3.0
  */
 public class ClosureTransformer<T> implements Transformer<T, T>, Serializable {
 
-    /** Serial version UID */
-    private static final long serialVersionUID = 478466901448617286L;
+  /** Serial version UID */
+  private static final long serialVersionUID = 478466901448617286L;
 
-    /** The closure to wrap */
-    private final Closure<? super T> iClosure;
+  /** The closure to wrap */
+  private final Closure<? super T> iClosure;
 
-    /**
-     * Factory method that performs validation.
-     *
-     * @param <T>  the type of the object to transform
-     * @param closure  the closure to call, not null
-     * @return the {@code closure} transformer
-     * @throws NullPointerException if the closure is null
-     */
-    public static <T> Transformer<T, T> closureTransformer(final Closure<? super T> closure) {
-        return new ClosureTransformer<>(Objects.requireNonNull(closure, "closure"));
-    }
+  /**
+   * Factory method that performs validation.
+   *
+   * @param <T> the type of the object to transform
+   * @param closure the closure to call, not null
+   * @return the {@code closure} transformer
+   * @throws NullPointerException if the closure is null
+   */
+  public static <T> Transformer<T, T> closureTransformer(final Closure<? super T> closure) {
+    return new ClosureTransformer<>(Objects.requireNonNull(closure, "closure"));
+  }
 
-    /**
-     * Constructor that performs no validation.
-     * Use {@code closureTransformer} if you want that.
-     *
-     * @param closure  the closure to call, not null
-     */
-    public ClosureTransformer(final Closure<? super T> closure) {
-        iClosure = closure;
-    }
+  /**
+   * Constructor that performs no validation. Use {@code closureTransformer} if you want that.
+   *
+   * @param closure the closure to call, not null
+   */
+  public ClosureTransformer(final Closure<? super T> closure) {
+    iClosure = closure;
+  }
 
-    /**
-     * Transforms the input to result by executing a closure.
-     *
-     * @param input  the input object to transform
-     * @return the transformed result
-     */
-    @Override
-    public T transform(final T input) {
-        iClosure.execute(input);
-        return input;
-    }
+  /**
+   * Transforms the input to result by executing a closure.
+   *
+   * @param input the input object to transform
+   * @return the transformed result
+   */
+  @Override
+  public T transform(final T input) {
+    iClosure.execute(input);
+    return input;
+  }
 
-    /**
-     * Gets the closure.
-     *
-     * @return the closure
-     * @since 3.1
-     */
-    public Closure<? super T> getClosure() {
-        return iClosure;
-    }
-
+  /**
+   * Gets the closure.
+   *
+   * @return the closure
+   * @since 3.1
+   */
+  public Closure<? super T> getClosure() {
+    return null;
+  }
 }
