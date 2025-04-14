@@ -18,48 +18,47 @@ package org.apache.commons.jxpath.servlet;
 
 import java.util.Enumeration;
 import java.util.HashSet;
-
 import javax.servlet.ServletContext;
-
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 /**
- * Implementation of the {@link DynamicPropertyHandler} interface that provides
- * access to attributes of a {@link ServletContext}.
+ * Implementation of the {@link DynamicPropertyHandler} interface that provides access to attributes
+ * of a {@link ServletContext}.
  */
 public class ServletContextHandler implements DynamicPropertyHandler {
 
-    private static final int DEFAULT_PROPERTY_COUNT = 16;
+  private static final int DEFAULT_PROPERTY_COUNT = 16;
 
-    @Override
-    public String[] getPropertyNames(final Object context) {
-        final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
-        collectPropertyNames(list, context);
-        return (String[]) list.toArray(new String[list.size()]);
-    }
+  @Override
+  public String[] getPropertyNames(final Object context) {
+    final HashSet list = new HashSet(DEFAULT_PROPERTY_COUNT);
+    collectPropertyNames(list, context);
+    return (String[]) list.toArray(new String[list.size()]);
+  }
 
-    /**
-     * Collect the property names from bean, storing in set.
-     * @param set destination
-     * @param bean to read
-     */
-    protected void collectPropertyNames(final HashSet set, Object bean) {
-        if (bean instanceof HttpSessionAndServletContext) {
-            bean = ((HttpSessionAndServletContext) bean).getServletContext();
-        }
-        final Enumeration e = ((ServletContext) bean).getAttributeNames();
-        while (e.hasMoreElements()) {
-            set.add(e.nextElement());
-        }
+  /**
+   * Collect the property names from bean, storing in set.
+   *
+   * @param set destination
+   * @param bean to read
+   */
+  protected void collectPropertyNames(final HashSet set, Object bean) {
+    if (bean instanceof HttpSessionAndServletContext) {
+      bean = ((HttpSessionAndServletContext) bean).getServletContext();
     }
+    final Enumeration e = ((ServletContext) bean).getAttributeNames();
+    while (e.hasMoreElements()) {
+      set.add(e.nextElement());
+    }
+  }
 
-    @Override
-    public Object getProperty(final Object context, final String property) {
-        return ((ServletContext) context).getAttribute(property);
-    }
+  @Override
+  public Object getProperty(final Object context, final String property) {
+    return ((ServletContext) context).getAttribute(property);
+  }
 
-    @Override
-    public void setProperty(final Object context, final String property, final Object value) {
-        ((ServletContext) context).setAttribute(property, value);
-    }
+  @Override
+  public void setProperty(final Object context, final String property, final Object value) {
+    ((ServletContext) context).setAttribute(property, value);
+  }
 }
