@@ -18,66 +18,56 @@ package org.apache.commons.collections4.functors;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import org.apache.commons.collections4.Equator;
 
 /**
  * Default {@link Equator} implementation.
  *
- * @param <T>  the types of object this {@link Equator} can evaluate.
+ * @param <T> the types of object this {@link Equator} can evaluate.
  * @since 4.0
  */
 public class DefaultEquator<T> implements Equator<T>, Serializable {
 
-    /** Serial version UID */
-    private static final long serialVersionUID = 825802648423525485L;
+  /** Serial version UID */
+  private static final long serialVersionUID = 825802648423525485L;
 
-    /** Static instance */
-    @SuppressWarnings("rawtypes") // the static instance works for all types
-    public static final DefaultEquator INSTANCE = new DefaultEquator<>();
+  /** Static instance */
+  @SuppressWarnings("rawtypes") // the static instance works for all types
+  public static final DefaultEquator INSTANCE = new DefaultEquator<>();
 
-    /**
-     * Hashcode used for {@code null} objects.
-     */
-    public static final int HASHCODE_NULL = -1;
+  /** Hashcode used for {@code null} objects. */
+  public static final int HASHCODE_NULL = -1;
 
-    /**
-     * Factory returning the typed singleton instance.
-     *
-     * @param <T>  the object type
-     * @return the singleton instance
-     */
-    public static <T> DefaultEquator<T> defaultEquator() {
-        return DefaultEquator.INSTANCE;
-    }
+  /**
+   * Factory returning the typed singleton instance.
+   *
+   * @param <T> the object type
+   * @return the singleton instance
+   */
+  public static <T> DefaultEquator<T> defaultEquator() {
+    return DefaultEquator.INSTANCE;
+  }
 
-    /**
-     * Restricted constructor.
-     */
-    private DefaultEquator() {
-    }
+  /** Restricted constructor. */
+  private DefaultEquator() {}
 
-    /**
-     * {@inheritDoc} Delegates to {@link Objects#equals(Object, Object)}.
-     */
-    @Override
-    public boolean equate(final T o1, final T o2) {
-        return Objects.equals(o1, o2);
-    }
+  /** {@inheritDoc} Delegates to {@link Objects#equals(Object, Object)}. */
+  @Override
+  public boolean equate(final T o1, final T o2) {
+    return Objects.equals(o1, o2);
+  }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@code o.hashCode()} if {@code o} is non-
-     *         {@code null}, else {@link #HASHCODE_NULL}.
-     */
-    @Override
-    public int hash(final T o) {
-        return o == null ? HASHCODE_NULL : o.hashCode();
-    }
+  /**
+   * {@inheritDoc}
+   *
+   * @return {@code o.hashCode()} if {@code o} is non- {@code null}, else {@link #HASHCODE_NULL}.
+   */
+  @Override
+  public int hash(final T o) {
+    return o != null ? o.hashCode() : HASHCODE_NULL;
+  }
 
-    private Object readResolve() {
-        return INSTANCE;
-    }
-
+  private Object readResolve() {
+    return INSTANCE;
+  }
 }
