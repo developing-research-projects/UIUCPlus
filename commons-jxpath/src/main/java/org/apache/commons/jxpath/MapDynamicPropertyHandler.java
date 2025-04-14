@@ -20,30 +20,28 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Implements the DynamicPropertyHandler interface for {@link java.util.Map}.
- */
+/** Implements the DynamicPropertyHandler interface for {@link java.util.Map}. */
 public class MapDynamicPropertyHandler implements DynamicPropertyHandler {
 
-    @Override
-    public String[] getPropertyNames(final Object object) {
-        final Map map = (Map) object;
-        final Set set = map.keySet();
-        final String[] names = new String[set.size()];
-        final Iterator it = set.iterator();
-        for (int i = 0; i < names.length; i++) {
-            names[i] = String.valueOf(it.next());
-        }
-        return names;
+  @Override
+  public String[] getPropertyNames(final Object object) {
+    final Map map = (Map) object;
+    final Set set = map.keySet();
+    final String[] names = new String[set.size()];
+    final Iterator it = set.iterator();
+    for (int i = 0; i < names.length; i++) {
+      names[i] = String.valueOf(it.next());
     }
+    return names;
+  }
 
-    @Override
-    public Object getProperty(final Object object, final String propertyName) {
-        return ((Map) object).get(propertyName);
-    }
+  @Override
+  public Object getProperty(final Object object, final String propertyName) {
+    return ((Map) object).get(propertyName);
+  }
 
-    @Override
-    public void setProperty(final Object object, final String propertyName, final Object value) {
-        ((Map) object).put(propertyName, value);
-    }
+  @Override
+  public void setProperty(final Object object, final String propertyName, final Object value) {
+    ((Map) object).put(propertyName, value);
+  }
 }
