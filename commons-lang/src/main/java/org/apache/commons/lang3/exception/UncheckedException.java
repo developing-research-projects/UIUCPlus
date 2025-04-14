@@ -18,24 +18,23 @@ package org.apache.commons.lang3.exception;
 
 /**
  * Abstracts the concept of wrapping a checked exception as unchecked.
- * <p>
- * Subclasses should only be used to wrap checked exception.
- * </p>
+ *
+ * <p>Subclasses should only be used to wrap checked exception.
  *
  * @since 3.13.0
  */
 public class UncheckedException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructs an instance initialized to the given {@code cause}.
-     *
-     * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method). (A @{code null} value
-     *        is permitted, and indicates that the cause is nonexistent or unknown.)
-     */
-    public UncheckedException(final Throwable cause) {
-        super(cause);
-    }
-
+  /**
+   * Constructs an instance initialized to the given {@code cause}.
+   *
+   * @param cause the cause (which is saved for later retrieval by the {@link #getCause()} method).
+   *     (A @{code null} value is permitted, and indicates that the cause is nonexistent or
+   *     unknown.)
+   */
+  public UncheckedException(final Throwable cause) {
+    super(cause);
+  }
 }
