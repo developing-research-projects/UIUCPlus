@@ -19,77 +19,76 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * Enclosing method class file attribute.
- */
+/** Enclosing method class file attribute. */
 public class EnclosingMethodAttribute extends Attribute {
 
-    private static CPUTF8 attributeName;
-    public static void setAttributeName(final CPUTF8 cpUTF8Value) {
-        attributeName = cpUTF8Value;
+  private static CPUTF8 attributeName;
+
+  public static void setAttributeName(final CPUTF8 cpUTF8Value) {
+    attributeName = cpUTF8Value;
+  }
+
+  private int classIndex;
+  private int methodIndex;
+  private final CPClass cpClass;
+
+  private final CPNameAndType method;
+
+  public EnclosingMethodAttribute(final CPClass cpClass, final CPNameAndType method) {
+    super(attributeName);
+    this.cpClass = cpClass;
+    this.method = method;
+  }
+
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#getLength()
+   */
+  @Override
+  protected int getLength() {
+    return 4;
+  }
+
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    if (method != null) {
+      return new ClassFileEntry[] {attributeName, cpClass, method};
     }
-    private int classIndex;
-    private int methodIndex;
-    private final CPClass cpClass;
+    return new ClassFileEntry[] {attributeName, cpClass};
+  }
 
-    private final CPNameAndType method;
-
-    public EnclosingMethodAttribute(final CPClass cpClass, final CPNameAndType method) {
-        super(attributeName);
-        this.cpClass = cpClass;
-        this.method = method;
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    cpClass.resolve(pool);
+    classIndex = pool.indexOf(cpClass);
+    if (method != null) {
+      method.resolve(pool);
+      methodIndex = pool.indexOf(method);
+    } else {
+      methodIndex = 0;
     }
+  }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#getLength()
-     */
-    @Override
-    protected int getLength() {
-        return 4;
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.ClassFileEntry#toString()
+   */
+  @Override
+  public String toString() {
+    return "EnclosingMethod";
+  }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        if (method != null) {
-            return new ClassFileEntry[] { attributeName, cpClass, method };
-        }
-        return new ClassFileEntry[] { attributeName, cpClass };
-    }
-
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        cpClass.resolve(pool);
-        classIndex = pool.indexOf(cpClass);
-        if (method != null) {
-            method.resolve(pool);
-            methodIndex = pool.indexOf(method);
-        } else {
-            methodIndex = 0;
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.ClassFileEntry#toString()
-     */
-    @Override
-    public String toString() {
-        return "EnclosingMethod";
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#writeBody(java.io.DataOutputStream)
-     */
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(classIndex);
-        dos.writeShort(methodIndex);
-    }
-
+  /*
+   * (non-Javadoc)
+   *
+   * @see org.apache.commons.compress.harmony.unpack200.bytecode.Attribute#writeBody(java.io.DataOutputStream)
+   */
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(classIndex);
+    dos.writeShort(methodIndex);
+  }
 }
