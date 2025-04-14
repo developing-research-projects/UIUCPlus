@@ -20,92 +20,89 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A simple implementation of {@link NodeSet} that behaves as a collection
- * of pointers.
- */
+/** A simple implementation of {@link NodeSet} that behaves as a collection of pointers. */
 public class BasicNodeSet implements NodeSet {
-    private final List pointers = new ArrayList();
-    private List readOnlyPointers;
-    private List nodes;
-    private List values;
+  private final List pointers = new ArrayList();
+  private List readOnlyPointers;
+  private List nodes;
+  private List values;
 
-    /**
-     * Add a pointer to this NodeSet.
-     * @param pointer to add
-     */
-    public void add(final Pointer pointer) {
-        if (pointers.add(pointer)) {
-            clearCacheLists();
-        }
+  /**
+   * Add a pointer to this NodeSet.
+   *
+   * @param pointer to add
+   */
+  public void add(final Pointer pointer) {
+    if (pointers.add(pointer)) {
+      clearCacheLists();
     }
+  }
 
-    /**
-     * Add the specified NodeSet to this NodeSet.
-     * @param nodeSet to add
-     */
-    public void add(final NodeSet nodeSet) {
-        if (pointers.addAll(nodeSet.getPointers())) {
-            clearCacheLists();
-        }
+  /**
+   * Add the specified NodeSet to this NodeSet.
+   *
+   * @param nodeSet to add
+   */
+  public void add(final NodeSet nodeSet) {
+    if (pointers.addAll(nodeSet.getPointers())) {
+      clearCacheLists();
     }
+  }
 
-    /**
-     * Remove a pointer from this NodeSet.
-     * @param pointer to remove
-     */
-    public void remove(final Pointer pointer) {
-        if (pointers.remove(pointer)) {
-            clearCacheLists();
-        }
+  /**
+   * Remove a pointer from this NodeSet.
+   *
+   * @param pointer to remove
+   */
+  public void remove(final Pointer pointer) {
+    if (pointers.remove(pointer)) {
+      clearCacheLists();
     }
+  }
 
-    @Override
-    public synchronized List getPointers() {
-        if (readOnlyPointers == null) {
-            readOnlyPointers = Collections.unmodifiableList(pointers);
-        }
-        return readOnlyPointers;
+  @Override
+  public synchronized List getPointers() {
+    if (readOnlyPointers == null) {
+      readOnlyPointers = Collections.unmodifiableList(pointers);
     }
+    return readOnlyPointers;
+  }
 
-    @Override
-    public synchronized List getNodes() {
-        if (nodes == null) {
-            nodes = new ArrayList();
-            for (int i = 0; i < pointers.size(); i++) {
-                final Pointer pointer = (Pointer) pointers.get(i);
-                nodes.add(pointer.getNode());
-            }
-            nodes = Collections.unmodifiableList(nodes);
-        }
-        return nodes;
+  @Override
+  public synchronized List getNodes() {
+    if (nodes == null) {
+      nodes = new ArrayList();
+      for (int i = 0; i < pointers.size(); i++) {
+        final Pointer pointer = (Pointer) pointers.get(i);
+        nodes.add(pointer.getNode());
+      }
+      nodes = Collections.unmodifiableList(nodes);
     }
+    return nodes;
+  }
 
-    @Override
-    public synchronized List getValues() {
-        if (values == null) {
-            values = new ArrayList();
-            for (int i = 0; i < pointers.size(); i++) {
-                final Pointer pointer = (Pointer) pointers.get(i);
-                values.add(pointer.getValue());
-            }
-            values = Collections.unmodifiableList(values);
-        }
-        return values;
+  @Override
+  public synchronized List getValues() {
+    if (values == null) {
+      values = new ArrayList();
+      for (int i = 0; i < pointers.size(); i++) {
+        final Pointer pointer = (Pointer) pointers.get(i);
+        values.add(pointer.getValue());
+      }
+      values = Collections.unmodifiableList(values);
     }
+    return values;
+  }
 
-    @Override
-    public String toString() {
-        return pointers.toString();
-    }
+  @Override
+  public String toString() {
+    return pointers.toString();
+  }
 
-    /**
-     * Clear cache list members.
-     */
-    private synchronized void clearCacheLists() {
-        readOnlyPointers = null;
-        nodes = null;
-        values = null;
-    }
-
+  /** Clear cache list members. */
+  private synchronized void clearCacheLists() {
+    readOnlyPointers = null;
+    nodes = null;
+    values = null;
+  }
 }
