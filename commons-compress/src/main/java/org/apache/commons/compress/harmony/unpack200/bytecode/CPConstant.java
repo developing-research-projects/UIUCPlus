@@ -18,50 +18,48 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 
 import java.util.Objects;
 
-/**
- * Abstract superclass for constant pool constant entries such as numbers or Strings
- */
+/** Abstract superclass for constant pool constant entries such as numbers or Strings */
 public abstract class CPConstant extends ConstantPoolEntry {
 
-    private final Object value;
+  private final Object value;
 
-    /**
-     * Create a new CPConstant
-     *
-     * @param tag TODO
-     * @param value TODO
-     * @param globalIndex index in CpBands
-     * @throws NullPointerException if value is null
-     */
-    public CPConstant(final byte tag, final Object value, final int globalIndex) {
-        super(tag, globalIndex);
-        this.value = Objects.requireNonNull(value, "value");
-    }
+  /**
+   * Create a new CPConstant
+   *
+   * @param tag TODO
+   * @param value TODO
+   * @param globalIndex index in CpBands
+   * @throws NullPointerException if value is null
+   */
+  public CPConstant(final byte tag, final Object value, final int globalIndex) {
+    super(tag, globalIndex);
+    this.value = Objects.requireNonNull(value, "value");
+  }
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final CPConstant other = (CPConstant) obj;
-        if (!Objects.equals(value, other.value)) {
-            return false;
-        }
-        return true;
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (obj == null) {
+      return false;
+    }
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final CPConstant other = (CPConstant) obj;
+    if (!Objects.equals(value, other.value)) {
+      return false;
+    }
+    return true;
+  }
 
-    protected Object getValue() {
-        return value;
-    }
+  protected Object getValue() {
+    return value;
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
+  @Override
+  public int hashCode() {
+    return (int) Objects.hash(value);
+  }
 }
