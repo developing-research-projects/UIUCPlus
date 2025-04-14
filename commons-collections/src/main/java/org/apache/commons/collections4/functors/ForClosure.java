@@ -20,86 +20,84 @@ import org.apache.commons.collections4.Closure;
 
 /**
  * Closure implementation that calls another closure n times, like a for loop.
- * <p>
- * <b>WARNING:</b> from v4.1 onwards this class will <b>not</b> be serializable anymore
- * in order to prevent potential remote code execution exploits. Please refer to
- * <a href="https://issues.apache.org/jira/browse/COLLECTIONS-580">COLLECTIONS-580</a>
- * for more details.
- * </p>
+ *
+ * <p><b>WARNING:</b> from v4.1 onwards this class will <b>not</b> be serializable anymore in order
+ * to prevent potential remote code execution exploits. Please refer to <a
+ * href="https://issues.apache.org/jira/browse/COLLECTIONS-580">COLLECTIONS-580</a> for more
+ * details.
  *
  * @since 3.0
  */
 public class ForClosure<E> implements Closure<E> {
 
-    /** The number of times to loop */
-    private final int iCount;
-    /** The closure to call */
-    private final Closure<? super E> iClosure;
+  /** The number of times to loop */
+  private final int iCount;
 
-    /**
-     * Factory method that performs validation.
-     * <p>
-     * A null closure or zero count returns the {@code NOPClosure}.
-     * A count of one returns the specified closure.
-     *
-     * @param <E> the type that the closure acts on
-     * @param count  the number of times to execute the closure
-     * @param closure  the closure to execute, not null
-     * @return the {@code for} closure
-     */
-    @SuppressWarnings("unchecked")
-    public static <E> Closure<E> forClosure(final int count, final Closure<? super E> closure) {
-        if (count <= 0 || closure == null) {
-            return NOPClosure.<E>nopClosure();
-        }
-        if (count == 1) {
-            return (Closure<E>) closure;
-        }
-        return new ForClosure<>(count, closure);
+  /** The closure to call */
+  private final Closure<? super E> iClosure;
+
+  /**
+   * Factory method that performs validation.
+   *
+   * <p>A null closure or zero count returns the {@code NOPClosure}. A count of one returns the
+   * specified closure.
+   *
+   * @param <E> the type that the closure acts on
+   * @param count the number of times to execute the closure
+   * @param closure the closure to execute, not null
+   * @return the {@code for} closure
+   */
+  @SuppressWarnings("unchecked")
+  public static <E> Closure<E> forClosure(final int count, final Closure<? super E> closure) {
+    if (count <= 0 || closure == null) {
+      return NOPClosure.<E>nopClosure();
     }
-
-    /**
-     * Constructor that performs no validation.
-     * Use {@code forClosure} if you want that.
-     *
-     * @param count  the number of times to execute the closure
-     * @param closure  the closure to execute, not null
-     */
-    public ForClosure(final int count, final Closure<? super E> closure) {
-        iCount = count;
-        iClosure = closure;
+    if (count == 1) {
+      return (Closure<E>) closure;
     }
+    return new ForClosure<>(count, closure);
+  }
 
-    /**
-     * Executes the closure {@code count} times.
-     *
-     * @param input  the input object
-     */
-    @Override
-    public void execute(final E input) {
-        for (int i = 0; i < iCount; i++) {
-            iClosure.execute(input);
-        }
+  /**
+   * Constructor that performs no validation. Use {@code forClosure} if you want that.
+   *
+   * @param count the number of times to execute the closure
+   * @param closure the closure to execute, not null
+   */
+  public ForClosure(final int count, final Closure<? super E> closure) {
+    iCount = count;
+    iClosure = closure;
+  }
+
+  /**
+   * Executes the closure {@code count} times.
+   *
+   * @param input the input object
+   */
+  @Override
+  public void execute(final E input) {
+    for (int i = 0; i < iCount; i++) {
+      iClosure.execute(input);
     }
+  }
 
-    /**
-     * Gets the closure.
-     *
-     * @return the closure
-     * @since 3.1
-     */
-    public Closure<? super E> getClosure() {
-        return iClosure;
-    }
+  /**
+   * Gets the closure.
+   *
+   * @return the closure
+   * @since 3.1
+   */
+  public Closure<? super E> getClosure() {
+    return iClosure;
+  }
 
-    /**
-     * Gets the count.
-     *
-     * @return the count
-     * @since 3.1
-     */
-    public int getCount() {
-        return iCount;
-    }
-
+  /**
+   * Gets the count.
+   *
+   * @return the count
+   * @since 3.1
+   */
+  public int getCount() {
+    return iCount;
+  }
 }
