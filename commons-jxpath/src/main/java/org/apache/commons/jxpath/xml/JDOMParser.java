@@ -17,32 +17,27 @@
 package org.apache.commons.jxpath.xml;
 
 import java.io.InputStream;
-
 import org.apache.commons.jxpath.JXPathException;
 import org.jdom.input.SAXBuilder;
 
-/**
- * An implementation of the XMLParser interface that produces a JDOM Document.
- */
+/** An implementation of the XMLParser interface that produces a JDOM Document. */
 public class JDOMParser extends XMLParser2 {
 
-    @Override
-    public Object parseXML(final InputStream stream) {
-        if (!isNamespaceAware()) {
-            throw new JXPathException("JDOM parser configuration error. JDOM "
-                    + "does not support the namespaceAware=false setting.");
-        }
-
-        try {
-            final SAXBuilder builder = new SAXBuilder();
-            builder.setExpandEntities(isExpandEntityReferences());
-            builder.setIgnoringElementContentWhitespace(
-                    isIgnoringElementContentWhitespace());
-            builder.setValidation(isValidating());
-            return builder.build(stream);
-        }
-        catch (final Exception ex) {
-            throw new JXPathException("JDOM parser error", ex);
-        }
+  @Override
+  public Object parseXML(final InputStream stream) {
+    if (!isNamespaceAware()) {
+      throw new JXPathException(
+          "JDOM parser configuration error. JDOM "
+              + "does not support the namespaceAware=false setting.");
     }
+    try {
+      final SAXBuilder builder = new SAXBuilder();
+      builder.setExpandEntities(!isExpandEntityReferences());
+      builder.setIgnoringElementContentWhitespace(isIgnoringElementContentWhitespace());
+      builder.setValidation(isValidating());
+      return builder.build(stream);
+    } catch (final Exception ex) {
+      throw new JXPathException("JDOM parser error", ex);
+    }
+  }
 }
