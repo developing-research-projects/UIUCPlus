@@ -25,127 +25,125 @@ import org.apache.commons.jxpath.util.TypeUtils;
 import org.w3c.dom.Attr;
 
 /**
- * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable,
- * neither is this pointer class truly so.
+ * A Pointer that points to a DOM node. Because the underlying DOM Attr is not Serializable, neither
+ * is this pointer class truly so.
  */
 public class DOMAttributePointer extends NodePointer {
-    private static final long serialVersionUID = 1115085175427555951L;
+  private static final long serialVersionUID = 1115085175427555951L;
 
-    private final Attr attr;
+  private final Attr attr;
 
-    /**
-     * Create a new DOMAttributePointer.
-     * @param parent pointer
-     * @param attr pointed
-     */
-    public DOMAttributePointer(final NodePointer parent, final Attr attr) {
-        super(parent);
-        this.attr = attr;
+  /**
+   * Create a new DOMAttributePointer.
+   *
+   * @param parent pointer
+   * @param attr pointed
+   */
+  public DOMAttributePointer(final NodePointer parent, final Attr attr) {
+    super(parent);
+    this.attr = attr;
+  }
+
+  @Override
+  public QName getName() {
+    return new QName(DOMNodePointer.getPrefix(attr), DOMNodePointer.getLocalName(attr));
+  }
+
+  @Override
+  public String getNamespaceURI() {
+    final String prefix = DOMNodePointer.getPrefix(attr);
+    return prefix == null ? null : parent.getNamespaceURI(prefix);
+  }
+
+  @Override
+  public Object getValue() {
+    final String value = attr.getValue();
+    if (value == null || value.equals("") && !attr.getSpecified()) {
+      return null;
     }
+    return value;
+  }
 
-    @Override
-    public QName getName() {
-        return new QName(
-            DOMNodePointer.getPrefix(attr),
-            DOMNodePointer.getLocalName(attr));
-    }
+  @Override
+  public Object getBaseValue() {
+    return attr;
+  }
 
-    @Override
-    public String getNamespaceURI() {
-        final String prefix = DOMNodePointer.getPrefix(attr);
-        return prefix == null ? null : parent.getNamespaceURI(prefix);
-    }
+  @Override
+  public boolean isCollection() {
+    return false;
+  }
 
-    @Override
-    public Object getValue() {
-        final String value = attr.getValue();
-        if (value == null || value.equals("") && !attr.getSpecified()) {
-            return null;
-        }
-        return value;
-    }
+  @Override
+  public int getLength() {
+    return 1;
+  }
 
-    @Override
-    public Object getBaseValue() {
-        return attr;
-    }
+  @Override
+  public Object getImmediateNode() {
+    return attr;
+  }
 
-    @Override
-    public boolean isCollection() {
-        return false;
-    }
+  @Override
+  public boolean isActual() {
+    return true;
+  }
 
-    @Override
-    public int getLength() {
-        return 1;
-    }
+  @Override
+  public boolean isLeaf() {
+    return true;
+  }
 
-    @Override
-    public Object getImmediateNode() {
-        return attr;
-    }
+  @Override
+  public boolean testNode(final NodeTest nodeTest) {
+    return nodeTest == null
+        || nodeTest instanceof NodeTypeTest
+            && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
+  }
 
-    @Override
-    public boolean isActual() {
-        return true;
-    }
+  /**
+   * Sets the value of this attribute.
+   *
+   * @param value to set
+   */
+  @Override
+  public void setValue(final Object value) {
+    attr.setValue((String) TypeUtils.convert(value, String.class));
+  }
 
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
+  @Override
+  public void remove() {
+    attr.getOwnerElement().removeAttributeNode(attr);
+  }
 
-    @Override
-    public boolean testNode(final NodeTest nodeTest) {
-        return nodeTest == null
-            || nodeTest instanceof NodeTypeTest
-                && ((NodeTypeTest) nodeTest).getNodeType() == Compiler.NODE_TYPE_NODE;
+  @Override
+  public String asPath() {
+    final StringBuffer buffer = new StringBuffer();
+    if (parent != null) {
+      buffer.append(parent.asPath());
+      if (buffer.length() == 0 || buffer.charAt(buffer.length() - 1) != '/') {
+        buffer.append('/');
+      }
     }
+    buffer.append('@');
+    buffer.append(getName());
+    return buffer.toString();
+  }
 
-    /**
-     * Sets the value of this attribute.
-     * @param value to set
-     */
-    @Override
-    public void setValue(final Object value) {
-        attr.setValue((String) TypeUtils.convert(value, String.class));
-    }
+  @Override
+  public int hashCode() {
+    return System.identityHashCode(attr);
+  }
 
-    @Override
-    public void remove() {
-        attr.getOwnerElement().removeAttributeNode(attr);
-    }
+  @Override
+  public boolean equals(final Object object) {
+    return object == this
+        || object instanceof DOMAttributePointer && attr == ((DOMAttributePointer) object).attr;
+  }
 
-    @Override
-    public String asPath() {
-        final StringBuffer buffer = new StringBuffer();
-        if (parent != null) {
-            buffer.append(parent.asPath());
-            if (buffer.length() == 0
-                || buffer.charAt(buffer.length() - 1) != '/') {
-                buffer.append('/');
-            }
-        }
-        buffer.append('@');
-        buffer.append(getName());
-        return buffer.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        return System.identityHashCode(attr);
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        return object == this || object instanceof DOMAttributePointer
-                && attr == ((DOMAttributePointer) object).attr;
-    }
-
-    @Override
-    public int compareChildNodePointers(final NodePointer pointer1,
-            final NodePointer pointer2) {
-        // Won't happen - attributes don't have children
-        return 0;
-    }
+  @Override
+  public int compareChildNodePointers(final NodePointer pointer1, final NodePointer pointer2) {
+    // Won't happen - attributes don't have children
+    return 0;
+  }
 }
