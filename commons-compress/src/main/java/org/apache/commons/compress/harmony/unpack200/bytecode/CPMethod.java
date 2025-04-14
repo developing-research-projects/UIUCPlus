@@ -18,38 +18,40 @@ package org.apache.commons.compress.harmony.unpack200.bytecode;
 
 import java.util.List;
 
-/**
- * Method constant pool entry.
- */
+/** Method constant pool entry. */
 public class CPMethod extends CPMember {
 
-    private boolean hashCodeComputed;
+  private boolean hashCodeComputed;
 
-    private int cachedHashCode;
+  private int cachedHashCode;
 
-    public CPMethod(final CPUTF8 name, final CPUTF8 descriptor, final long flags, final List<Attribute> attributes) {
-        super(name, descriptor, flags, attributes);
+  public CPMethod(
+      final CPUTF8 name,
+      final CPUTF8 descriptor,
+      final long flags,
+      final List<Attribute> attributes) {
+    super(name, descriptor, flags, attributes);
+  }
+
+  private void generateHashCode() {
+    hashCodeComputed = true;
+    final int PRIME = 31;
+    int result = 1;
+    result = PRIME * result + name.hashCode();
+    result = PRIME * result + descriptor.hashCode();
+    cachedHashCode = result;
+  }
+
+  @Override
+  public int hashCode() {
+    if (!hashCodeComputed) {
+      generateHashCode();
     }
-    private void generateHashCode() {
-        hashCodeComputed = true;
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + name.hashCode();
-        result = PRIME * result + descriptor.hashCode();
-        cachedHashCode = result;
-    }
+    return cachedHashCode;
+  }
 
-    @Override
-    public int hashCode() {
-        if (!hashCodeComputed) {
-            generateHashCode();
-        }
-        return cachedHashCode;
-    }
-
-    @Override
-    public String toString() {
-        return "Method: " + name + "(" + descriptor + ")";
-    }
-
+  @Override
+  public String toString() {
+    return "Method: " + name + "-" + descriptor + ")";
+  }
 }
