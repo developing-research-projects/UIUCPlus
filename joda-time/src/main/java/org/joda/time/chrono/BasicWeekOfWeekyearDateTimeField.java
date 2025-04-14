@@ -31,102 +31,98 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = -1587436826395135328L;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = -1587436826395135328L;
 
-    private final BasicChronology iChronology;
+  private final BasicChronology iChronology;
 
-    /**
-     * Restricted constructor
-     */
-    BasicWeekOfWeekyearDateTimeField(BasicChronology chronology, DurationField weeks) {
-        super(DateTimeFieldType.weekOfWeekyear(), weeks);
-        iChronology = chronology;
+  /** Restricted constructor */
+  BasicWeekOfWeekyearDateTimeField(BasicChronology chronology, DurationField weeks) {
+    super(DateTimeFieldType.weekOfWeekyear(), weeks);
+    iChronology = chronology;
+  }
+
+  /**
+   * Get the week of a week based year component of the specified time instant.
+   *
+   * @see org.joda.time.DateTimeField#get(long)
+   * @param instant the time instant in millis to query.
+   * @return the week of the year extracted from the input.
+   */
+  @Override
+  public int get(long instant) {
+    return iChronology.getWeekOfWeekyear(instant);
+  }
+
+  @Override
+  public DurationField getRangeDurationField() {
+    return iChronology.weekyears();
+  }
+
+  // 1970-01-01 is day of week 4, Thursday. The rounding methods need to
+  // apply a corrective alignment since weeks begin on day of week 1, Monday.
+
+  @Override
+  public long roundFloor(long instant) {
+    return super.roundFloor(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
+        - 3 * DateTimeConstants.MILLIS_PER_DAY;
+  }
+
+  @Override
+  public long roundCeiling(long instant) {
+    return super.roundCeiling(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
+        - 3 * DateTimeConstants.MILLIS_PER_DAY;
+  }
+
+  @Override
+  public long remainder(long instant) {
+    return super.remainder(instant + 3 * DateTimeConstants.MILLIS_PER_DAY);
+  }
+
+  @Override
+  public int getMinimumValue() {
+    return 1;
+  }
+
+  @Override
+  public int getMaximumValue() {
+    return 53;
+  }
+
+  @Override
+  public int getMaximumValue(long instant) {
+    int weekyear = iChronology.getWeekyear(instant);
+    return iChronology.getWeeksInYear(weekyear);
+  }
+
+  @Override
+  public int getMaximumValue(ReadablePartial partial) {
+    if (partial.isSupported(DateTimeFieldType.weekyear())) {
+      int weekyear = partial.get(DateTimeFieldType.weekyear());
+      return iChronology.getWeeksInYear(weekyear);
     }
+    return 53;
+  }
 
-    /**
-     * Get the week of a week based year component of the specified time instant.
-     * 
-     * @see org.joda.time.DateTimeField#get(long)
-     * @param instant  the time instant in millis to query.
-     * @return the week of the year extracted from the input.
-     */
-    @Override
-    public int get(long instant) {
-        return iChronology.getWeekOfWeekyear(instant);
-    }
-
-    @Override
-    public DurationField getRangeDurationField() {
-        return iChronology.weekyears();
-    }
-
-    // 1970-01-01 is day of week 4, Thursday. The rounding methods need to
-    // apply a corrective alignment since weeks begin on day of week 1, Monday.
-
-    @Override
-    public long roundFloor(long instant) {
-        return super.roundFloor(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
-            - 3 * DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    @Override
-    public long roundCeiling(long instant) {
-        return super.roundCeiling(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
-            - 3 * DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    @Override
-    public long remainder(long instant) {
-        return super.remainder(instant + 3 * DateTimeConstants.MILLIS_PER_DAY);
-    }
-
-    @Override
-    public int getMinimumValue() {
-        return 1;
-    }
-
-    @Override
-    public int getMaximumValue() {
-        return 53;
-    }
-
-    @Override
-    public int getMaximumValue(long instant) {
-        int weekyear = iChronology.getWeekyear(instant);
+  @Override
+  public int getMaximumValue(ReadablePartial partial, int[] values) {
+    int size = partial.size();
+    for (int i = 0; i < size; i++) {
+      if (partial.getFieldType(i) == DateTimeFieldType.weekyear()) {
+        int weekyear = values[i];
         return iChronology.getWeeksInYear(weekyear);
+      }
     }
+    return 53;
+  }
 
-    @Override
-    public int getMaximumValue(ReadablePartial partial) {
-        if (partial.isSupported(DateTimeFieldType.weekyear())) {
-            int weekyear = partial.get(DateTimeFieldType.weekyear());
-            return iChronology.getWeeksInYear(weekyear);
-        }
-        return 53;
-    }
+  @Override
+  protected int getMaximumValueForSet(long instant, int value) {
+    return value > 52 ? getMaximumValue(instant) : 52;
+  }
 
-    @Override
-    public int getMaximumValue(ReadablePartial partial, int[] values) {
-        int size = partial.size();
-        for (int i = 0; i < size; i++) {
-            if (partial.getFieldType(i) == DateTimeFieldType.weekyear()) {
-                int weekyear = values[i];
-                return iChronology.getWeeksInYear(weekyear);
-            }
-        }
-        return 53;
-    }
-
-    @Override
-    protected int getMaximumValueForSet(long instant, int value) {
-        return value > 52 ? getMaximumValue(instant) : 52;
-    }
-
-    /**
-     * Serialization singleton
-     */
-    private Object readResolve() {
-        return iChronology.weekOfWeekyear();
-    }
+  /** Serialization singleton */
+  private Object readResolve() {
+    return iChronology.weekOfWeekyear();
+  }
 }
