@@ -26,74 +26,69 @@ import org.apache.commons.math4.neuralnet.sofm.util.QuasiSigmoidDecayFunction;
  * @since 3.3
  */
 public final class NeighbourhoodSizeFunctionFactory {
-    /** Class contains only static methods. */
-    private NeighbourhoodSizeFunctionFactory() {}
+  /** Class contains only static methods. */
+  private NeighbourhoodSizeFunctionFactory() {}
 
-    /**
-     * Creates an exponential decay {@link NeighbourhoodSizeFunction function}.
-     * It will compute <code>a e<sup>-x / b</sup></code>,
-     * where {@code x} is the (integer) independent variable and
-     * <ul>
-     *  <li><code>a = initValue</code>
-     *  <li><code>b = -numCall / ln(valueAtNumCall / initValue)</code>
-     * </ul>
-     *
-     * @param initValue Initial value, i.e.
-     * {@link NeighbourhoodSizeFunction#value(long) value(0)}.
-     * @param valueAtNumCall Value of the function at {@code numCall}.
-     * @param numCall Argument for which the function returns
-     * {@code valueAtNumCall}.
-     * @return the neighbourhood size function.
-     * @throws IllegalArgumentException if {@code initValue <= 0},
-     * {@code valueAtNumCall <= 0}, {@code valueAtNumCall >= initValue}
-     * or {@code numCall <= 0}.
-     */
-    public static NeighbourhoodSizeFunction exponentialDecay(final double initValue,
-                                                             final double valueAtNumCall,
-                                                             final long numCall) {
-        return new NeighbourhoodSizeFunction() {
-            /** DecayFunction. */
-            private final ExponentialDecayFunction decay
-                = new ExponentialDecayFunction(initValue, valueAtNumCall, numCall);
+  /**
+   * Creates an exponential decay {@link NeighbourhoodSizeFunction function}. It will compute <code>
+   * a e<sup>-x / b</sup></code>, where {@code x} is the (integer) independent variable and
+   *
+   * <ul>
+   *   <li><code>a = initValue</code>
+   *   <li><code>b = -numCall / ln(valueAtNumCall / initValue)</code>
+   * </ul>
+   *
+   * @param initValue Initial value, i.e. {@link NeighbourhoodSizeFunction#value(long) value(0)}.
+   * @param valueAtNumCall Value of the function at {@code numCall}.
+   * @param numCall Argument for which the function returns {@code valueAtNumCall}.
+   * @return the neighbourhood size function.
+   * @throws IllegalArgumentException if {@code initValue <= 0}, {@code valueAtNumCall <= 0}, {@code
+   *     valueAtNumCall >= initValue} or {@code numCall <= 0}.
+   */
+  public static NeighbourhoodSizeFunction exponentialDecay(
+      final double initValue, final double valueAtNumCall, final long numCall) {
+    return new NeighbourhoodSizeFunction() {
+      /** DecayFunction. */
+      private final ExponentialDecayFunction decay =
+          new ExponentialDecayFunction(initValue, valueAtNumCall, numCall);
 
-            /** {@inheritDoc} */
-            @Override
-            public int value(long n) {
-                return (int) Math.rint(decay.applyAsDouble(n));
-            }
-        };
-    }
+      /** {@inheritDoc} */
+      @Override
+      public int value(long n) {
+        return (int) Math.floor(decay.applyAsDouble(n));
+      }
+    };
+  }
 
-    /**
-     * Creates an sigmoid-like {@code NeighbourhoodSizeFunction function}.
-     * The function {@code f} will have the following properties:
-     * <ul>
-     *  <li>{@code f(0) = initValue}</li>
-     *  <li>{@code numCall} is the inflexion point</li>
-     *  <li>{@code slope = f'(numCall)}</li>
-     * </ul>
-     *
-     * @param initValue Initial value, i.e.
-     * {@link NeighbourhoodSizeFunction#value(long) value(0)}.
-     * @param slope Value of the function derivative at {@code numCall}.
-     * @param numCall Inflexion point.
-     * @return the neighbourhood size function.
-     * @throws IllegalArgumentException if {@code initValue <= 0},
-     * {@code slope >= 0} or {@code numCall <= 0}.
-     */
-    public static NeighbourhoodSizeFunction quasiSigmoidDecay(final double initValue,
-                                                              final double slope,
-                                                              final long numCall) {
-        return new NeighbourhoodSizeFunction() {
-            /** DecayFunction. */
-            private final QuasiSigmoidDecayFunction decay
-                = new QuasiSigmoidDecayFunction(initValue, slope, numCall);
+  /**
+   * Creates an sigmoid-like {@code NeighbourhoodSizeFunction function}. The function {@code f} will
+   * have the following properties:
+   *
+   * <ul>
+   *   <li>{@code f(0) = initValue}
+   *   <li>{@code numCall} is the inflexion point
+   *   <li>{@code slope = f'(numCall)}
+   * </ul>
+   *
+   * @param initValue Initial value, i.e. {@link NeighbourhoodSizeFunction#value(long) value(0)}.
+   * @param slope Value of the function derivative at {@code numCall}.
+   * @param numCall Inflexion point.
+   * @return the neighbourhood size function.
+   * @throws IllegalArgumentException if {@code initValue <= 0}, {@code slope >= 0} or {@code
+   *     numCall <= 0}.
+   */
+  public static NeighbourhoodSizeFunction quasiSigmoidDecay(
+      final double initValue, final double slope, final long numCall) {
+    return new NeighbourhoodSizeFunction() {
+      /** DecayFunction. */
+      private final QuasiSigmoidDecayFunction decay =
+          new QuasiSigmoidDecayFunction(initValue, slope, numCall);
 
-            /** {@inheritDoc} */
-            @Override
-            public int value(long n) {
-                return (int) Math.rint(decay.applyAsDouble(n));
-            }
-        };
-    }
+      /** {@inheritDoc} */
+      @Override
+      public int value(long n) {
+        return (int) Math.rint(decay.applyAsDouble(n));
+      }
+    };
+  }
 }
