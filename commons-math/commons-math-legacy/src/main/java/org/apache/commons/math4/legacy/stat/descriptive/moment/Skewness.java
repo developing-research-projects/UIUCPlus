@@ -16,211 +16,198 @@
  */
 package org.apache.commons.math4.legacy.stat.descriptive.moment;
 
+import org.apache.commons.math4.core.jdkmath.JdkMath;
+import org.apache.commons.math4.legacy.core.MathArrays;
 import org.apache.commons.math4.legacy.exception.MathIllegalArgumentException;
 import org.apache.commons.math4.legacy.exception.NullArgumentException;
 import org.apache.commons.math4.legacy.stat.descriptive.AbstractStorelessUnivariateStatistic;
-import org.apache.commons.math4.core.jdkmath.JdkMath;
-import org.apache.commons.math4.legacy.core.MathArrays;
 
 /**
  * Computes the skewness of the available values.
- * <p>
- * We use the following (unbiased) formula to define skewness:</p>
- * <p>
- * skewness = [n / (n -1) (n - 2)] sum[(x_i - mean)^3] / std^3 </p>
- * <p>
- * where n is the number of values, mean is the {@link Mean} and std is the
- * {@link StandardDeviation} </p>
- * <p>
- * Note that this statistic is undefined for {@code n < 3}.  <code>Double.Nan</code>
- * is returned when there is not sufficient data to compute the statistic.
- * Double.NaN may also be returned if the input includes NaN and / or
- * infinite values.</p>
- * <p>
- * <strong>Note that this implementation is not synchronized.</strong> If
- * multiple threads access an instance of this class concurrently, and at least
- * one of the threads invokes the <code>increment()</code> or
- * <code>clear()</code> method, it must be synchronized externally. </p>
+ *
+ * <p>We use the following (unbiased) formula to define skewness:
+ *
+ * <p>skewness = [n / (n -1) (n - 2)] sum[(x_i - mean)^3] / std^3
+ *
+ * <p>where n is the number of values, mean is the {@link Mean} and std is the {@link
+ * StandardDeviation}
+ *
+ * <p>Note that this statistic is undefined for {@code n < 3}. <code>Double.Nan</code> is returned
+ * when there is not sufficient data to compute the statistic. Double.NaN may also be returned if
+ * the input includes NaN and / or infinite values.
+ *
+ * <p><strong>Note that this implementation is not synchronized.</strong> If multiple threads access
+ * an instance of this class concurrently, and at least one of the threads invokes the <code>
+ * increment()</code> or <code>clear()</code> method, it must be synchronized externally.
  */
 public class Skewness extends AbstractStorelessUnivariateStatistic {
-    /** The value below which the variance is considered zero and thus skewness is zero. */
-    private static final double ZERO_VARIANCE_THRESHOLD = 10E-20;
+  /** The value below which the variance is considered zero and thus skewness is zero. */
+  private static final double ZERO_VARIANCE_THRESHOLD = 10E-20;
 
-    /** Third moment on which this statistic is based. */
-    protected ThirdMoment moment;
+  /** Third moment on which this statistic is based. */
+  protected ThirdMoment moment;
 
-     /**
-     * Determines whether or not this statistic can be incremented or cleared.
-     * <p>
-     * Statistics based on (constructed from) external moments cannot
-     * be incremented or cleared.</p>
-    */
-    protected boolean incMoment;
+  /**
+   * Determines whether or not this statistic can be incremented or cleared.
+   *
+   * <p>Statistics based on (constructed from) external moments cannot be incremented or cleared.
+   */
+  protected boolean incMoment;
 
-    /**
-     * Constructs a Skewness.
-     */
-    public Skewness() {
-        incMoment = true;
-        moment = new ThirdMoment();
+  /** Constructs a Skewness. */
+  public Skewness() {
+    incMoment = true;
+    moment = new ThirdMoment();
+  }
+
+  /**
+   * Constructs a Skewness with an external moment.
+   *
+   * @param m3 external moment
+   */
+  public Skewness(final ThirdMoment m3) {
+    incMoment = false;
+    this.moment = m3;
+  }
+
+  /**
+   * Copy constructor, creates a new {@code Skewness} identical to the {@code original}.
+   *
+   * @param original the {@code Skewness} instance to copy
+   * @throws NullArgumentException if original is null
+   */
+  public Skewness(Skewness original) throws NullArgumentException {
+    copy(original, this);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Note that when {@link #Skewness(ThirdMoment)} is used to create a Skewness, this method does
+   * nothing. In that case, the ThirdMoment should be incremented directly.
+   */
+  @Override
+  public void increment(final double d) {
+    if (incMoment) {
+      moment.increment(d);
     }
+  }
 
-    /**
-     * Constructs a Skewness with an external moment.
-     * @param m3 external moment
-     */
-    public Skewness(final ThirdMoment m3) {
-        incMoment = false;
-        this.moment = m3;
+  /**
+   * Returns the value of the statistic based on the values that have been added.
+   *
+   * <p>See {@link Skewness} for the definition used in the computation.
+   *
+   * @return the skewness of the available values.
+   */
+  @Override
+  public double getResult() {
+
+    if (moment.n < 3) {
+      return Double.NaN;
     }
-
-    /**
-     * Copy constructor, creates a new {@code Skewness} identical
-     * to the {@code original}.
-     *
-     * @param original the {@code Skewness} instance to copy
-     * @throws NullArgumentException if original is null
-     */
-    public Skewness(Skewness original) throws NullArgumentException {
-        copy(original, this);
+    double variance = moment.m2 / (moment.n - 1);
+    if (variance < ZERO_VARIANCE_THRESHOLD) {
+      return 0.0d;
+    } else {
+      double n0 = moment.getN();
+      return (n0 * moment.m3) / ((n0 - 1) * (n0 - 2) * JdkMath.sqrt(variance) * variance);
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     * <p>Note that when {@link #Skewness(ThirdMoment)} is used to
-     * create a Skewness, this method does nothing. In that case, the
-     * ThirdMoment should be incremented directly.</p>
-     */
-    @Override
-    public void increment(final double d) {
-        if (incMoment) {
-            moment.increment(d);
+  /** {@inheritDoc} */
+  @Override
+  public long getN() {
+    return 1;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void clear() {
+    if (incMoment) {
+      moment.clear();
+    }
+  }
+
+  /**
+   * Returns the Skewness of the entries in the specified portion of the input array.
+   *
+   * <p>See {@link Skewness} for the definition used in the computation.
+   *
+   * <p>Throws <code>IllegalArgumentException</code> if the array is null.
+   *
+   * @param values the input array
+   * @param begin the index of the first array element to include
+   * @param length the number of elements to include
+   * @return the skewness of the values or Double.NaN if length is less than 3
+   * @throws MathIllegalArgumentException if the array is null or the array index parameters are not
+   *     valid
+   */
+  @Override
+  public double evaluate(final double[] values, final int begin, final int length)
+      throws MathIllegalArgumentException {
+
+    // Initialize the skewness
+    double skew = Double.NaN;
+
+    if (MathArrays.verifyValues(values, begin, length) && length > 2) {
+      Mean mean = new Mean();
+      // Get the mean and the standard deviation
+      double m = mean.evaluate(values, begin, length);
+
+      // Calc the std, this is implemented here instead
+      // of using the standardDeviation method eliminate
+      // a duplicate pass to get the mean
+      double accum = 0.0;
+      double accum2 = 0.0;
+      for (int i = begin; i < begin + length; i++) {
+        final double d = values[i] - m;
+        accum += d * d;
+        accum2 += d;
+      }
+      final double variance = (accum - (accum2 * accum2 / length)) / (length - 1);
+      if (variance < ZERO_VARIANCE_THRESHOLD) {
+        skew = 0.0d;
+      } else {
+        double accum3 = 0.0;
+        for (int i = begin; i < begin + length; i++) {
+          final double d = values[i] - m;
+          accum3 += d * d * d;
         }
+        accum3 /= variance * JdkMath.sqrt(variance);
+
+        // Get N
+        double n0 = length;
+
+        // Calculate skewness
+        skew = (n0 / ((n0 - 1) * (n0 - 2))) * accum3;
+      }
     }
+    return skew;
+  }
 
-    /**
-     * Returns the value of the statistic based on the values that have been added.
-     * <p>
-     * See {@link Skewness} for the definition used in the computation.</p>
-     *
-     * @return the skewness of the available values.
-     */
-    @Override
-    public double getResult() {
+  /** {@inheritDoc} */
+  @Override
+  public Skewness copy() {
+    Skewness result = new Skewness();
+    // No try-catch or advertised exception because args are guaranteed non-null
+    copy(this, result);
+    return result;
+  }
 
-        if (moment.n < 3) {
-            return Double.NaN;
-        }
-        double variance = moment.m2 / (moment.n - 1);
-        if (variance < ZERO_VARIANCE_THRESHOLD) {
-            return 0.0d;
-        } else {
-            double n0 = moment.getN();
-            return  (n0 * moment.m3) /
-            ((n0 - 1) * (n0 -2) * JdkMath.sqrt(variance) * variance);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long getN() {
-        return moment.getN();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clear() {
-        if (incMoment) {
-            moment.clear();
-        }
-    }
-
-    /**
-     * Returns the Skewness of the entries in the specified portion of the
-     * input array.
-     * <p>
-     * See {@link Skewness} for the definition used in the computation.</p>
-     * <p>
-     * Throws <code>IllegalArgumentException</code> if the array is null.</p>
-     *
-     * @param values the input array
-     * @param begin the index of the first array element to include
-     * @param length the number of elements to include
-     * @return the skewness of the values or Double.NaN if length is less than 3
-     * @throws MathIllegalArgumentException if the array is null or the array index
-     *  parameters are not valid
-     */
-    @Override
-    public double evaluate(final double[] values,final int begin, final int length)
-        throws MathIllegalArgumentException {
-
-        // Initialize the skewness
-        double skew = Double.NaN;
-
-        if (MathArrays.verifyValues(values, begin, length) && length > 2 ) {
-            Mean mean = new Mean();
-            // Get the mean and the standard deviation
-            double m = mean.evaluate(values, begin, length);
-
-            // Calc the std, this is implemented here instead
-            // of using the standardDeviation method eliminate
-            // a duplicate pass to get the mean
-            double accum = 0.0;
-            double accum2 = 0.0;
-            for (int i = begin; i < begin + length; i++) {
-                final double d = values[i] - m;
-                accum  += d * d;
-                accum2 += d;
-            }
-            final double variance = (accum - (accum2 * accum2 / length)) / (length - 1);
-            if (variance < ZERO_VARIANCE_THRESHOLD) {
-                skew = 0.0d;
-            } else {
-                double accum3 = 0.0;
-                for (int i = begin; i < begin + length; i++) {
-                    final double d = values[i] - m;
-                    accum3 += d * d * d;
-                }
-                accum3 /= variance * JdkMath.sqrt(variance);
-
-                // Get N
-                double n0 = length;
-
-                // Calculate skewness
-                skew = (n0 / ((n0 - 1) * (n0 - 2))) * accum3;
-            }
-        }
-        return skew;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Skewness copy() {
-        Skewness result = new Skewness();
-        // No try-catch or advertised exception because args are guaranteed non-null
-        copy(this, result);
-        return result;
-    }
-
-    /**
-     * Copies source to dest.
-     * <p>Neither source nor dest can be null.</p>
-     *
-     * @param source Skewness to copy
-     * @param dest Skewness to copy to
-     * @throws NullArgumentException if either source or dest is null
-     */
-    public static void copy(Skewness source, Skewness dest)
-        throws NullArgumentException {
-        NullArgumentException.check(source);
-        NullArgumentException.check(dest);
-        dest.moment = new ThirdMoment(source.moment.copy());
-        dest.incMoment = source.incMoment;
-    }
+  /**
+   * Copies source to dest.
+   *
+   * <p>Neither source nor dest can be null.
+   *
+   * @param source Skewness to copy
+   * @param dest Skewness to copy to
+   * @throws NullArgumentException if either source or dest is null
+   */
+  public static void copy(Skewness source, Skewness dest) throws NullArgumentException {
+    NullArgumentException.check(source);
+    NullArgumentException.check(dest);
+    dest.moment = new ThirdMoment(source.moment.copy());
+    dest.incMoment = source.incMoment;
+  }
 }
