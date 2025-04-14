@@ -20,19 +20,17 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
 /**
- * Abstract datetime field class that defines its own DurationField, which
- * delegates back into this ImpreciseDateTimeField.
- * <p>
- * This DateTimeField is useful for defining DateTimeFields that are composed
- * of imprecise durations. If both duration fields are precise, then a
- * {@link PreciseDateTimeField} should be used instead.
- * <p>
- * When defining imprecise DateTimeFields where a matching DurationField is
- * already available, just extend BaseDateTimeField directly so as not to
- * create redundant DurationField instances.
- * <p>
- * ImpreciseDateTimeField is thread-safe and immutable, and its subclasses must
- * be as well.
+ * Abstract datetime field class that defines its own DurationField, which delegates back into this
+ * ImpreciseDateTimeField.
+ *
+ * <p>This DateTimeField is useful for defining DateTimeFields that are composed of imprecise
+ * durations. If both duration fields are precise, then a {@link PreciseDateTimeField} should be
+ * used instead.
+ *
+ * <p>When defining imprecise DateTimeFields where a matching DurationField is already available,
+ * just extend BaseDateTimeField directly so as not to create redundant DurationField instances.
+ *
+ * <p>ImpreciseDateTimeField is thread-safe and immutable, and its subclasses must be as well.
  *
  * @author Brian S O'Neill
  * @see PreciseDateTimeField
@@ -40,181 +38,171 @@ import org.joda.time.DurationFieldType;
  */
 public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = 7190739608550251860L;
+  @SuppressWarnings("unused")
+  private static final long serialVersionUID = 7190739608550251860L;
 
-    final long iUnitMillis;
-    private final DurationField iDurationField;
+  final long iUnitMillis;
+  private final DurationField iDurationField;
 
-    /**
-     * Constructor.
-     * 
-     * @param type  the field type
-     * @param unitMillis  the average duration unit milliseconds
-     */
-    public ImpreciseDateTimeField(DateTimeFieldType type, long unitMillis) {
-        super(type);
-        iUnitMillis = unitMillis;
-        iDurationField = new LinkedDurationField(type.getDurationType());
+  /**
+   * Constructor.
+   *
+   * @param type the field type
+   * @param unitMillis the average duration unit milliseconds
+   */
+  public ImpreciseDateTimeField(DateTimeFieldType type, long unitMillis) {
+    super(type);
+    iUnitMillis = unitMillis;
+    iDurationField = new LinkedDurationField(type.getDurationType());
+  }
+
+  @Override
+  public abstract int get(long instant);
+
+  @Override
+  public abstract long set(long instant, int value);
+
+  @Override
+  public abstract long add(long instant, int value);
+
+  @Override
+  public abstract long add(long instant, long value);
+
+  /**
+   * Computes the difference between two instants, as measured in the units of this field. Any
+   * fractional units are dropped from the result. Calling getDifference reverses the effect of
+   * calling add. In the following code:
+   *
+   * <pre>
+   * long instant = ...
+   * int v = ...
+   * int age = getDifference(add(instant, v), instant);
+   * </pre>
+   *
+   * The value 'age' is the same as the value 'v'.
+   *
+   * <p>The default implementation call getDifferenceAsLong and converts the return value to an int.
+   *
+   * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to subtract from
+   * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to subtract off the minuend
+   * @return the difference in the units of this field
+   */
+  @Override
+  public int getDifference(long minuendInstant, long subtrahendInstant) {
+    return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
+  }
+
+  /**
+   * Computes the difference between two instants, as measured in the units of this field. Any
+   * fractional units are dropped from the result. Calling getDifference reverses the effect of
+   * calling add. In the following code:
+   *
+   * <pre>
+   * long instant = ...
+   * long v = ...
+   * long age = getDifferenceAsLong(add(instant, v), instant);
+   * </pre>
+   *
+   * The value 'age' is the same as the value 'v'.
+   *
+   * <p>The default implementation performs a guess-and-check algorithm using
+   * getDurationField().getUnitMillis() and the add() method. Subclasses are encouraged to provide a
+   * more efficient implementation.
+   *
+   * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to subtract from
+   * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to subtract off the minuend
+   * @return the difference in the units of this field
+   */
+  @Override
+  public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    if (minuendInstant < subtrahendInstant) {
+      return -getDifferenceAsLong(subtrahendInstant, minuendInstant);
+    }
+
+    long difference = (minuendInstant - subtrahendInstant) / iUnitMillis;
+    if (add(subtrahendInstant, difference) < minuendInstant) {
+      do {
+        difference++;
+      } while (add(subtrahendInstant, difference) <= minuendInstant);
+      difference--;
+    } else if (add(subtrahendInstant, difference) > minuendInstant) {
+      do {
+        difference--;
+      } while (add(subtrahendInstant, difference) > minuendInstant);
+    }
+    return difference;
+  }
+
+  @Override
+  public final DurationField getDurationField() {
+    return iDurationField;
+  }
+
+  @Override
+  public abstract DurationField getRangeDurationField();
+
+  @Override
+  public abstract long roundFloor(long instant);
+
+  protected final long getDurationUnitMillis() {
+    return iUnitMillis;
+  }
+
+  private final class LinkedDurationField extends BaseDurationField {
+    private static final long serialVersionUID = -203813474600094134L;
+
+    LinkedDurationField(DurationFieldType type) {
+      super(type);
     }
 
     @Override
-    public abstract int get(long instant);
+    public boolean isPrecise() {
+      return false;
+    }
 
     @Override
-    public abstract long set(long instant, int value);
+    public long getUnitMillis() {
+      return iUnitMillis;
+    }
 
     @Override
-    public abstract long add(long instant, int value);
+    public int getValue(long duration, long instant) {
+      return ImpreciseDateTimeField.this.getDifference(instant + duration, instant);
+    }
 
     @Override
-    public abstract long add(long instant, long value);
+    public long getValueAsLong(long duration, long instant) {
+      return ImpreciseDateTimeField.this.getDifferenceAsLong(instant + duration, instant);
+    }
 
-    /**
-     * Computes the difference between two instants, as measured in the units
-     * of this field. Any fractional units are dropped from the result. Calling
-     * getDifference reverses the effect of calling add. In the following code:
-     *
-     * <pre>
-     * long instant = ...
-     * int v = ...
-     * int age = getDifference(add(instant, v), instant);
-     * </pre>
-     *
-     * The value 'age' is the same as the value 'v'.
-     * <p>
-     * The default implementation call getDifferenceAsLong and converts the
-     * return value to an int.
-     *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
-     * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
-     * @return the difference in the units of this field
-     */
+    @Override
+    public long getMillis(int value, long instant) {
+      return ImpreciseDateTimeField.this.add(instant, value) - instant;
+    }
+
+    @Override
+    public long getMillis(long value, long instant) {
+      return ImpreciseDateTimeField.this.add(instant, value) - instant;
+    }
+
+    @Override
+    public long add(long instant, int value) {
+      return ImpreciseDateTimeField.this.add(instant, value);
+    }
+
+    @Override
+    public long add(long instant, long value) {
+      return ImpreciseDateTimeField.this.add(instant, value);
+    }
+
     @Override
     public int getDifference(long minuendInstant, long subtrahendInstant) {
-        return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
+      return ImpreciseDateTimeField.this.getDifference(minuendInstant, subtrahendInstant);
     }
 
-    /**
-     * Computes the difference between two instants, as measured in the units
-     * of this field. Any fractional units are dropped from the result. Calling
-     * getDifference reverses the effect of calling add. In the following code:
-     *
-     * <pre>
-     * long instant = ...
-     * long v = ...
-     * long age = getDifferenceAsLong(add(instant, v), instant);
-     * </pre>
-     *
-     * The value 'age' is the same as the value 'v'.
-     * <p>
-     * The default implementation performs a guess-and-check algorithm using
-     * getDurationField().getUnitMillis() and the add() method. Subclasses are
-     * encouraged to provide a more efficient implementation.
-     *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
-     * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
-     * @return the difference in the units of this field
-     */
     @Override
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        if (minuendInstant < subtrahendInstant) {
-            return -getDifferenceAsLong(subtrahendInstant, minuendInstant);
-        }
-        
-        long difference = (minuendInstant - subtrahendInstant) / iUnitMillis;
-        if (add(subtrahendInstant, difference) < minuendInstant) {
-            do {
-                difference++;
-            } while (add(subtrahendInstant, difference) <= minuendInstant);
-            difference--;
-        } else if (add(subtrahendInstant, difference) > minuendInstant) {
-            do {
-                difference--;
-            } while (add(subtrahendInstant, difference) > minuendInstant);
-        }
-        return difference;
+      return ImpreciseDateTimeField.this.getDifferenceAsLong(minuendInstant, subtrahendInstant);
     }
-
-    @Override
-    public final DurationField getDurationField() {
-        return iDurationField;
-    }
-
-    @Override
-    public abstract DurationField getRangeDurationField();
-
-    @Override
-    public abstract long roundFloor(long instant);
-
-    protected final long getDurationUnitMillis() {
-        return iUnitMillis;
-    }
-
-    private final class LinkedDurationField extends BaseDurationField {
-        private static final long serialVersionUID = -203813474600094134L;
-
-        LinkedDurationField(DurationFieldType type) {
-            super(type);
-        }
-    
-        @Override
-        public boolean isPrecise() {
-            return false;
-        }
-    
-        @Override
-        public long getUnitMillis() {
-            return iUnitMillis;
-        }
-
-        @Override
-        public int getValue(long duration, long instant) {
-            return ImpreciseDateTimeField.this
-                .getDifference(instant + duration, instant);
-        }
-
-        @Override
-        public long getValueAsLong(long duration, long instant) {
-            return ImpreciseDateTimeField.this
-                .getDifferenceAsLong(instant + duration, instant);
-        }
-        
-        @Override
-        public long getMillis(int value, long instant) {
-            return ImpreciseDateTimeField.this.add(instant, value) - instant;
-        }
-
-        @Override
-        public long getMillis(long value, long instant) {
-            return ImpreciseDateTimeField.this.add(instant, value) - instant;
-        }
-
-        @Override
-        public long add(long instant, int value) {
-            return ImpreciseDateTimeField.this.add(instant, value);
-        }
-        
-        @Override
-        public long add(long instant, long value) {
-            return ImpreciseDateTimeField.this.add(instant, value);
-        }
-        
-        @Override
-        public int getDifference(long minuendInstant, long subtrahendInstant) {
-            return ImpreciseDateTimeField.this
-                .getDifference(minuendInstant, subtrahendInstant);
-        }
-        
-        @Override
-        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-            return ImpreciseDateTimeField.this
-                .getDifferenceAsLong(minuendInstant, subtrahendInstant);
-        }
-    }
-
+  }
 }
