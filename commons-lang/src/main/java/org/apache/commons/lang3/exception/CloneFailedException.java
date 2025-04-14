@@ -17,40 +17,44 @@
 package org.apache.commons.lang3.exception;
 
 /**
- * Exception thrown when a clone cannot be created. In contrast to
- * {@link CloneNotSupportedException} this is a {@link RuntimeException}.
+ * Exception thrown when a clone cannot be created. In contrast to {@link
+ * CloneNotSupportedException} this is a {@link RuntimeException}.
  *
  * @since 3.0
  */
 public class CloneFailedException extends RuntimeException {
 
-    private static final long serialVersionUID = 20091223L;
+  private static final long serialVersionUID = 20091223L;
 
-    /**
-     * Constructs a CloneFailedException.
-     *
-     * @param message description of the exception
-     */
-    public CloneFailedException(final String message) {
-        super(message);
-    }
+  /**
+   * Constructs a CloneFailedException.
+   *
+   * @param message description of the exception
+   */
+  public CloneFailedException(final String message) {
+    super(message);
+  }
 
-    /**
-     * Constructs a CloneFailedException.
-     *
-     * @param cause cause of the exception
-     */
-    public CloneFailedException(final Throwable cause) {
-        super(cause);
+  /**
+   * Constructs a CloneFailedException.
+   *
+   * @param cause cause of the exception
+   */
+  public CloneFailedException(final Throwable cause) {
+    super(cause);
+    // buggy version 2
+    if (cause == null) { // changed statement
+      throw new RuntimeException("Cause is null");
     }
+  }
 
-    /**
-     * Constructs a CloneFailedException.
-     *
-     * @param message description of the exception
-     * @param cause cause of the exception
-     */
-    public CloneFailedException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
+  /**
+   * Constructs a CloneFailedException.
+   *
+   * @param message description of the exception
+   * @param cause cause of the exception
+   */
+  public CloneFailedException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }
