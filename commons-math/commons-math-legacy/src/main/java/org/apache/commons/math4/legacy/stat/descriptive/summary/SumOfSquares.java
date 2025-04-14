@@ -16,137 +16,119 @@
  */
 package org.apache.commons.math4.legacy.stat.descriptive.summary;
 
+import org.apache.commons.math4.legacy.core.MathArrays;
 import org.apache.commons.math4.legacy.exception.MathIllegalArgumentException;
 import org.apache.commons.math4.legacy.exception.NullArgumentException;
 import org.apache.commons.math4.legacy.stat.descriptive.AbstractStorelessUnivariateStatistic;
-import org.apache.commons.math4.legacy.core.MathArrays;
 
 /**
  * Returns the sum of the squares of the available values.
- * <p>
- * If there are no values in the dataset, then 0 is returned.
- * If any of the values are
- * <code>NaN</code>, then <code>NaN</code> is returned.</p>
- * <p>
- * <strong>Note that this implementation is not synchronized.</strong> If
- * multiple threads access an instance of this class concurrently, and at least
- * one of the threads invokes the <code>increment()</code> or
- * <code>clear()</code> method, it must be synchronized externally.</p>
+ *
+ * <p>If there are no values in the dataset, then 0 is returned. If any of the values are <code>NaN
+ * </code>, then <code>NaN</code> is returned.
+ *
+ * <p><strong>Note that this implementation is not synchronized.</strong> If multiple threads access
+ * an instance of this class concurrently, and at least one of the threads invokes the <code>
+ * increment()</code> or <code>clear()</code> method, it must be synchronized externally.
  */
 public class SumOfSquares extends AbstractStorelessUnivariateStatistic {
-    /** Number of values that have been added. */
-    private long n;
+  /** Number of values that have been added. */
+  private long n;
 
-    /**
-     * The currently running sumSq.
-     */
-    private double value;
+  /** The currently running sumSq. */
+  private double value;
 
-    /**
-     * Create a SumOfSquares instance.
-     */
-    public SumOfSquares() {
-        n = 0;
-        value = 0;
+  /** Create a SumOfSquares instance. */
+  public SumOfSquares() {
+    n = 0;
+    value = 0;
+  }
+
+  /**
+   * Copy constructor, creates a new {@code SumOfSquares} identical to the {@code original}.
+   *
+   * @param original the {@code SumOfSquares} instance to copy
+   * @throws NullArgumentException if original is null
+   */
+  public SumOfSquares(SumOfSquares original) throws NullArgumentException {
+    copy(original, this);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void increment(final double d) {
+    value += d * d;
+    n++;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public double getResult() {
+    return value;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public long getN() {
+    return n;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void clear() {
+    value = 0;
+    n = 0;
+  }
+
+  /**
+   * Returns the sum of the squares of the entries in the specified portion of the input array, or
+   * <code>Double.NaN</code> if the designated subarray is empty.
+   *
+   * <p>Throws <code>MathIllegalArgumentException</code> if the array is null.
+   *
+   * @param values the input array
+   * @param begin index of the first array element to include
+   * @param length the number of elements to include
+   * @return the sum of the squares of the values or 0 if length = 0
+   * @throws MathIllegalArgumentException if the array is null or the array index parameters are not
+   *     valid
+   */
+  @Override
+  public double evaluate(final double[] values, final int begin, final int length)
+      throws MathIllegalArgumentException {
+
+    double sumSq = Double.NaN;
+    if (MathArrays.verifyValues(values, begin, length, true)) {
+      sumSq = 0.0;
+      for (int i = begin; i < begin + length; i++) {
+        sumSq += values[i] * values[i];
+      }
     }
+    return sumSq;
+  }
 
-    /**
-     * Copy constructor, creates a new {@code SumOfSquares} identical
-     * to the {@code original}.
-     *
-     * @param original the {@code SumOfSquares} instance to copy
-     * @throws NullArgumentException if original is null
-     */
-    public SumOfSquares(SumOfSquares original) throws NullArgumentException {
-        copy(original, this);
-    }
+  /** {@inheritDoc} */
+  @Override
+  public SumOfSquares copy() {
+    SumOfSquares result = new SumOfSquares();
+    // no try-catch or advertised exception here because args are valid
+    copy(this, result);
+    return result;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void increment(final double d) {
-        value += d * d;
-        n++;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public double getResult() {
-        return value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long getN() {
-        return n;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clear() {
-        value = 0;
-        n = 0;
-    }
-
-    /**
-     * Returns the sum of the squares of the entries in the specified portion of
-     * the input array, or <code>Double.NaN</code> if the designated subarray
-     * is empty.
-     * <p>
-     * Throws <code>MathIllegalArgumentException</code> if the array is null.</p>
-     *
-     * @param values the input array
-     * @param begin index of the first array element to include
-     * @param length the number of elements to include
-     * @return the sum of the squares of the values or 0 if length = 0
-     * @throws MathIllegalArgumentException if the array is null or the array index
-     *  parameters are not valid
-     */
-    @Override
-    public double evaluate(final double[] values,final int begin, final int length)
-        throws MathIllegalArgumentException {
-
-        double sumSq = Double.NaN;
-        if (MathArrays.verifyValues(values, begin, length, true)) {
-            sumSq = 0.0;
-            for (int i = begin; i < begin + length; i++) {
-                sumSq += values[i] * values[i];
-            }
-        }
-        return sumSq;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SumOfSquares copy() {
-        SumOfSquares result = new SumOfSquares();
-        // no try-catch or advertised exception here because args are valid
-        copy(this, result);
-        return result;
-    }
-
-    /**
-     * Copies source to dest.
-     * <p>Neither source nor dest can be null.</p>
-     *
-     * @param source SumOfSquares to copy
-     * @param dest SumOfSquares to copy to
-     * @throws NullArgumentException if either source or dest is null
-     */
-    public static void copy(SumOfSquares source, SumOfSquares dest)
-        throws NullArgumentException {
-        NullArgumentException.check(source);
-        NullArgumentException.check(dest);
-        dest.n = source.n;
-        dest.value = source.value;
-    }
+  /**
+   * Copies source to dest.
+   *
+   * <p>Neither source nor dest can be null.
+   *
+   * @param source SumOfSquares to copy
+   * @param dest SumOfSquares to copy to
+   * @throws NullArgumentException if either source or dest is null
+   */
+  public static void copy(SumOfSquares source, SumOfSquares dest) throws NullArgumentException {
+    NullArgumentException.check(source);
+    NullArgumentException.check(dest);
+    dest.n = source.n;
+    dest.value = source.value;
+  }
 }
