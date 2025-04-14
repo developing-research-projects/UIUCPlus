@@ -18,74 +18,74 @@ package org.apache.commons.jxpath.ri;
 
 import java.io.Serializable;
 
-
-/**
- * A qualified name: a combination of an optional namespace prefix
- * and an local name.
- */
+/** A qualified name: a combination of an optional namespace prefix and an local name. */
 public class QName implements Serializable {
-    private static final long serialVersionUID = 7616199282015091496L;
+  private static final long serialVersionUID = 7616199282015091496L;
 
-    private final String prefix;
-    private final String name;
-    private final String qualifiedName;
+  private final String prefix;
+  private final String name;
+  private final String qualifiedName;
 
-    /**
-     * Create a new QName.
-     * @param qualifiedName value
-     */
-    public QName(final String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-        final int index = qualifiedName.indexOf(':');
-        prefix = index < 0 ? null : qualifiedName.substring(0, index);
-        name = index < 0 ? qualifiedName : qualifiedName.substring(index + 1);
+  /**
+   * Create a new QName.
+   *
+   * @param qualifiedName value
+   */
+  public QName(final String qualifiedName) {
+    this.qualifiedName = qualifiedName;
+    final int index = qualifiedName.indexOf(':');
+    prefix = index < 0 ? null : qualifiedName.substring(0, index);
+    name = index < 0 ? qualifiedName : qualifiedName.substring(index + 1);
+  }
+
+  /**
+   * Create a new QName.
+   *
+   * @param prefix ns
+   * @param localName String
+   */
+  public QName(final String prefix, final String localName) {
+    this.prefix = prefix;
+    this.name = localName;
+    this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
+  }
+
+  /**
+   * Get the prefix of this QName.
+   *
+   * @return String
+   */
+  public String getPrefix() {
+    return prefix;
+  }
+
+  /**
+   * Get the local name.
+   *
+   * @return String
+   */
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public String toString() {
+    return qualifiedName;
+  }
+
+  @Override
+  public int hashCode() {
+    return name.hashCode();
+  }
+
+  @Override
+  public boolean equals(final Object object) {
+    if (this == object) {
+      return true;
     }
-
-    /**
-     * Create a new QName.
-     * @param prefix ns
-     * @param localName String
-     */
-    public QName(final String prefix, final String localName) {
-        this.prefix = prefix;
-        this.name = localName;
-        this.qualifiedName = prefix == null ? localName : prefix + ':' + localName;
+    if (!(object instanceof QName)) {
+      return false;
     }
-
-    /**
-     * Get the prefix of this QName.
-     * @return String
-     */
-    public String getPrefix() {
-        return prefix;
-    }
-
-    /**
-     * Get the local name.
-     * @return String
-     */
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return qualifiedName;
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public boolean equals(final Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof QName)) {
-            return false;
-        }
-        return qualifiedName.equals(((QName) object).qualifiedName);
-    }
+    return qualifiedName.equals(((QName) object).qualifiedName);
+  }
 }
