@@ -19,39 +19,38 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
-/**
- * Implementation of {@link Expression} for the operation "*".
- */
+/** Implementation of {@link Expression} for the operation "*". */
 public class CoreOperationMultiply extends CoreOperation {
 
-    /**
-     * Create a new CoreOperationMultiply.
-     * @param arg1 factor 1
-     * @param arg2 factor 2
-     */
-    public CoreOperationMultiply(final Expression arg1, final Expression arg2) {
-        super(new Expression[] { arg1, arg2 });
-    }
+  /**
+   * Create a new CoreOperationMultiply.
+   *
+   * @param arg1 factor 1
+   * @param arg2 factor 2
+   */
+  public CoreOperationMultiply(final Expression arg1, final Expression arg2) {
+    super(new Expression[] {arg1, arg2});
+  }
 
-    @Override
-    public Object computeValue(final EvalContext context) {
-        final double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
-        final double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
-        return Double.valueOf(l * r);
-    }
+  @Override
+  public Object computeValue(final EvalContext context) {
+    final double l = InfoSetUtil.doubleValue(args[0].computeValue(context));
+    final double r = InfoSetUtil.doubleValue(args[1].computeValue(context));
+    return Double.valueOf(l * r);
+  }
 
-    @Override
-    protected int getPrecedence() {
-        return MULTIPLY_PRECEDENCE;
-    }
+  @Override
+  protected int getPrecedence() {
+    return MULTIPLY_PRECEDENCE;
+  }
 
-    @Override
-    protected boolean isSymmetric() {
-        return true;
-    }
+  @Override
+  protected boolean isSymmetric() {
+    return true;
+  }
 
-    @Override
-    public String getSymbol() {
-        return "*";
-    }
+  @Override
+  public String getSymbol() {
+    return "*";
+  }
 }
