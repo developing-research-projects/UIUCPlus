@@ -44,18 +44,26 @@ public class BagOfPrimitives {
 
   public String getExpectedJson() {
     return "{"
-        + "\"longValue\":" + longValue + ","
-        + "\"intValue\":" + intValue + ","
-        + "\"booleanValue\":" + booleanValue + ","
-        + "\"stringValue\":\"" + stringValue + "\""
+        + "\"longValue\":"
+        + longValue
+        + ","
+        + "\"intValue\":"
+        + intValue
+        + ","
+        + "\"booleanValue\":"
+        + booleanValue
+        + ","
+        + "\"stringValue\":\""
+        + stringValue
+        + "\""
         + "}";
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
-    result = prime * result + (booleanValue ? 1231 : 1237);
+    int result;
+    result = prime * (booleanValue ? 1231 : 1237);
     result = prime * result + intValue;
     result = prime * result + (int) (longValue ^ (longValue >>> 32));
     result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
@@ -80,7 +88,8 @@ public class BagOfPrimitives {
 
   @Override
   public String toString() {
-    return String.format("(longValue=%d,intValue=%d,booleanValue=%b,stringValue=%s)",
+    return String.format(
+        "(longValue=%d,intValue=%d,booleanValue=%b,stringValue=%s)",
         longValue, intValue, booleanValue, stringValue);
   }
 }
