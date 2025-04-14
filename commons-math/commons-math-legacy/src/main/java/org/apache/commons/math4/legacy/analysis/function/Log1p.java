@@ -17,9 +17,9 @@
 
 package org.apache.commons.math4.legacy.analysis.function;
 
+import org.apache.commons.math4.core.jdkmath.JdkMath;
 import org.apache.commons.math4.legacy.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math4.legacy.analysis.differentiation.UnivariateDifferentiableFunction;
-import org.apache.commons.math4.core.jdkmath.JdkMath;
 
 /**
  * <code>log(1 + p)</code> function.
@@ -27,17 +27,19 @@ import org.apache.commons.math4.core.jdkmath.JdkMath;
  * @since 3.0
  */
 public class Log1p implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
-    @Override
-    public double value(double x) {
-        return JdkMath.log1p(x);
-    }
+  /** {@inheritDoc} */
+  @Override
+  public double value(double x) {
+    return JdkMath.log1p(x);
+  }
 
-    /** {@inheritDoc}
-     * @since 3.1
-     */
-    @Override
-    public DerivativeStructure value(final DerivativeStructure t) {
-        return t.log1p();
-    }
+  /**
+   * {@inheritDoc}
+   *
+   * @since 3.1
+   */
+  @Override
+  public DerivativeStructure value(final DerivativeStructure t) {
+    return t.log1p();
+  }
 }
