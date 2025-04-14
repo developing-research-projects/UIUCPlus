@@ -23,16 +23,15 @@ package org.apache.commons.codec.digest;
 import java.util.zip.Checksum;
 
 /**
- * A pure-java implementation of the CRC32 checksum that uses
- * the CRC32-C polynomial, the same polynomial used by iSCSI
- * and implemented on many Intel chipsets supporting SSE4.2.
+ * A pure-java implementation of the CRC32 checksum that uses the CRC32-C polynomial, the same
+ * polynomial used by iSCSI and implemented on many Intel chipsets supporting SSE4.2.
  *
- * Copied from Hadoop 2.3.6:
- * https://gitbox.apache.org/repos/asf?p=hadoop.git;a=blob_plain;
+ * <p>Copied from Hadoop 2.3.6: https://gitbox.apache.org/repos/asf?p=hadoop.git;a=blob_plain;
  * f=hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/PureJavaCrc32C.java;
  * hb=2120de588b92b9f22b1cc4188761d6a8c61aa778
- * <p>
- * This class is Not ThreadSafe
+ *
+ * <p>This class is Not ThreadSafe
+ *
  * @since 1.11
  */
 public class PureJavaCrc32C implements Checksum {
@@ -60,35 +59,42 @@ public class PureJavaCrc32C implements Checksum {
   public void update(final byte[] b, int off, int len) {
     int localCrc = crc;
 
-    while(len > 7) {
-      final int c0 =(b[off+0] ^ localCrc) & 0xff;
-      final int c1 =(b[off+1] ^ (localCrc >>>= 8)) & 0xff;
-      final int c2 =(b[off+2] ^ (localCrc >>>= 8)) & 0xff;
-      final int c3 =(b[off+3] ^ (localCrc >>>= 8)) & 0xff;
-      localCrc = (T[T8_7_START + c0] ^ T[T8_6_START + c1]) ^
-                 (T[T8_5_START + c2] ^ T[T8_4_START + c3]);
+    while (len > 7) {
+      final int c0 = (b[off + 0] ^ localCrc) & 0xff;
+      final int c1 = (b[off + 1] ^ (localCrc >>>= 8)) & 0xff;
+      final int c2 = (b[off + 2] ^ (localCrc >>>= 8)) & 0xff;
+      final int c3 = (b[off + 3] ^ (localCrc >>>= 8)) & 0xff;
+      localCrc =
+          (T[T8_7_START + c0] ^ T[T8_6_START + c1]) ^ (T[T8_5_START + c2] ^ T[T8_4_START + c3]);
 
-      final int c4 = b[off+4] & 0xff;
-      final int c5 = b[off+5] & 0xff;
-      final int c6 = b[off+6] & 0xff;
-      final int c7 = b[off+7] & 0xff;
+      final int c4 = b[off + 4] & 0xff;
+      final int c5 = b[off + 5] & 0xff;
+      final int c6 = b[off + 6] & 0xff;
+      final int c7 = b[off + 7] & 0xff;
 
-      localCrc ^= (T[T8_3_START + c4] ^ T[T8_2_START + c5]) ^
-                  (T[T8_1_START + c6] ^ T[T8_0_START + c7]);
+      localCrc ^=
+          (T[T8_3_START + c4] ^ T[T8_2_START + c5]) ^ (T[T8_1_START + c6] ^ T[T8_0_START + c7]);
 
       off += 8;
       len -= 8;
     }
 
     /* loop unroll - duff's device style */
-    switch(len) {
-      case 7: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 6: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 5: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 4: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 3: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 2: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
-      case 1: localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+    switch (len) {
+      case 7:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 6:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 5:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 4:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 3:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 2:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
+      case 1:
+        localCrc = (localCrc >>> 8) ^ T[T8_0_START + ((localCrc ^ b[off++]) & 0xff)];
       default:
         break; // satisfy Findbugs
     }
@@ -98,7 +104,7 @@ public class PureJavaCrc32C implements Checksum {
   }
 
   @Override
-  final public void update(final int b) {
+  public final void update(final int b) {
     crc = (crc >>> 8) ^ T[T8_0_START + ((crc ^ b) & 0xff)];
   }
 
