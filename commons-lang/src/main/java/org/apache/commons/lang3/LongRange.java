@@ -20,65 +20,61 @@ package org.apache.commons.lang3;
 /**
  * Specializes {@link NumberRange} for {@link Long}s.
  *
- * <p>
- * This class is not designed to interoperate with other NumberRanges
- * </p>
+ * <p>This class is not designed to interoperate with other NumberRanges
  *
  * @since 3.13.0
  */
 public final class LongRange extends NumberRange<Long> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * Creates a range with the specified minimum and maximum values (both inclusive).
-     *
-     * <p>
-     * The range uses the natural ordering of the elements to determine where values lie in the range.
-     * </p>
-     *
-     * <p>
-     * The arguments may be passed in the order (min,max) or (max,min). The getMinimum and getMaximum methods will return the correct values.
-     * </p>
-     *
-     * @param fromInclusive the first value that defines the edge of the range, inclusive.
-     * @param toInclusive the second value that defines the edge of the range, inclusive.
-     * @return the range object, not null.
-     */
-    public static LongRange of(final long fromInclusive, final long toInclusive) {
-        return of(Long.valueOf(fromInclusive), Long.valueOf(toInclusive));
+  /**
+   * Creates a range with the specified minimum and maximum values (both inclusive).
+   *
+   * <p>The range uses the natural ordering of the elements to determine where values lie in the
+   * range.
+   *
+   * <p>The arguments may be passed in the order (min,max) or (max,min). The getMinimum and
+   * getMaximum methods will return the correct values.
+   *
+   * @param fromInclusive the first value that defines the edge of the range, inclusive.
+   * @param toInclusive the second value that defines the edge of the range, inclusive.
+   * @return the range object, not null.
+   */
+  public static LongRange of(final long fromInclusive, final long toInclusive) {
+    if (fromInclusive > toInclusive) {
+      return of(Long.valueOf(toInclusive), Long.valueOf(fromInclusive));
     }
+    return of(Long.valueOf(fromInclusive), Long.valueOf(toInclusive));
+  }
 
-    /**
-     * Creates a range with the specified minimum and maximum values (both inclusive).
-     *
-     * <p>
-     * The range uses the natural ordering of the elements to determine where values lie in the range.
-     * </p>
-     *
-     * <p>
-     * The arguments may be passed in the order (min,max) or (max,min). The getMinimum and getMaximum methods will return the correct values.
-     * </p>
-     *
-     * @param fromInclusive the first value that defines the edge of the range, inclusive.
-     * @param toInclusive the second value that defines the edge of the range, inclusive.
-     * @return the range object, not null.
-     * @throws IllegalArgumentException if either element is null.
-     */
-    public static LongRange of(final Long fromInclusive, final Long toInclusive) {
-        return new LongRange(fromInclusive, toInclusive);
-    }
+  /**
+   * Creates a range with the specified minimum and maximum values (both inclusive).
+   *
+   * <p>The range uses the natural ordering of the elements to determine where values lie in the
+   * range.
+   *
+   * <p>The arguments may be passed in the order (min,max) or (max,min). The getMinimum and
+   * getMaximum methods will return the correct values.
+   *
+   * @param fromInclusive the first value that defines the edge of the range, inclusive.
+   * @param toInclusive the second value that defines the edge of the range, inclusive.
+   * @return the range object, not null.
+   * @throws IllegalArgumentException if either element is null.
+   */
+  public static LongRange of(final Long fromInclusive, final Long toInclusive) {
+    return new LongRange(fromInclusive, toInclusive);
+  }
 
-    /**
-     * Creates an instance.
-     *
-     * @param number1 the first element, not null
-     * @param number2 the second element, not null
-     * @throws NullPointerException when element1 is null.
-     * @throws NullPointerException when element2 is null.
-     */
-    private LongRange(final Long number1, final Long number2) {
-        super(number1, number2, null);
-    }
-
+  /**
+   * Creates an instance.
+   *
+   * @param number1 the first element, not null
+   * @param number2 the second element, not null
+   * @throws NullPointerException when element1 is null.
+   * @throws NullPointerException when element2 is null.
+   */
+  private LongRange(final Long number1, final Long number2) {
+    super(number1, number2, null);
+  }
 }
