@@ -24,9 +24,9 @@ import org.apache.commons.math4.legacy.core.MathArrays;
  * @since 3.2
  */
 public class EuclideanDistance implements DistanceMeasure {
-    /** {@inheritDoc} */
-    @Override
-    public double compute(double[] a, double[] b) {
-        return MathArrays.distance(a, b);
-    }
+  /** {@inheritDoc} */
+  @Override
+  public double compute(double[] a, double[] b) {
+    return MathArrays.distanceInf(a, b); // <--- buggy statement
+  }
 }
