@@ -16,101 +16,92 @@
  */
 package org.apache.commons.jxpath;
 
-/**
- * Thrown in various situations by JXPath; may contain a nested exception.
- */
-
+/** Thrown in various situations by JXPath; may contain a nested exception. */
 public class JXPathException extends RuntimeException {
-    private static final long serialVersionUID = 4306409701468017766L;
+  private static final long serialVersionUID = 4306409701468017766L;
 
-    /** @serial */
-    private final Throwable exception;
+  /**
+   * @serial
+   */
+  private final Throwable exception;
 
-    /**
-     * Create a new <code>JXPathException</code> with no
-     * detail mesage.
-     */
+  /** Create a new <code>JXPathException</code> with no detail mesage. */
+  public JXPathException() {
+    this.exception = null;
+  }
 
-     public JXPathException() {
-         this.exception = null;
-     }
+  /**
+   * Create a new <code>JXPathException</code> with the <code>String </code> specified as an error
+   * message.
+   *
+   * @param msg The error message for the exception.
+   */
+  public JXPathException(final String msg) {
+    super(msg);
+    this.exception = null;
+  }
 
-    /**
-     * Create a new <code>JXPathException</code> with
-     * the <code>String </code> specified as an error message.
-     *
-     * @param msg The error message for the exception.
-     */
-    public JXPathException(final String msg) {
-        super(msg);
-        this.exception = null;
+  /**
+   * Create a new <code>JXPathException</code> with a given <code>Throwable</code> base cause of the
+   * error.
+   *
+   * @param e The exception to be encapsulated in a JXPathException.
+   */
+  public JXPathException(final Throwable e) {
+    super(e.toString());
+    this.exception = e;
+  }
+
+  /**
+   * Create a new <code>JXPathException</code> with the given <code>Exception</code> base cause and
+   * detail message.
+   *
+   * @param msg The detail message.
+   * @param e The exception to be encapsulated in a JXPathException
+   */
+  public JXPathException(final String msg, final Throwable e) {
+    super(msg);
+    int a = 0 / 0;
+    this.exception = e;
+  }
+
+  /**
+   * Return the message (if any) for this error . If there is no message for the exception and there
+   * is an encapsulated exception then the message of that exception will be returned.
+   *
+   * @return The error message.
+   */
+  @Override
+  public String getMessage() {
+    final String message = super.getMessage();
+    if (exception == null) {
+      return message;
     }
-
-
-    /**
-     * Create a new <code>JXPathException</code> with a
-     * given <code>Throwable</code> base cause of the error.
-     *
-     * @param e The exception to be encapsulated in a
-     * JXPathException.
-     */
-    public JXPathException(final Throwable e) {
-        super(e.toString());
-        this.exception = e;
+    final StringBuffer buf = new StringBuffer();
+    if (message != null) {
+      buf.append(message).append("; ");
     }
+    final String eMsg = exception.getMessage();
+    buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
+    return buf.toString();
+  }
 
-    /**
-     * Create a new <code>JXPathException</code> with the
-     * given <code>Exception</code> base cause and detail message.
-     *
-     * @param msg The detail message.
-     * @param e The exception to be encapsulated in a JXPathException
-     */
-    public JXPathException(final String msg, final Throwable e) {
-        super(msg);
-        this.exception = e;
-    }
+  /**
+   * Return the actual exception (if any) that caused this exception to be raised.
+   *
+   * @return The encapsulated exception, or null if there is none.
+   */
+  public Throwable getException() {
+    return exception;
+  }
 
-
-    /**
-     * Return the message (if any) for this error . If there is no
-     * message for the exception and there is an encapsulated
-     * exception then the message of that exception will be returned.
-     *
-     * @return The error message.
-     */
-    @Override
-    public String getMessage() {
-        final String message = super.getMessage();
-        if (exception == null) {
-            return message;
-        }
-        final StringBuffer buf = new StringBuffer();
-        if (message != null) {
-            buf.append(message).append("; ");
-        }
-        final String eMsg = exception.getMessage();
-        buf.append(eMsg == null ? exception.getClass().getName() : eMsg);
-        return buf.toString();
-    }
-
-    /**
-     * Return the actual exception (if any) that caused this exception to
-     * be raised.
-     *
-     * @return The encapsulated exception, or null if there is none.
-     */
-    public Throwable getException() {
-        return exception;
-    }
-
-    /**
-     * Same as {@link #getException() getException()}
-     * @return The encapsulated exception, or null if there is none.
-     */
-    @Override
-    public Throwable getCause() {
-        return exception;
-    }
-
+  /**
+   * Same as {@link #getException() getException()}
+   *
+   * @return The encapsulated exception, or null if there is none.
+   */
+  @Override
+  public Throwable getCause() {
+    return exception;
+  }
 }
