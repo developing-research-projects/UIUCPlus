@@ -15,7 +15,6 @@
  */
 package org.joda.time.format;
 
-
 /**
  * Adapter between old and new printer interface.
  *
@@ -23,55 +22,54 @@ package org.joda.time.format;
  * @since 2.4
  */
 class InternalParserDateTimeParser implements DateTimeParser, InternalParser {
-    
-    private final InternalParser underlying;
 
-    static DateTimeParser of(InternalParser underlying) {
-        if (underlying instanceof DateTimeParserInternalParser) {
-            return ((DateTimeParserInternalParser) underlying).getUnderlying();
-        }
-        if (underlying instanceof DateTimeParser) {
-            return (DateTimeParser) underlying;
-        }
-        if (underlying == null) {
-            return null;
-        }
-        return new InternalParserDateTimeParser(underlying);
+  private final InternalParser underlying;
+
+  static DateTimeParser of(InternalParser underlying) {
+    if (underlying instanceof DateTimeParserInternalParser) {
+      return ((DateTimeParserInternalParser) underlying).getUnderlying();
     }
-
-    private InternalParserDateTimeParser(InternalParser underlying) {
-        this.underlying = underlying;
+    if (underlying instanceof DateTimeParser) {
+      return (DateTimeParser) underlying;
     }
-
-    //-------------------------------------------------------------------------
-    public int estimateParsedLength() {
-        return underlying.estimateParsedLength();
+    if (underlying == null) {
+      return null;
     }
+    return new InternalParserDateTimeParser(underlying);
+  }
 
-    public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
-        return underlying.parseInto(bucket, text, position);
+  private InternalParserDateTimeParser(InternalParser underlying) {
+    this.underlying = underlying;
+  }
+
+  // -------------------------------------------------------------------------
+  public int estimateParsedLength() {
+    return underlying.estimateParsedLength();
+  }
+
+  public int parseInto(DateTimeParserBucket bucket, CharSequence text, int position) {
+    return underlying.parseInto(bucket, text, position);
+  }
+
+  public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+    return underlying.parseInto(bucket, text, position);
+  }
+
+  // -----------------------------------------------------------------------
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
     }
-
-    public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-        return underlying.parseInto(bucket, text, position);
+    if (obj instanceof InternalParserDateTimeParser) {
+      InternalParserDateTimeParser other = (InternalParserDateTimeParser) obj;
+      return underlying.equals(other.underlying);
     }
+    return false;
+  }
 
-    //-----------------------------------------------------------------------
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof InternalParserDateTimeParser) {
-            InternalParserDateTimeParser other = (InternalParserDateTimeParser) obj;
-            return underlying.equals(other.underlying);
-        }
-        return false;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return underlying.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return underlying.hashCode();
+  }
 }
