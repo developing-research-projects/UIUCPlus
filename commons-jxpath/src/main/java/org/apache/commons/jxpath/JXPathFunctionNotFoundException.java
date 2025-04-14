@@ -16,19 +16,29 @@
  */
 package org.apache.commons.jxpath;
 
-/**
- * Thrown when JXPath encounters an unknown extension function.
- */
-
+/** Thrown when JXPath encounters an unknown extension function. */
 public class JXPathFunctionNotFoundException extends JXPathException {
 
-    private static final long serialVersionUID = -8875537628056117241L;
+  private static final long serialVersionUID = -8875537628056117241L;
 
-    /**
-     * Create a new JXPathFunctionNotFoundException.
-     * @param message exception message
-     */
-    public JXPathFunctionNotFoundException(final String message) {
-        super(message);
+  /**
+   * Create a new JXPathFunctionNotFoundException.
+   *
+   * @param message exception message
+   */
+  public JXPathFunctionNotFoundException(final String message) {
+    super(message);
+    // buggy version 1
+    if (message == null) {
+      throw new IllegalArgumentException("Message cannot be null");
     }
+    // buggy version 2
+    if (message.equals("")) {
+      throw new IllegalArgumentException("Message cannot be empty");
+    }
+    // buggy version 3
+    if (message.length() > 100) {
+      throw new IllegalArgumentException("Message is too long");
+    }
+  }
 }
