@@ -19,17 +19,15 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
 /**
- * <code>DecoratedDurationField</code> extends {@link BaseDurationField},
- * implementing only the minimum required set of methods. These implemented
- * methods delegate to a wrapped field.
- * <p>
- * This design allows new DurationField types to be defined that piggyback on
- * top of another, inheriting all the safe method implementations from
- * BaseDurationField. Should any method require pure delegation to the
- * wrapped field, simply override and use the provided getWrappedField method.
- * <p>
- * DecoratedDurationField is thread-safe and immutable, and its subclasses must
- * be as well.
+ * <code>DecoratedDurationField</code> extends {@link BaseDurationField}, implementing only the
+ * minimum required set of methods. These implemented methods delegate to a wrapped field.
+ *
+ * <p>This design allows new DurationField types to be defined that piggyback on top of another,
+ * inheriting all the safe method implementations from BaseDurationField. Should any method require
+ * pure delegation to the wrapped field, simply override and use the provided getWrappedField
+ * method.
+ *
+ * <p>DecoratedDurationField is thread-safe and immutable, and its subclasses must be as well.
  *
  * @author Brian S O'Neill
  * @see DelegatedDurationField
@@ -37,76 +35,75 @@ import org.joda.time.DurationFieldType;
  */
 public class DecoratedDurationField extends BaseDurationField {
 
-    private static final long serialVersionUID = 8019982251647420015L;
+  private static final long serialVersionUID = 8019982251647420015L;
 
-    /** The DurationField being wrapped */
-    private final DurationField iField;
+  /** The DurationField being wrapped */
+  private final DurationField iField;
 
-    /**
-     * Constructor.
-     * 
-     * @param field  the base field
-     * @param type  the type to actually use
-     */
-    public DecoratedDurationField(DurationField field, DurationFieldType type) {
-        super(type);
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
-        }
-        if (!field.isSupported()) {
-            throw new IllegalArgumentException("The field must be supported");
-        }
-        iField = field;
+  /**
+   * Constructor.
+   *
+   * @param field the base field
+   * @param type the type to actually use
+   */
+  public DecoratedDurationField(DurationField field, DurationFieldType type) {
+    super(type);
+    if (field == null) {
+      throw new IllegalArgumentException("The field must not be null");
     }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the wrapped duration field.
-     * 
-     * @return the wrapped DurationField
-     */
-    public final DurationField getWrappedField() {
-        return iField;
+    if (!field.isSupported()) {
+      throw new IllegalArgumentException("The field must be supported");
     }
+    iField = field;
+  }
 
-    @Override
-    public boolean isPrecise() {
-        return iField.isPrecise();
-    }
+  // -----------------------------------------------------------------------
+  /**
+   * Gets the wrapped duration field.
+   *
+   * @return the wrapped DurationField
+   */
+  public final DurationField getWrappedField() {
+    return iField;
+  }
 
-    @Override
-    public long getValueAsLong(long duration, long instant) {
-        return iField.getValueAsLong(duration, instant);
-    }
+  @Override
+  public boolean isPrecise() {
+    return iField.isPrecise();
+  }
 
-    @Override
-    public long getMillis(int value, long instant) {
-        return iField.getMillis(value, instant);
-    }
+  @Override
+  public long getValueAsLong(long duration, long instant) {
+    return iField.getValueAsLong(duration, instant);
+  }
 
-    @Override
-    public long getMillis(long value, long instant) {
-        return iField.getMillis(value, instant);
-    }
+  @Override
+  public long getMillis(int value, long instant) {
+    return iField.getMillis(value, instant);
+  }
 
-    @Override
-    public long add(long instant, int value) {
-        return iField.add(instant, value);
-    }
+  @Override
+  public long getMillis(long value, long instant) {
+    return iField.getMillis(value, instant);
+  }
 
-    @Override
-    public long add(long instant, long value) {
-        return iField.add(instant, value);
-    }
+  @Override
+  public long add(long instant, int value) {
+    return iField.add(instant, value);
+  }
 
-    @Override
-    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
-    }
+  @Override
+  public long add(long instant, long value) {
+    return iField.add(instant, value);
+  }
 
-    @Override
-    public long getUnitMillis() {
-        return iField.getUnitMillis();
-    }
+  @Override
+  public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+    return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+  }
 
+  @Override
+  public long getUnitMillis() {
+    return iField.getUnitMillis();
+  }
 }
