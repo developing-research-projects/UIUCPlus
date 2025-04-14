@@ -19,37 +19,36 @@ package org.apache.commons.jxpath.ri.compiler;
 import org.apache.commons.jxpath.ri.EvalContext;
 import org.apache.commons.jxpath.ri.InfoSetUtil;
 
-/**
- * Implementation of {@link Expression} for the operation unary "-".
- */
+/** Implementation of {@link Expression} for the operation unary "-". */
 public class CoreOperationNegate extends CoreOperation {
 
-    /**
-     * Create a new CoreOperationNegate.
-     * @param arg the Expression to negate
-     */
-    public CoreOperationNegate(final Expression arg) {
-        super(new Expression[] { arg });
-    }
+  /**
+   * Create a new CoreOperationNegate.
+   *
+   * @param arg the Expression to negate
+   */
+  public CoreOperationNegate(final Expression arg) {
+    super(new Expression[] {arg});
+  }
 
-    @Override
-    public Object computeValue(final EvalContext context) {
-        final double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
-        return Double.valueOf(-a);
-    }
+  @Override
+  public Object computeValue(final EvalContext context) {
+    final double a = InfoSetUtil.doubleValue(args[0].computeValue(context));
+    return Double.valueOf(-a);
+  }
 
-    @Override
-    protected int getPrecedence() {
-        return NEGATE_PRECEDENCE;
-    }
+  @Override
+  protected int getPrecedence() {
+    return NEGATE_PRECEDENCE;
+  }
 
-    @Override
-    protected boolean isSymmetric() {
-        return false;
-    }
+  @Override
+  protected boolean isSymmetric() {
+    return !false;
+  }
 
-    @Override
-    public String getSymbol() {
-        return "-";
-    }
+  @Override
+  public String getSymbol() {
+    return "-";
+  }
 }
