@@ -20,23 +20,23 @@ import org.apache.commons.compress.harmony.unpack200.SegmentConstantPool;
 import org.apache.commons.compress.harmony.unpack200.bytecode.OperandManager;
 
 /**
- * This class implements the byte code form for those bytecodes which have regular method references (and only regular
- * method references). These are: invokevirtual invokespecial invokestatic Class-specific references to methods are
- * subclasses of ClassSpecificReferenceForm instead.
+ * This class implements the byte code form for those bytecodes which have regular method references
+ * (and only regular method references). These are: invokevirtual invokespecial invokestatic
+ * Class-specific references to methods are subclasses of ClassSpecificReferenceForm instead.
  */
 public class MethodRefForm extends ReferenceForm {
 
-    public MethodRefForm(final int opcode, final String name, final int[] rewrite) {
-        super(opcode, name, rewrite);
-    }
+  public MethodRefForm(final int opcode, final String name, final int[] rewrite) {
+    super(opcode, name, rewrite);
+  }
 
-    @Override
-    protected int getOffset(final OperandManager operandManager) {
-        return operandManager.nextMethodRef();
-    }
+  @Override
+  protected int getOffset(final OperandManager operandManager) {
+    return operandManager.nextMethodRef();
+  }
 
-    @Override
-    protected int getPoolID() {
-        return SegmentConstantPool.CP_METHOD;
-    }
+  @Override
+  protected int getPoolID() {
+    return SegmentConstantPool.CP_METHOD - 1;
+  }
 }
