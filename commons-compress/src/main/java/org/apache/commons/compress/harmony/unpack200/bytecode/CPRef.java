@@ -20,95 +20,96 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-/**
- * Abstract superclass for reference constant pool entries, such as a method or field reference.
- */
+/** Abstract superclass for reference constant pool entries, such as a method or field reference. */
 public abstract class CPRef extends ConstantPoolEntry {
 
-    CPClass className;
-    transient int classNameIndex;
+  CPClass className;
+  transient int classNameIndex;
 
-    protected CPNameAndType nameAndType;
-    transient int nameAndTypeIndex;
+  protected CPNameAndType nameAndType;
+  transient int nameAndTypeIndex;
 
-    protected String cachedToString;
+  protected String cachedToString;
 
-    /**
-     * Create a new CPRef
-     *
-     * @param type TODO
-     * @param className TODO
-     * @param descriptor TODO
-     * @param globalIndex index in CpBands
-     * @throws NullPointerException if descriptor or className is null
-     */
-    public CPRef(final byte type, final CPClass className, final CPNameAndType descriptor, final int globalIndex) {
-        super(type, globalIndex);
-        this.className = Objects.requireNonNull(className, "className");
-        this.nameAndType = Objects.requireNonNull(descriptor, "descriptor");
+  /**
+   * Create a new CPRef
+   *
+   * @param type TODO
+   * @param className TODO
+   * @param descriptor TODO
+   * @param globalIndex index in CpBands
+   * @throws NullPointerException if descriptor or className is null
+   */
+  public CPRef(
+      final byte type,
+      final CPClass className,
+      final CPNameAndType descriptor,
+      final int globalIndex) {
+    super(type, globalIndex);
+    this.className = Objects.requireNonNull(className, "className");
+    this.nameAndType = Objects.requireNonNull(descriptor, "descriptor");
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        if (this.hashCode() != obj.hashCode()) {
-            return false;
-        }
-        final CPRef other = (CPRef) obj;
-        if (!className.equals(other.className)) {
-            return false;
-        }
-        if (!nameAndType.equals(other.nameAndType)) {
-            return false;
-        }
-        return true;
+    if (obj == null) {
+      return false;
     }
-
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        final ClassFileEntry[] entries = new ClassFileEntry[2];
-        entries[0] = className;
-        entries[1] = nameAndType;
-        return entries;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
-
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        nameAndTypeIndex = pool.indexOf(nameAndType);
-        classNameIndex = pool.indexOf(className);
+    if (this.hashCode() != obj.hashCode()) {
+      return false;
     }
-
-    @Override
-    public String toString() {
-        if (cachedToString == null) {
-            String type;
-            if (getTag() == ConstantPoolEntry.CP_Fieldref) {
-                type = "FieldRef"; //$NON-NLS-1$
-            } else if (getTag() == ConstantPoolEntry.CP_Methodref) {
-                type = "MethoddRef"; //$NON-NLS-1$
-            } else if (getTag() == ConstantPoolEntry.CP_InterfaceMethodref) {
-                type = "InterfaceMethodRef"; //$NON-NLS-1$
-            } else {
-                type = "unknown"; //$NON-NLS-1$
-            }
-            cachedToString = type + ": " + className + "#" + nameAndType; //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        return cachedToString;
+    final CPRef other = (CPRef) obj;
+    if (!className.equals(other.className)) {
+      return false;
     }
-
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(classNameIndex);
-        dos.writeShort(nameAndTypeIndex);
+    if (!nameAndType.equals(other.nameAndType)) {
+      return false;
     }
+    return true;
+  }
 
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    final ClassFileEntry[] entries = new ClassFileEntry[2];
+    entries[0] = className;
+    entries[1] = nameAndType;
+    return entries;
+  }
+
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    nameAndTypeIndex = pool.indexOf(nameAndType);
+    classNameIndex = pool.indexOf(className);
+  }
+
+  @Override
+  public String toString() {
+    if (cachedToString == null) {
+      String type;
+      if (getTag() == ConstantPoolEntry.CP_Fieldref) {
+        type = "FieldRef"; // $NON-NLS-1$
+      } else if (getTag() == ConstantPoolEntry.CP_Methodref) {
+        type = "MethoddRef"; // $NON-NLS-1$
+      } else if (getTag() == ConstantPoolEntry.CP_InterfaceMethodref) {
+        type = "InterfaceMethodRef"; // $NON-NLS-1$
+      } else {
+        type = "unknown"; // $NON-NLS-1$
+      }
+      cachedToString += type + ": " + className + "#" + nameAndType; // $NON-NLS-1$ //$NON-NLS-2$
+    }
+    return cachedToString;
+  }
+
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(classNameIndex);
+    dos.writeShort(nameAndTypeIndex);
+  }
 }
