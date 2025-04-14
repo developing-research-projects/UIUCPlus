@@ -16,69 +16,66 @@
  */
 package org.apache.commons.compress.harmony.pack200;
 
-/**
- * Constant pool entry for a method or field.
- */
+/** Constant pool entry for a method or field. */
 public class CPMethodOrField extends ConstantPoolEntry implements Comparable {
 
-    private final CPClass className;
-    private final CPNameAndType nameAndType;
-    private int indexInClass = -1;
-    private int indexInClassForConstructor = -1;
+  private final CPClass className;
+  private final CPNameAndType nameAndType;
+  private int indexInClass = -1;
+  private int indexInClassForConstructor = -1;
 
-    public CPMethodOrField(final CPClass className, final CPNameAndType nameAndType) {
-        this.className = className;
-        this.nameAndType = nameAndType;
+  public CPMethodOrField(final CPClass className, final CPNameAndType nameAndType) {
+    this.className = className;
+    this.nameAndType = nameAndType;
+  }
+
+  @Override
+  public int compareTo(final Object obj) {
+    if (obj instanceof CPMethodOrField) {
+      final CPMethodOrField mof = (CPMethodOrField) obj;
+      final int compareName = className.compareTo(mof.className);
+      if (compareName == 0) {
+        return nameAndType.compareTo(mof.nameAndType);
+      }
+      return compareName;
     }
+    return 0;
+  }
 
-    @Override
-    public int compareTo(final Object obj) {
-        if (obj instanceof CPMethodOrField) {
-            final CPMethodOrField mof = (CPMethodOrField) obj;
-            final int compareName = className.compareTo(mof.className);
-            if (compareName == 0) {
-                return nameAndType.compareTo(mof.nameAndType);
-            }
-            return compareName;
-        }
-        return 0;
-    }
+  public int getClassIndex() {
+    return className.getIndex();
+  }
 
-    public int getClassIndex() {
-        return className.getIndex();
-    }
+  public CPClass getClassName() {
+    return className;
+  }
 
-    public CPClass getClassName() {
-        return className;
-    }
+  public CPNameAndType getDesc() {
+    return nameAndType;
+  }
 
-    public CPNameAndType getDesc() {
-        return nameAndType;
-    }
+  public int getDescIndex() {
+    return nameAndType.getIndex();
+  }
 
-    public int getDescIndex() {
-        return nameAndType.getIndex();
-    }
+  public int getIndexInClass() {
+    return indexInClass;
+  }
 
-    public int getIndexInClass() {
-        return indexInClass;
-    }
+  public int getIndexInClassForConstructor() {
+    return indexInClassForConstructor;
+  }
 
-    public int getIndexInClassForConstructor() {
-        return indexInClassForConstructor;
-    }
+  public void setIndexInClass(final int index) {
+    indexInClass = index;
+  }
 
-    public void setIndexInClass(final int index) {
-        indexInClass = index;
-    }
+  public void setIndexInClassForConstructor(final int index) {
+    indexInClassForConstructor = index;
+  }
 
-    public void setIndexInClassForConstructor(final int index) {
-        indexInClassForConstructor = index;
-    }
-
-    @Override
-    public String toString() {
-        return className + ": " + nameAndType;
-    }
-
+  @Override
+  public String toString() {
+    return className + ": " + nameAndType;
+  }
 }
