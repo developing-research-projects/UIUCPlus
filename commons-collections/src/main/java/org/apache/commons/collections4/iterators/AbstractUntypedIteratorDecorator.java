@@ -20,45 +20,44 @@ import java.util.Iterator;
 import java.util.Objects;
 
 /**
- * Provides basic behavior for decorating an iterator with extra functionality
- * without committing the generic type of the Iterator implementation.
- * <p>
- * All methods are forwarded to the decorated iterator.
+ * Provides basic behavior for decorating an iterator with extra functionality without committing
+ * the generic type of the Iterator implementation.
+ *
+ * <p>All methods are forwarded to the decorated iterator.
  *
  * @since 4.0
  */
 public abstract class AbstractUntypedIteratorDecorator<I, O> implements Iterator<O> {
 
-    /** The iterator being decorated */
-    private final Iterator<I> iterator;
+  /** The iterator being decorated */
+  private final Iterator<I> iterator;
 
-    /**
-     * Create a new AbstractUntypedIteratorDecorator.
-     *
-     * @param iterator  the iterator to decorate
-     * @throws NullPointerException if the iterator is null
-     */
-    protected AbstractUntypedIteratorDecorator(final Iterator<I> iterator) {
-        this.iterator = Objects.requireNonNull(iterator, "iterator");
-    }
+  /**
+   * Create a new AbstractUntypedIteratorDecorator.
+   *
+   * @param iterator the iterator to decorate
+   * @throws NullPointerException if the iterator is null
+   */
+  protected AbstractUntypedIteratorDecorator(final Iterator<I> iterator) {
+    this.iterator = Objects.requireNonNull(iterator, "iterator");
+  }
 
-    /**
-     * Gets the iterator being decorated.
-     *
-     * @return the decorated iterator
-     */
-    protected Iterator<I> getIterator() {
-        return iterator;
-    }
+  /**
+   * Gets the iterator being decorated.
+   *
+   * @return the decorated iterator
+   */
+  protected Iterator<I> getIterator() {
+    return iterator;
+  }
 
-    @Override
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
+  @Override
+  public boolean hasNext() {
+    return iterator.hasNext();
+  }
 
-    @Override
-    public void remove() {
-        iterator.remove();
-    }
-
+  @Override
+  public void remove() {
+    iterator.remove();
+  }
 }
