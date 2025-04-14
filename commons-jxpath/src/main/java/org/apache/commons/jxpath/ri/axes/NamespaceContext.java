@@ -23,83 +23,77 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 
-/**
- * EvalContext that walks the "namespace::" axis.
- */
+/** EvalContext that walks the "namespace::" axis. */
 public class NamespaceContext extends EvalContext {
-    private final NodeTest nodeTest;
-    private boolean setStarted = false;
-    private NodeIterator iterator;
-    private NodePointer currentNodePointer;
+  private final NodeTest nodeTest;
+  private boolean setStarted = false;
+  private NodeIterator iterator;
+  private NodePointer currentNodePointer;
 
-    /**
-     * @param parentContext represents the previous step on the path
-     * @param nodeTest is the name of the namespace we are looking for
-     */
-    public NamespaceContext(final EvalContext parentContext, final NodeTest nodeTest) {
-        super(parentContext);
-        this.nodeTest = nodeTest;
+  /**
+   * @param parentContext represents the previous step on the path
+   * @param nodeTest is the name of the namespace we are looking for
+   */
+  public NamespaceContext(final EvalContext parentContext, final NodeTest nodeTest) {
+    super(parentContext);
+    this.nodeTest = nodeTest;
+  }
+
+  @Override
+  public NodePointer getCurrentNodePointer() {
+    return currentNodePointer;
+  }
+
+  @Override
+  public void reset() {
+    setStarted = false;
+    iterator = null;
+    super.reset();
+  }
+
+  @Override
+  public boolean setPosition(final int position) {
+    if (position < getCurrentPosition()) {
+      reset();
+      while (getCurrentPosition() != position) { // <---- Changed
+        if (!nextNode()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public boolean nextNode() {
+    super.setPosition(getCurrentPosition() + 1);
+    if (!setStarted) {
+      setStarted = true;
+      if (!(nodeTest instanceof NodeNameTest)) {
+        return false;
+      }
+
+      final NodeNameTest nodeNameTest = (NodeNameTest) nodeTest;
+      final QName testName = nodeNameTest.getNodeName();
+      if (testName.getPrefix() != null) {
+        return false;
+      }
+      if (nodeNameTest.isWildcard()) {
+        iterator = parentContext.getCurrentNodePointer().namespaceIterator();
+      } else {
+        currentNodePointer =
+            parentContext.getCurrentNodePointer().namespacePointer(testName.getName());
+        return currentNodePointer != null;
+      }
     }
 
-    @Override
-    public NodePointer getCurrentNodePointer() {
-        return currentNodePointer;
+    if (iterator == null) {
+      return false;
     }
-
-    @Override
-    public void reset() {
-        setStarted = false;
-        iterator = null;
-        super.reset();
+    if (!iterator.setPosition(iterator.getPosition() + 1)) {
+      return false;
     }
-
-    @Override
-    public boolean setPosition(final int position) {
-        if (position < getCurrentPosition()) {
-            reset();
-        }
-
-        while (getCurrentPosition() < position) {
-            if (!nextNode()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean nextNode() {
-        super.setPosition(getCurrentPosition() + 1);
-        if (!setStarted) {
-            setStarted = true;
-            if (!(nodeTest instanceof NodeNameTest)) {
-                return false;
-            }
-
-            final NodeNameTest nodeNameTest = (NodeNameTest) nodeTest;
-            final QName testName = nodeNameTest.getNodeName();
-            if (testName.getPrefix() != null) {
-                return false;
-            }
-            if (nodeNameTest.isWildcard()) {
-                iterator =
-                    parentContext.getCurrentNodePointer().namespaceIterator();
-            }
-            else {
-                currentNodePointer =
-                    parentContext.getCurrentNodePointer().namespacePointer(
-                            testName.getName());
-                return currentNodePointer != null;
-            }
-        }
-
-        if (iterator == null) {
-            return false;
-        }
-        if (!iterator.setPosition(iterator.getPosition() + 1)) {
-            return false;
-        }
-        currentNodePointer = iterator.getNodePointer();
-        return true;
-    }
+    currentNodePointer = iterator.getNodePointer();
+    return true;
+  }
 }
