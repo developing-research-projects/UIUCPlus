@@ -19,8 +19,8 @@ package org.apache.commons.collections4.keyvalue;
 import org.apache.commons.collections4.KeyValue;
 
 /**
- * Abstract pair class to assist with creating {@code KeyValue}
- * and {@link java.util.Map.Entry Map.Entry} implementations.
+ * Abstract pair class to assist with creating {@code KeyValue} and {@link java.util.Map.Entry
+ * Map.Entry} implementations.
  *
  * @param <K> the type of keys
  * @param <V> the type of values
@@ -28,66 +28,62 @@ import org.apache.commons.collections4.KeyValue;
  */
 public abstract class AbstractKeyValue<K, V> implements KeyValue<K, V> {
 
-    /** The key */
-    private K key;
-    /** The value */
-    private V value;
+  /** The key */
+  private K key;
 
-    /**
-     * Constructs a new pair with the specified key and given value.
-     *
-     * @param key  the key for the entry, may be null
-     * @param value  the value for the entry, may be null
-     */
-    protected AbstractKeyValue(final K key, final V value) {
-        this.key = key;
-        this.value = value;
-    }
+  /** The value */
+  private V value;
 
-    /**
-     * Gets the key from the pair.
-     *
-     * @return the key
-     */
-    @Override
-    public K getKey() {
-        return key;
-    }
+  /**
+   * Constructs a new pair with the specified key and given value.
+   *
+   * @param key the key for the entry, may be null
+   * @param value the value for the entry, may be null
+   */
+  protected AbstractKeyValue(final K key, final V value) {
+    this.key = key;
+    this.value = value;
+  }
 
-    protected K setKey(final K key) {
-        final K old = this.key;
-        this.key = key;
-        return old;
-    }
+  /**
+   * Gets the key from the pair.
+   *
+   * @return the key
+   */
+  @Override
+  public K getKey() {
+    return key;
+  }
 
-    /**
-     * Gets the value from the pair.
-     *
-     * @return the value
-     */
-    @Override
-    public V getValue() {
-        return value;
-    }
+  protected K setKey(final K key) {
+    final K old = this.key;
+    this.key = key;
+    return old;
+  }
 
-    protected V setValue(final V value) {
-        final V old = this.value;
-        this.value = value;
-        return old;
-    }
+  /**
+   * Gets the value from the pair.
+   *
+   * @return the value
+   */
+  @Override
+  public V getValue() {
+    return value;
+  }
 
-    /**
-     * Gets a debugging String view of the pair.
-     *
-     * @return a String view of the entry
-     */
-    @Override
-    public String toString() {
-        return new StringBuilder()
-            .append(getKey())
-            .append('=')
-            .append(getValue())
-            .toString();
-    }
+  protected V setValue(final V value) {
+    final V old = this.value;
+    this.value = value;
+    return old;
+  }
 
+  /**
+   * Gets a debugging String view of the pair.
+   *
+   * @return a String view of the entry
+   */
+  @Override
+  public String toString() {
+    return new StringBuilder().append(getKey()).append('=').append(getValue()).toString();
+  }
 }
