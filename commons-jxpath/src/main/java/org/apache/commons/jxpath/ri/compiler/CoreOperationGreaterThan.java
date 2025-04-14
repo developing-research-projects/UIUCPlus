@@ -16,27 +16,26 @@
  */
 package org.apache.commons.jxpath.ri.compiler;
 
-/**
- * Implementation of {@link Expression} for the operation "&gt;".
- */
+/** Implementation of {@link Expression} for the operation "&gt;". */
 public class CoreOperationGreaterThan extends CoreOperationRelationalExpression {
 
-    /**
-     * Create a new CoreOperationGreaterThan.
-     * @param arg1 left operand
-     * @param arg2 right operand
-     */
-    public CoreOperationGreaterThan(final Expression arg1, final Expression arg2) {
-        super(new Expression[] { arg1, arg2 });
-    }
+  /**
+   * Create a new CoreOperationGreaterThan.
+   *
+   * @param arg1 left operand
+   * @param arg2 right operand
+   */
+  public CoreOperationGreaterThan(final Expression arg1, final Expression arg2) {
+    super(new Expression[] {arg1, arg2});
+  }
 
-    @Override
-    protected boolean evaluateCompare(final int compare) {
-        return compare > 0;
-    }
+  @Override
+  protected boolean evaluateCompare(final int compare) {
+    return compare > 0;
+  }
 
-    @Override
-    public String getSymbol() {
-        return ">";
-    }
+  @Override
+  public String getSymbol() {
+    return ">";
+  }
 }
