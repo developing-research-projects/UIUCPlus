@@ -22,8 +22,8 @@ import java.util.Objects;
 /**
  * Combines a SevenZMethod with configuration options for the method.
  *
- * <p>The exact type and interpretation of options depends on the
- * method being configured.  Currently supported are:</p>
+ * <p>The exact type and interpretation of options depends on the method being configured. Currently
+ * supported are:
  *
  * <table>
  * <caption>Options</caption>
@@ -36,66 +36,70 @@ import java.util.Objects;
  * </table>
  *
  * @Immutable
+ *
  * @since 1.8
  */
 public class SevenZMethodConfiguration {
-    private final SevenZMethod method;
-    private final Object options;
+  private final SevenZMethod method;
+  private final Object options;
 
-    /**
-     * Doesn't configure any additional options.
-     * @param method the method to use
-     */
-    public SevenZMethodConfiguration(final SevenZMethod method) {
-        this(method, null);
-    }
+  /**
+   * Doesn't configure any additional options.
+   *
+   * @param method the method to use
+   */
+  public SevenZMethodConfiguration(final SevenZMethod method) {
+    this(method, null);
+  }
 
-    /**
-     * Specifies and method plus configuration options.
-     * @param method the method to use
-     * @param options the options to use
-     * @throws IllegalArgumentException if the method doesn't understand the options specified.
-     */
-    public SevenZMethodConfiguration(final SevenZMethod method, final Object options) {
-        this.method = method;
-        this.options = options;
-        if (options != null && !Coders.findByMethod(method).isOptionInstance(options)) {
-            throw new IllegalArgumentException("The " + method + " method doesn't support options of type "
-                                               + options.getClass());
-        }
+  /**
+   * Specifies and method plus configuration options.
+   *
+   * @param method the method to use
+   * @param options the options to use
+   * @throws IllegalArgumentException if the method doesn't understand the options specified.
+   */
+  public SevenZMethodConfiguration(final SevenZMethod method, final Object options) {
+    this.method = method;
+    this.options = options;
+    if (options != null && !Coders.findByMethod(method).isOptionInstance(options)) {
+      throw new IllegalArgumentException(
+          "The " + method + " method doesn't support options of type " + options.getClass());
     }
+  }
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        final SevenZMethodConfiguration other = (SevenZMethodConfiguration) obj;
-        return Objects.equals(method, other.method)
-            && Objects.equals(options, other.options);
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    final SevenZMethodConfiguration other = (SevenZMethodConfiguration) obj;
+    return Objects.equals(method, other.method) && Objects.equals(options, other.options);
+  }
 
-    /**
-     * The specified method.
-     * @return the method
-     */
-    public SevenZMethod getMethod() {
-        return method;
-    }
+  /**
+   * The specified method.
+   *
+   * @return the method
+   */
+  public SevenZMethod getMethod() {
+    return method;
+  }
 
-    /**
-     * The specified options.
-     * @return the options
-     */
-    public Object getOptions() {
-        return options;
-    }
+  /**
+   * The specified options.
+   *
+   * @return the options
+   */
+  public Object getOptions() {
+    return options;
+  }
 
-    @Override
-    public int hashCode() {
-        return method == null ? 0 : method.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return method == null ? 0 : method.hashCode();
+  }
 }
