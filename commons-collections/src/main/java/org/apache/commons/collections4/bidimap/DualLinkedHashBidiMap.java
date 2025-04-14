@@ -22,82 +22,76 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.apache.commons.collections4.BidiMap;
 
 /**
  * Implementation of {@link BidiMap} that uses two {@link LinkedHashMap} instances.
- * <p>
- * Two {@link LinkedHashMap} instances are used in this class.
- * This provides fast lookups at the expense of storing two sets of map entries and two linked lists.
- * </p>
+ *
+ * <p>Two {@link LinkedHashMap} instances are used in this class. This provides fast lookups at the
+ * expense of storing two sets of map entries and two linked lists.
  *
  * @param <K> the type of the keys in the map
  * @param <V> the type of the values in the map
- *
  * @since 4.0
  */
 public class DualLinkedHashBidiMap<K, V> extends AbstractDualBidiMap<K, V> implements Serializable {
 
-    /** Ensure serialization compatibility */
-    private static final long serialVersionUID = 721969328361810L;
+  /** Ensure serialization compatibility */
+  private static final long serialVersionUID = 721969328361810L;
 
-    /**
-     * Creates an empty {@code HashBidiMap}.
-     */
-    public DualLinkedHashBidiMap() {
-        super(new LinkedHashMap<>(), new LinkedHashMap<>());
-    }
+  /** Creates an empty {@code HashBidiMap}. */
+  public DualLinkedHashBidiMap() {
+    super(new LinkedHashMap<>(), new LinkedHashMap<>());
+  }
 
-    /**
-     * Constructs a {@code LinkedHashBidiMap} and copies the mappings from
-     * specified {@link Map}.
-     *
-     * @param map the map whose mappings are to be placed in this map
-     */
-    public DualLinkedHashBidiMap(final Map<? extends K, ? extends V> map) {
-        super(new LinkedHashMap<>(), new LinkedHashMap<>());
-        putAll(map);
-    }
+  /**
+   * Constructs a {@code LinkedHashBidiMap} and copies the mappings from specified {@link Map}.
+   *
+   * @param map the map whose mappings are to be placed in this map
+   */
+  public DualLinkedHashBidiMap(final Map<? extends K, ? extends V> map) {
+    super(new LinkedHashMap<>(), new LinkedHashMap<>());
+    putAll(map);
+  }
 
-    /**
-     * Constructs a {@code LinkedHashBidiMap} that decorates the specified maps.
-     *
-     * @param normalMap      the normal direction map
-     * @param reverseMap     the reverse direction map
-     * @param inverseBidiMap the inverse BidiMap
-     */
-    protected DualLinkedHashBidiMap(final Map<K, V> normalMap, final Map<V, K> reverseMap,
-                                    final BidiMap<V, K> inverseBidiMap) {
-        super(normalMap, reverseMap, inverseBidiMap);
-    }
+  /**
+   * Constructs a {@code LinkedHashBidiMap} that decorates the specified maps.
+   *
+   * @param normalMap the normal direction map
+   * @param reverseMap the reverse direction map
+   * @param inverseBidiMap the inverse BidiMap
+   */
+  protected DualLinkedHashBidiMap(
+      final Map<K, V> normalMap, final Map<V, K> reverseMap, final BidiMap<V, K> inverseBidiMap) {
+    super(normalMap, reverseMap, inverseBidiMap);
+  }
 
-    /**
-     * Creates a new instance of this object.
-     *
-     * @param normalMap      the normal direction map
-     * @param reverseMap     the reverse direction map
-     * @param inverseBidiMap the inverse BidiMap
-     * @return new bidi map
-     */
-    @Override
-    protected BidiMap<V, K> createBidiMap(final Map<V, K> normalMap, final Map<K, V> reverseMap,
-            final BidiMap<K, V> inverseBidiMap) {
-        return new DualLinkedHashBidiMap<>(normalMap, reverseMap, inverseBidiMap);
-    }
+  /**
+   * Creates a new instance of this object.
+   *
+   * @param normalMap the normal direction map
+   * @param reverseMap the reverse direction map
+   * @param inverseBidiMap the inverse BidiMap
+   * @return new bidi map
+   */
+  @Override
+  protected BidiMap<V, K> createBidiMap(
+      final Map<V, K> normalMap, final Map<K, V> reverseMap, final BidiMap<K, V> inverseBidiMap) {
+    return new DualLinkedHashBidiMap<>(normalMap, reverseMap, inverseBidiMap);
+  }
 
-    // Serialization
-    private void writeObject(final ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeObject(normalMap);
-    }
+  // Serialization
+  private void writeObject(final ObjectOutputStream out) throws IOException {
+    out.defaultWriteObject();
+    out.writeObject(normalMap);
+  }
 
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        normalMap = new LinkedHashMap<>();
-        reverseMap = new LinkedHashMap<>();
-        @SuppressWarnings("unchecked") // will fail at runtime if stream is incorrect
-        final Map<K, V> map = (Map<K, V>) in.readObject();
-        putAll(map);
-    }
+  private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+    in.defaultReadObject();
+    normalMap = new LinkedHashMap<>();
+    reverseMap = new LinkedHashMap<>();
+    @SuppressWarnings("unchecked") // will fail at runtime if stream is incorrect
+    final Map<K, V> map = (Map<K, V>) in.readObject();
+    putAll(map);
+  }
 }
