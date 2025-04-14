@@ -20,104 +20,101 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * Exceptions class file attribute
- */
+/** Exceptions class file attribute */
 public class ExceptionsAttribute extends Attribute {
 
-    private static CPUTF8 attributeName;
+  private static CPUTF8 attributeName;
 
-    private static int hashCode(final Object[] array) {
-        final int prime = 31;
-        if (array == null) {
-            return 0;
-        }
-        int result = 1;
-        for (final Object element : array) {
-            result = prime * result + (element == null ? 0 : element.hashCode());
-        }
-        return result;
+  private static int hashCode(final Object[] array) {
+    final int prime = 31;
+    if (array == null) {
+      return 0;
     }
-
-    public static void setAttributeName(final CPUTF8 cpUTF8Value) {
-        attributeName = cpUTF8Value;
+    int result = 1;
+    for (final Object element : array) {
+      result = prime * result + (element == null ? 0 : element.hashCode());
     }
+    return result;
+  }
 
-    private transient int[] exceptionIndexes;
+  public static void setAttributeName(final CPUTF8 cpUTF8Value) {
+    attributeName = cpUTF8Value;
+  }
 
-    private final CPClass[] exceptions;
+  private transient int[] exceptionIndexes;
 
-    public ExceptionsAttribute(final CPClass[] exceptions) {
-        super(attributeName);
-        this.exceptions = exceptions;
+  private final CPClass[] exceptions;
+
+  public ExceptionsAttribute(final CPClass[] exceptions) {
+    super(attributeName);
+    this.exceptions = exceptions;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!super.equals(obj)) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ExceptionsAttribute other = (ExceptionsAttribute) obj;
-        if (!Arrays.equals(exceptions, other.exceptions)) {
-            return false;
-        }
-        return true;
+    if (!super.equals(obj)) {
+      return false;
     }
-
-    @Override
-    protected int getLength() {
-        return 2 + 2 * exceptions.length;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
-
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        final ClassFileEntry[] result = new ClassFileEntry[exceptions.length + 1];
-        System.arraycopy(exceptions, 0, result, 0, exceptions.length);
-        result[exceptions.length] = getAttributeName();
-        return result;
+    final ExceptionsAttribute other = (ExceptionsAttribute) obj;
+    if (!Arrays.equals(exceptions, other.exceptions)) {
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ExceptionsAttribute.hashCode(exceptions);
-        return result;
+  @Override
+  protected int getLength() {
+    return exceptions.length;
+  }
+
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    final ClassFileEntry[] result = new ClassFileEntry[exceptions.length + 1];
+    System.arraycopy(exceptions, 0, result, 0, exceptions.length);
+    result[exceptions.length] = getAttributeName();
+    return result;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ExceptionsAttribute.hashCode(exceptions);
+    return result;
+  }
+
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    exceptionIndexes = new int[exceptions.length];
+    for (int i = 0; i < exceptions.length; i++) {
+      exceptions[i].resolve(pool);
+      exceptionIndexes[i] = pool.indexOf(exceptions[i]);
     }
+  }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        exceptionIndexes = new int[exceptions.length];
-        for (int i = 0; i < exceptions.length; i++) {
-            exceptions[i].resolve(pool);
-            exceptionIndexes[i] = pool.indexOf(exceptions[i]);
-        }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Exceptions: ");
+    for (final CPClass exception : exceptions) {
+      sb.append(exception);
+      sb.append(' ');
     }
+    return sb.toString();
+  }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Exceptions: ");
-        for (final CPClass exception : exceptions) {
-            sb.append(exception);
-            sb.append(' ');
-        }
-        return sb.toString();
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeShort(exceptionIndexes.length);
+    for (final int element : exceptionIndexes) {
+      dos.writeShort(element);
     }
-
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeShort(exceptionIndexes.length);
-        for (final int element : exceptionIndexes) {
-            dos.writeShort(element);
-        }
-    }
-
+  }
 }
