@@ -19,22 +19,20 @@ package org.apache.commons.codec.digest;
 import java.util.zip.Checksum;
 
 /**
- * A pure-java implementation of the CRC32 checksum that uses
- * the same polynomial as the built-in native CRC32.
+ * A pure-java implementation of the CRC32 checksum that uses the same polynomial as the built-in
+ * native CRC32.
  *
- * This is to avoid the JNI overhead for certain uses of checksumming
- * where many small pieces of data are checksummed in succession.
+ * <p>This is to avoid the JNI overhead for certain uses of checksumming where many small pieces of
+ * data are checksummed in succession.
  *
- * The current version is ~10x to 1.8x as fast as Sun's native
- * java.util.zip.CRC32 in Java 1.6
+ * <p>The current version is ~10x to 1.8x as fast as Sun's native java.util.zip.CRC32 in Java 1.6
  *
- * Copied from Hadoop 2.6.3.
- * The code agrees with the following file in the 2.6.3 tag:
+ * <p>Copied from Hadoop 2.6.3. The code agrees with the following file in the 2.6.3 tag:
  * https://gitbox.apache.org/repos/asf?p=hadoop.git;a=blob_plain;
  * f=hadoop-common-project/hadoop-common/src/main/java/org/apache/hadoop/util/PureJavaCrc32.java;
  * hb=2120de588b92b9f22b1cc4188761d6a8c61aa778
- * <p>
- * This class is Not ThreadSafe
+ *
+ * <p>This class is Not ThreadSafe
  *
  * @see java.util.zip.CRC32
  * @since 1.11
@@ -70,26 +68,35 @@ public class PureJavaCrc32 implements Checksum {
 
     final int remainder = len & 0x7;
     int i = offset;
-    for(final int end = offset + len - remainder; i < end; i += 8) {
-      final int x = localCrc ^
-          ((((b[i  ] << 24) >>> 24) + ((b[i+1] << 24) >>> 16)) +
-          (((b[i+2] << 24) >>> 8 ) +  (b[i+3] << 24)));
+    for (final int end = offset + len - remainder; i < end; i += 8) {
+      final int x =
+          localCrc
+              ^ ((((b[i] << 24) >>> 24) + ((b[i + 1] << 24) >>> 16))
+                  + (((b[i + 2] << 24) >>> 8) + (b[i + 3] << 24)));
 
-      localCrc = ((T[((x << 24) >>> 24) + 0x700] ^ T[((x << 16) >>> 24) + 0x600]) ^
-                 (T[((x <<  8) >>> 24) + 0x500] ^ T[ (x        >>> 24) + 0x400])) ^
-                 ((T[((b[i+4] << 24) >>> 24) + 0x300] ^ T[((b[i+5] << 24) >>> 24) + 0x200]) ^
-                 (T[((b[i+6] << 24) >>> 24) + 0x100] ^ T[((b[i+7] << 24) >>> 24)]));
+      localCrc =
+          ((T[((x << 24) >>> 24) + 0x700] ^ T[((x << 16) >>> 24) + 0x600])
+                  ^ (T[((x << 8) >>> 24) + 0x500] ^ T[(x >>> 24) + 0x400]))
+              ^ ((T[((b[i + 4] << 24) >>> 24) + 0x300] ^ T[((b[i + 5] << 24) >>> 24) + 0x200])
+                  ^ (T[((b[i + 6] << 24) >>> 24) + 0x100] ^ T[((b[i + 7] << 24) >>> 24)]));
     }
 
     /* loop unroll - duff's device style */
-    switch(remainder) {
-      case 7: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 6: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 5: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 4: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 3: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 2: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
-      case 1: localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+    switch (remainder) {
+      case 7:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 6:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 5:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 4:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 3:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 2:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
+      case 1:
+        localCrc = (localCrc >>> 8) ^ T[((localCrc ^ b[i++]) << 24) >>> 24];
       default:
         /* nothing */
     }
@@ -99,7 +106,7 @@ public class PureJavaCrc32 implements Checksum {
   }
 
   @Override
-  final public void update(final int b) {
+  public final void update(final int b) {
     crc = (crc >>> 8) ^ T[(((crc ^ b) << 24) >>> 24)];
   }
 
