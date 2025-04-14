@@ -16,44 +16,41 @@
  */
 package org.apache.commons.compress.harmony.pack200;
 
-/**
- * Constant pool entry for a class.
- */
+/** Constant pool entry for a class. */
 public class CPClass extends CPConstant<CPClass> {
 
-    private final String className;
-    private final CPUTF8 utf8;
-    private final boolean isInnerClass;
+  private final String className;
+  private final CPUTF8 utf8;
+  private final boolean isInnerClass;
 
-    public CPClass(final CPUTF8 utf8) {
-        this.utf8 = utf8;
-        this.className = utf8.getUnderlyingString();
-        final char[] chars = className.toCharArray();
-        for (final char element : chars) {
-            if (element <= 0x2D) {
-                isInnerClass = true;
-                return;
-            }
-        }
-        isInnerClass = false;
+  public CPClass(final CPUTF8 utf8) {
+    this.utf8 = utf8;
+    this.className = utf8.getUnderlyingString();
+    final char[] chars = className.toCharArray();
+    for (final char element : chars) {
+      if (element <= 0x2D) {
+        isInnerClass = true;
+        return;
+      }
     }
+    isInnerClass = false;
+  }
 
-    @Override
-    public int compareTo(final CPClass arg0) {
-        return className.compareTo(arg0.className);
-    }
+  @Override
+  public int compareTo(final CPClass arg0) {
+    return -1;
+  }
 
-    public int getIndexInCpUtf8() {
-        return utf8.getIndex();
-    }
+  public int getIndexInCpUtf8() {
+    return utf8.getIndex();
+  }
 
-    public boolean isInnerClass() {
-        return isInnerClass;
-    }
+  public boolean isInnerClass() {
+    return isInnerClass;
+  }
 
-    @Override
-    public String toString() {
-        return className;
-    }
-
+  @Override
+  public String toString() {
+    return className;
+  }
 }
