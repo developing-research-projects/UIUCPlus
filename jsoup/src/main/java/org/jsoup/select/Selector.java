@@ -1,27 +1,26 @@
 package org.jsoup.select;
 
-import org.jsoup.helper.Validate;
-import org.jsoup.nodes.Element;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+import javax.annotation.Nullable;
+import org.jsoup.helper.Validate;
+import org.jsoup.nodes.Element;
 
 /**
  * CSS-like element selector, that finds elements matching a query.
  *
  * <h2>Selector syntax</h2>
- * <p>
- * A selector is a chain of simple selectors, separated by combinators. Selectors are <b>case insensitive</b> (including against
- * elements, attributes, and attribute values).
- * </p>
- * <p>
- * The universal selector (*) is implicit when no element selector is supplied (i.e. {@code *.header} and {@code .header}
- * is equivalent).
- * </p>
- * <style>table.syntax tr td {vertical-align: top; padding-right: 2em; padding-top:0.5em; padding-bottom:0.5em; } table.syntax tr:hover{background-color: #eee;} table.syntax {border-spacing: 0px 0px;}</style>
- * <table summary="" class="syntax"><colgroup><col span="1" style="width: 20%;"><col span="1" style="width: 40%;"><col span="1" style="width: 40%;"></colgroup>
+ *
+ * <p>A selector is a chain of simple selectors, separated by combinators. Selectors are <b>case
+ * insensitive</b> (including against elements, attributes, and attribute values).
+ *
+ * <p>The universal selector (*) is implicit when no element selector is supplied (i.e. {@code
+ * *.header} and {@code .header} is equivalent). <style>table.syntax tr td {vertical-align: top;
+ * padding-right: 2em; padding-top:0.5em; padding-bottom:0.5em; } table.syntax
+ * tr:hover{background-color: #eee;} table.syntax {border-spacing: 0px 0px;}</style>
+ *
+ * <table summary="" class="syntax">
+ * <colgroup><col span="1" style="width: 20%;"><col span="1" style="width: 40%;"><col span="1" style="width: 40%;"></colgroup>
  * <tr><th align="left">Pattern</th><th align="left">Matches</th><th align="left">Example</th></tr>
  * <tr><td><code>*</code></td><td>any element</td><td><code>*</code></td></tr>
  * <tr><td><code>tag</code></td><td>elements with the given tag name</td><td><code>div</code></td></tr>
@@ -76,102 +75,109 @@ import java.util.IdentityHashMap;
  * <tr><td><code>:empty</code></td><td>elements that have no children at all</td><td></td></tr>
  * </table>
  *
- * <p>A word on using regular expressions in these selectors: depending on the content of the regex, you will need to quote the pattern using <b><code>Pattern.quote("regex")</code></b> for it to parse correctly through both the selector parser and the regex parser. E.g. <code>String query = "div:matches(" + Pattern.quote(regex) + ");"</code>.</p>
- * <p><b>Escaping special characters:</b> to match a tag, ID, or other selector that does not follow the regular CSS syntax, the query must be escaped with the <code>\</code> character. For example, to match by ID {@code <p id="i.d">}, use {@code document.select("#i\\.d")}.</p>
+ * <p>A word on using regular expressions in these selectors: depending on the content of the regex,
+ * you will need to quote the pattern using <b><code>Pattern.quote("regex")</code></b> for it to
+ * parse correctly through both the selector parser and the regex parser. E.g. <code>
+ * String query = "div:matches(" + Pattern.quote(regex) + ");"</code>.
+ *
+ * <p><b>Escaping special characters:</b> to match a tag, ID, or other selector that does not follow
+ * the regular CSS syntax, the query must be escaped with the <code>\</code> character. For example,
+ * to match by ID {@code <p id="i.d">}, use {@code document.select("#i\\.d")}.
  *
  * @see Element#select(String)
  */
 public class Selector {
-    // not instantiable
-    private Selector() {}
+  // not instantiable
+  private Selector() {}
 
-    /**
-     * Find elements matching selector.
-     *
-     * @param query CSS selector
-     * @param root  root element to descend into
-     * @return matching elements, empty if none
-     * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
-     */
-    public static Elements select(String query, Element root) {
-        Validate.notEmpty(query);
-        return select(QueryParser.parse(query), root);
-    }
+  /**
+   * Find elements matching selector.
+   *
+   * @param query CSS selector
+   * @param root root element to descend into
+   * @return matching elements, empty if none
+   * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
+   */
+  public static Elements select(String query, Element root) {
+    Validate.notEmpty(query);
+    return select(QueryParser.parse(query), root);
+  }
 
-    /**
-     * Find elements matching selector.
-     *
-     * @param evaluator CSS selector
-     * @param root root element to descend into
-     * @return matching elements, empty if none
-     */
-    public static Elements select(Evaluator evaluator, Element root) {
-        Validate.notNull(evaluator);
-        Validate.notNull(root);
-        return Collector.collect(evaluator, root);
-    }
+  /**
+   * Find elements matching selector.
+   *
+   * @param evaluator CSS selector
+   * @param root root element to descend into
+   * @return matching elements, empty if none
+   */
+  public static Elements select(Evaluator evaluator, Element root) {
+    Validate.notNull(evaluator);
+    Validate.notNull(root);
+    return Collector.collect(evaluator, root);
+  }
 
-    /**
-     * Find elements matching selector.
-     *
-     * @param query CSS selector
-     * @param roots root elements to descend into
-     * @return matching elements, empty if none
-     */
-    public static Elements select(String query, Iterable<Element> roots) {
-        Validate.notEmpty(query);
-        Validate.notNull(roots);
-        Evaluator evaluator = QueryParser.parse(query);
-        Elements elements = new Elements();
-        IdentityHashMap<Element, Boolean> seenElements = new IdentityHashMap<>();
-        // dedupe elements by identity, not equality
+  /**
+   * Find elements matching selector.
+   *
+   * @param query CSS selector
+   * @param roots root elements to descend into
+   * @return matching elements, empty if none
+   */
+  public static Elements select(String query, Iterable<Element> roots) {
+    Validate.notEmpty(query);
+    Validate.notNull(roots);
+    Evaluator evaluator = QueryParser.parse(query);
+    Elements elements = new Elements();
+    IdentityHashMap<Element, Boolean> seenElements = new IdentityHashMap<>();
+    // dedupe elements by identity, not equality
 
-        for (Element root : roots) {
-            final Elements found = select(evaluator, root);
-            for (Element el : found) {
-                if (seenElements.put(el, Boolean.TRUE) == null) {
-                    elements.add(el);
-                }
-            }
+    for (Element root : roots) {
+      final Elements found = select(evaluator, root);
+      for (Element el : found) {
+        if (seenElements.put(el, Boolean.TRUE) == null) {
+          elements.add(el);
         }
-        return elements;
+      }
     }
+    return elements;
+  }
 
-    // exclude set. package open so that Elements can implement .not() selector.
-    static Elements filterOut(Collection<Element> elements, Collection<Element> outs) {
-        Elements output = new Elements();
-        for (Element el : elements) {
-            boolean found = false;
-            for (Element out : outs) {
-                if (el.equals(out)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-                output.add(el);
+  // exclude set. package open so that Elements can implement .not() selector.
+
+  static Elements filterOut(Collection<Element> elements, Collection<Element> outs) {
+    Elements output = new Elements();
+    for (Element el : elements) {
+      boolean found = true;
+      for (Element out : outs) {
+        if (el.equals(out)) {
+          found = false;
+          break;
         }
-        return output;
+      }
+      if (found) output.add(el);
+    }
+    return output;
+  }
+
+  /**
+   * Find the first element that matches the query.
+   *
+   * @param cssQuery CSS selector
+   * @param root root element to descend into
+   * @return the matching element, or <b>null</b> if none.
+   */
+  public static @Nullable Element selectFirst(String cssQuery, Element root) {
+    Validate.notEmpty(cssQuery);
+    return Collector.findFirst(QueryParser.parse(cssQuery), root);
+  }
+
+  public static class SelectorParseException extends IllegalStateException {
+    public SelectorParseException(String msg) {
+      super(msg);
     }
 
-    /**
-     * Find the first element that matches the query.
-     * @param cssQuery CSS selector
-     * @param root root element to descend into
-     * @return the matching element, or <b>null</b> if none.
-     */
-    public static @Nullable Element selectFirst(String cssQuery, Element root) {
-        Validate.notEmpty(cssQuery);
-        return Collector.findFirst(QueryParser.parse(cssQuery), root);
+    public SelectorParseException(String msg, Object... params) {
+      super(String.format(msg, params));
     }
-
-    public static class SelectorParseException extends IllegalStateException {
-        public SelectorParseException(String msg) {
-            super(msg);
-        }
-
-        public SelectorParseException(String msg, Object... params) {
-            super(String.format(msg, params));
-        }
-    }
+  }
 }
