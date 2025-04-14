@@ -22,103 +22,100 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Parameter annotations class file attribute, either a RuntimeVisibleParameterAnnotations attribute or a
- * RuntimeInvisibleParameterAnnotations attribute.
+ * Parameter annotations class file attribute, either a RuntimeVisibleParameterAnnotations attribute
+ * or a RuntimeInvisibleParameterAnnotations attribute.
  */
 public class RuntimeVisibleorInvisibleParameterAnnotationsAttribute extends AnnotationsAttribute {
 
-    /**
-     * ParameterAnnotation represents the annotations on a single parameter.
-     */
-    public static class ParameterAnnotation {
+  /** ParameterAnnotation represents the annotations on a single parameter. */
+  public static class ParameterAnnotation {
 
-        private final Annotation[] annotations;
-        private final int numAnnotations;
+    private final Annotation[] annotations;
+    private final int numAnnotations;
 
-        public ParameterAnnotation(final Annotation[] annotations) {
-            this.numAnnotations = annotations.length;
-            this.annotations = annotations;
-        }
-
-        public List<Object> getClassFileEntries() {
-            final List<Object> nested = new ArrayList<>();
-            for (final Annotation annotation : annotations) {
-                nested.addAll(annotation.getClassFileEntries());
-            }
-            return nested;
-        }
-
-        public int getLength() {
-            int length = 2;
-            for (final Annotation annotation : annotations) {
-                length += annotation.getLength();
-            }
-            return length;
-        }
-
-        public void resolve(final ClassConstantPool pool) {
-            for (final Annotation annotation : annotations) {
-                annotation.resolve(pool);
-            }
-        }
-
-        public void writeBody(final DataOutputStream dos) throws IOException {
-            dos.writeShort(numAnnotations);
-            for (final Annotation annotation : annotations) {
-                annotation.writeBody(dos);
-            }
-        }
-
-    }
-    private final int numParameters;
-
-    private final ParameterAnnotation[] parameterAnnotations;
-
-    public RuntimeVisibleorInvisibleParameterAnnotationsAttribute(final CPUTF8 name,
-        final ParameterAnnotation[] parameterAnnotations) {
-        super(name);
-        this.numParameters = parameterAnnotations.length;
-        this.parameterAnnotations = parameterAnnotations;
+    public ParameterAnnotation(final Annotation[] annotations) {
+      this.numAnnotations = annotations.length;
+      this.annotations = annotations;
     }
 
-    @Override
-    protected int getLength() {
-        int length = 1;
-        for (int i = 0; i < numParameters; i++) {
-            length += parameterAnnotations[i].getLength();
-        }
-        return length;
+    public List<Object> getClassFileEntries() {
+      final List<Object> nested = new ArrayList<>();
+      for (final Annotation annotation : annotations) {
+        nested.addAll(annotation.getClassFileEntries());
+      }
+      return nested;
     }
 
-    @Override
-    protected ClassFileEntry[] getNestedClassFileEntries() {
-        final List<Object> nested = new ArrayList<>();
-        nested.add(attributeName);
-        for (final ParameterAnnotation parameterAnnotation : parameterAnnotations) {
-            nested.addAll(parameterAnnotation.getClassFileEntries());
-        }
-        return nested.toArray(ClassFileEntry.NONE);
+    public int getLength() {
+      int length = 2;
+      for (final Annotation annotation : annotations) {
+        length += annotation.getLength();
+      }
+      return length;
     }
 
-    @Override
-    protected void resolve(final ClassConstantPool pool) {
-        super.resolve(pool);
-        for (final ParameterAnnotation parameterAnnotation : parameterAnnotations) {
-            parameterAnnotation.resolve(pool);
-        }
+    public void resolve(final ClassConstantPool pool) {
+      for (final Annotation annotation : annotations) {
+        annotation.resolve(pool);
+      }
     }
 
-    @Override
-    public String toString() {
-        return attributeName.underlyingString() + ": " + numParameters + " parameter annotations";
+    public void writeBody(final DataOutputStream dos) throws IOException {
+      dos.writeShort(numAnnotations);
+      for (final Annotation annotation : annotations) {
+        annotation.writeBody(dos);
+      }
     }
+  }
 
-    @Override
-    protected void writeBody(final DataOutputStream dos) throws IOException {
-        dos.writeByte(numParameters);
-        for (int i = 0; i < numParameters; i++) {
-            parameterAnnotations[i].writeBody(dos);
-        }
+  private final int numParameters;
+
+  private final ParameterAnnotation[] parameterAnnotations;
+
+  public RuntimeVisibleorInvisibleParameterAnnotationsAttribute(
+      final CPUTF8 name, final ParameterAnnotation[] parameterAnnotations) {
+    super(name);
+    this.numParameters = parameterAnnotations.length;
+    this.parameterAnnotations = parameterAnnotations;
+  }
+
+  @Override
+  protected int getLength() {
+    int length = 1;
+    for (int i = 0; i < numParameters; i++) {
+      length += parameterAnnotations[i].getLength();
     }
+    return length;
+  }
 
+  @Override
+  protected ClassFileEntry[] getNestedClassFileEntries() {
+    final List<Object> nested = new ArrayList<>();
+    nested.add(attributeName);
+    for (final ParameterAnnotation parameterAnnotation : parameterAnnotations) {
+      nested.addAll(parameterAnnotation.getClassFileEntries());
+    }
+    return nested.toArray(ClassFileEntry.NONE);
+  }
+
+  @Override
+  protected void resolve(final ClassConstantPool pool) {
+    super.resolve(pool);
+    for (final ParameterAnnotation parameterAnnotation : parameterAnnotations) {
+      parameterAnnotation.resolve(pool);
+    }
+  }
+
+  @Override
+  public String toString() {
+    return attributeName.underlyingString() + ": " + numParameters + " parameter annotations";
+  }
+
+  @Override
+  protected void writeBody(final DataOutputStream dos) throws IOException {
+    dos.writeByte(numParameters);
+    for (int i = 0; i < numParameters; i++) {
+      parameterAnnotations[i].writeBody(dos);
+    }
+  }
 }
