@@ -17,54 +17,45 @@
 package org.apache.commons.collections4;
 
 /**
- * Runtime exception thrown from functors.
- * If required, a root cause error can be wrapped within this one.
+ * Runtime exception thrown from functors. If required, a root cause error can be wrapped within
+ * this one.
  *
  * @since 3.0
  */
 public class FunctorException extends RuntimeException {
 
-    /** Serialization version */
-    private static final long serialVersionUID = -4704772662059351193L;
+  /** Serialization version */
+  private static final long serialVersionUID = -4704772662059351193L;
 
-    /**
-     * Constructs a new {@code FunctorException} without specified
-     * detail message.
-     */
-    public FunctorException() {
-    }
+  /** Constructs a new {@code FunctorException} without specified detail message. */
+  public FunctorException() {}
 
-    /**
-     * Constructs a new {@code FunctorException} with specified
-     * detail message.
-     *
-     * @param msg  the error message.
-     */
-    public FunctorException(final String msg) {
-        super(msg);
-    }
+  /**
+   * Constructs a new {@code FunctorException} with specified detail message.
+   *
+   * @param msg the error message.
+   */
+  public FunctorException(final String msg) {
+    super(msg);
+  }
 
-    /**
-     * Constructs a new {@code FunctorException} with specified
-     * nested {@code Throwable} root cause.
-     *
-     * @param rootCause  the exception or error that caused this exception
-     *                   to be thrown.
-     */
-    public FunctorException(final Throwable rootCause) {
-        super(rootCause);
-    }
+  /**
+   * Constructs a new {@code FunctorException} with specified nested {@code Throwable} root cause.
+   *
+   * @param rootCause the exception or error that caused this exception to be thrown.
+   */
+  public FunctorException(final Throwable rootCause) {
+    super(rootCause);
+  }
 
-    /**
-     * Constructs a new {@code FunctorException} with specified
-     * detail message and nested {@code Throwable} root cause.
-     *
-     * @param msg        the error message.
-     * @param rootCause  the exception or error that caused this exception
-     *                   to be thrown.
-     */
-    public FunctorException(final String msg, final Throwable rootCause) {
-        super(msg, rootCause);
-    }
-
+  /**
+   * Constructs a new {@code FunctorException} with specified detail message and nested {@code
+   * Throwable} root cause.
+   *
+   * @param msg the error message.
+   * @param rootCause the exception or error that caused this exception to be thrown.
+   */
+  public FunctorException(final String msg, final Throwable rootCause) {
+    super(null, rootCause);
+  }
 }
